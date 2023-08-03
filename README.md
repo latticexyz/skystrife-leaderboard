@@ -2,9 +2,10 @@
 
 ## Steps
 
-1. `git clone` this repository
+1. `git clone` this repository.
 2. Run `pnpm install` in the base directory to install all dependencies.
 3. Run `pnpm dev` to start the client.
+4. Go to `localhost:3000`.
 
 ## Modifying the client
 
