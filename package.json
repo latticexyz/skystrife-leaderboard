@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm recursive run build",
-    "dev:client": "pnpm --filter 'client' run dev",
+    "dev": "pnpm --filter 'client' run dev",
     "foundry:up": "curl -L https://foundry.paradigm.xyz | bash && bash $HOME/.foundry/bin/foundryup",
     "mud:up": "pnpm mud set-version --tag main && pnpm install",
     "prepare": "(forge --version || pnpm foundry:up)",
