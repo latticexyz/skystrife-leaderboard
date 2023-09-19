@@ -7,9 +7,22 @@ import {
 } from "@latticexyz/recs";
 import { useState } from "react";
 
+const stringToColour = (str: string) => {
+  let hash = 0;
+  str.split("").forEach((char) => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash);
+  });
+  let colour = "#";
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    colour += value.toString(16).padStart(2, "0");
+  }
+  return colour;
+};
+
 export const App = () => {
   const {
-    components: { Position, StructureType, UnitType },
+    components: { Position, OwnedBy, StructureType, UnitType },
   } = useMUD();
 
   const [matchId, setMatchId] = useState(1);
@@ -20,6 +33,7 @@ export const App = () => {
       position: getComponentValueStrict(Position, entity),
       structureType: getComponentValue(StructureType, entity),
       unitType: getComponentValue(UnitType, entity),
+      owner: getComponentValue(OwnedBy, entity),
     }))
     .filter(({ position }) => {
       return position.z === matchId;
@@ -33,7 +47,7 @@ export const App = () => {
         onChange={(e) => setMatchId(parseInt(e.target.value))}
         type="number"
       />
-      {units.map(({ entity, position, structureType, unitType }) => {
+      {units.map(({ entity, position, structureType, unitType, owner }) => {
         return (
           <div
             key={entity}
@@ -41,11 +55,7 @@ export const App = () => {
               position: "absolute",
               left: 300 + position.x * 20,
               top: 300 + position.y * 20,
-              backgroundColor: unitType
-                ? "red"
-                : structureType
-                ? "grey"
-                : "green",
+              backgroundColor: owner ? stringToColour(owner.value) : "green",
               width: 20,
             }}
           >
