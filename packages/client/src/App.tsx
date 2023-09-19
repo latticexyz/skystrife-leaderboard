@@ -1,65 +1,58 @@
 import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValueStrict } from "@latticexyz/recs";
-import { toEthAddress } from "@latticexyz/utils";
-import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
-import { OverlineLarge, OverlineSmall } from "./Theme/SkyStrife/Typography";
-import { Orbs } from "./Theme/SkyStrife/Orbs";
-
-const TOKEN_ID =
-  "0x4d616e6100000000000000000000000000000000000000000000000000000000";
+import {
+  Has,
+  getComponentValue,
+  getComponentValueStrict,
+} from "@latticexyz/recs";
+import { useState } from "react";
 
 export const App = () => {
   const {
-    components: { TokenBalance },
+    components: { Position, StructureType, UnitType },
   } = useMUD();
 
-  const balances = useEntityQuery([Has(TokenBalance)])
-    .filter((entity) => {
-      return (
-        decodeEntity(TokenBalance.metadata.keySchema, entity).token === TOKEN_ID
-      );
-    })
-    .map((entity) => {
-      const owner = decodeEntity(
-        TokenBalance.metadata.keySchema,
-        entity
-      ).entity;
-      const { value } = getComponentValueStrict(TokenBalance, entity);
+  const [matchId, setMatchId] = useState(1);
 
-      return { entity: owner, value };
+  const units = useEntityQuery([Has(Position)])
+    .map((entity) => ({
+      entity,
+      position: getComponentValueStrict(Position, entity),
+      structureType: getComponentValue(StructureType, entity),
+      unitType: getComponentValue(UnitType, entity),
+    }))
+    .filter(({ position }) => {
+      return position.z === matchId;
     });
 
-  balances.sort((a, b) => Number(b.value - a.value));
-
   return (
-    <div className="bg-slate-200 min-h-screen h-fit">
-      <div className="p-8">
-        <OverlineLarge>Sky Strife Leaderboard</OverlineLarge>
-
-        <div className="flex">
-          <div>
-            <OverlineSmall className="mb-3 text-ss-text-x-light">
-              Player
-            </OverlineSmall>
-            {balances.map((b) => (
-              <div key={b.entity}>{toEthAddress(b.entity)}</div>
-            ))}
-            <div className="h-2" />
+    <div>
+      Match ID:
+      <input
+        value={matchId}
+        onChange={(e) => setMatchId(parseInt(e.target.value))}
+        type="number"
+      />
+      {units.map(({ entity, position, structureType, unitType }) => {
+        return (
+          <div
+            key={entity}
+            style={{
+              position: "absolute",
+              left: 300 + position.x * 20,
+              top: 300 + position.y * 20,
+              backgroundColor: unitType
+                ? "red"
+                : structureType
+                ? "grey"
+                : "green",
+              width: 20,
+            }}
+          >
+            {structureType ? "O" : unitType ? "X" : "_"}
           </div>
-
-          <div className="w-16" />
-
-          <div>
-            <OverlineSmall className="mb-3 text-ss-text-x-light">
-              Balance
-            </OverlineSmall>
-            {balances.map((b) => (
-              <Orbs key={b.entity} amount={b.value} />
-            ))}
-          </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 };
