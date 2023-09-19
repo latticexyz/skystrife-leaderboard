@@ -20,6 +20,9 @@ const stringToColour = (str: string) => {
   return colour;
 };
 
+const WIDTH = 30;
+
+// TODO: create a mapping between unit types and emojis
 export const App = () => {
   const {
     components: { Position, OwnedBy, StructureType, UnitType },
@@ -53,13 +56,21 @@ export const App = () => {
             key={entity}
             style={{
               position: "absolute",
-              left: 300 + position.x * 20,
-              top: 300 + position.y * 20,
-              backgroundColor: owner ? stringToColour(owner.value) : "green",
-              width: 20,
+              left: WIDTH * (15 + position.x),
+              top: WIDTH * (15 + position.y),
+              width: WIDTH,
+              height: WIDTH,
+              border: "solid",
+              borderWidth: 0.1,
+              backgroundColor:
+                structureType || unitType
+                  ? owner
+                    ? stringToColour(owner.value)
+                    : "grey"
+                  : "green",
             }}
           >
-            {structureType ? "O" : unitType ? "X" : "_"}
+            {structureType ? "🏰" : unitType ? "🥷" : ""}
           </div>
         );
       })}
