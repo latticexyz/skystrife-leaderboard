@@ -1,9 +1,10 @@
 import { useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import { Has, getComponentValueStrict } from "@latticexyz/recs";
-import { Hex } from "viem";
+import { Hex, formatEther } from "viem";
 import { OverlineLarge, OverlineSmall } from "./Theme/SkyStrife/Typography";
-import { Mana } from "./Theme/SkyStrife/Mana";
+import { Orbs } from "./Theme/SkyStrife/Orbs";
+import { decodeEntity } from "@latticexyz/store-sync/recs";
 
 const TOKEN_ID =
   "0x4d616e6100000000000000000000000000000000000000000000000000000000";
@@ -16,9 +17,15 @@ export const App = () => {
   } = useMUD();
 
   const balances = useEntityQuery([Has(TokenBalance)])
-    .filter((entity) => entity.split(":")[0] === TOKEN_ID)
+    .filter(
+      (entity) =>
+        decodeEntity(TokenBalance.metadata.keySchema, entity).token === TOKEN_ID
+    )
     .map((entity) => {
-      const owner = entity.split(":")[1];
+      const owner = decodeEntity(
+        TokenBalance.metadata.keySchema,
+        entity
+      ).entity;
       const { value } = getComponentValueStrict(TokenBalance, entity);
 
       return { entity: owner, value };
@@ -49,7 +56,7 @@ export const App = () => {
               Balance
             </OverlineSmall>
             {balances.map((b) => (
-              <Mana key={b.entity} amount={Number(b.value)} />
+              <Orbs key={b.entity} amount={b.value} />
             ))}
           </div>
         </div>
