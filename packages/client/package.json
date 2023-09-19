@@ -11,31 +11,30 @@
     "test": "tsc --noEmit"
   },
   "dependencies": {
-    "@ethersproject/providers": "^5.7.2",
-    "@latticexyz/common": "2.0.0-next.0",
-    "@latticexyz/dev-tools": "2.0.0-next.0",
-    "@latticexyz/network": "2.0.0-indexing-1d07fea9",
-    "@latticexyz/react": "2.0.0-next.0",
-    "@latticexyz/recs": "2.0.0-next.0",
-    "@latticexyz/schema-type": "2.0.0-next.0",
-    "@latticexyz/std-client": "2.0.0-indexing-1d07fea9",
-    "@latticexyz/utils": "2.0.0-next.0",
-    "@latticexyz/world": "2.0.0-next.0",
-    "autoprefixer": "^10.4.14",
-    "ethers": "^5.7.2",
+    "@latticexyz/common": "2.0.0-main-7e6e5157",
+    "@latticexyz/dev-tools": "2.0.0-main-7e6e5157",
+    "@latticexyz/react": "2.0.0-main-7e6e5157",
+    "@latticexyz/recs": "2.0.0-main-7e6e5157",
+    "@latticexyz/schema-type": "2.0.0-main-7e6e5157",
+    "@latticexyz/services": "2.0.0-main-7e6e5157",
+    "@latticexyz/store-sync": "2.0.0-main-7e6e5157",
+    "@latticexyz/utils": "2.0.0-main-7e6e5157",
+    "@latticexyz/world": "2.0.0-main-7e6e5157",
+    "autoprefixer": "^10.4.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rxjs": "7.5.5",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "^3.3.3",
-    "viem": "1.3.1"
+    "viem": "1.6.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^3.1.0",
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
-    "vite": "^4.2.1",
+    "vite": "^4.4.9",
     "wait-port": "^1.0.4"
   }
 }

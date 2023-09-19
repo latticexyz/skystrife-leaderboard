@@ -1,6 +1,6 @@
 import { mudConfig, resolveTableId } from "@latticexyz/world/register";
 
-const config = mudConfig({
+export default mudConfig({
   enums: {
     UnitTypes: [
       "Unknown",
@@ -201,22 +201,6 @@ const config = mudConfig({
       },
     },
     /**
-     * How much stamina it costs an entity to engage in combat.
-     */
-    CombatCost: {
-      schema: "int32",
-    },
-    /**
-     * NOTE: Not currently used.
-     * Used to store a combat strength bonus matrix.
-     * i.e. Archer bonus vs Swordsman.
-     */
-    CombatStrength: {
-      schema: {
-        combatTypeStrengthBonuses: "int32[]",
-      },
-    },
-    /**
      * Used on terrain to give Strength bonuses to any entity staning on it.
      */
     StrengthMod: {
@@ -236,12 +220,6 @@ const config = mudConfig({
         prototypeIds: "bytes32[]",
         staminaCosts: "int32[]",
       },
-    },
-    /**
-     * Size of inventory for an entity.
-     */
-    Inventory: {
-      schema: "uint32",
     },
     /**
      * Used to mark something as an Item.
@@ -269,12 +247,6 @@ const config = mudConfig({
      */
     Match: "uint32",
     /**
-     * The SpawnPoints that are part of a match.
-     * Used as a lookup table to avoid querying all SpawnPoints
-     * in all Matches and then filtering.
-     */
-    MatchSpawnPoints: "bytes32[]",
-    /**
      * Match data for SkyPool
      */
     MatchSky: {
@@ -286,10 +258,10 @@ const config = mudConfig({
     /**
      * SkyPool settings:
      * - Creation cost of SkyPool matches.
-     * - Scale of rewards for SkyPool matches. The larger the scale, the more rewards.
      * - Window (in blocks) to determine match rewards.
      * - The entity that holds the SkyPools balance.
      * - Token that is used in SkyPool rewards.
+     * - The fraction that each place in the match should win
      */
     SkyPoolConfig: {
       keySchema: {},
@@ -298,6 +270,7 @@ const config = mudConfig({
         window: "uint256",
         entity: "bytes32",
         token: "bytes32",
+        matchRewardNumerators: "uint256[]",
       },
     },
     /**
@@ -313,6 +286,23 @@ const config = mudConfig({
       },
     },
     /**
+     * Match access control resource and function selector.
+     */
+    MatchAccessControl: {
+      schema: {
+        resourceSelector: "bytes32",
+        funcSelector: "bytes4",
+      },
+      dataStruct: false,
+    },
+    MatchAllowed: {
+      keySchema: {
+        matchEntity: "bytes32",
+        account: "address",
+      },
+      schema: "bool",
+    },
+    /**
      * Whether a match has finished.
      */
     MatchFinished: {
@@ -320,7 +310,7 @@ const config = mudConfig({
     },
     MatchMapCopyProgress: "uint256",
     /**
-     * Time when match was ready for players to join.
+     * Time when match Level copying is completed.
      */
     MatchReady: "uint256",
     /**
@@ -345,6 +335,12 @@ const config = mudConfig({
     LatestMatch: {
       keySchema: {},
       schema: "uint32",
+    },
+    /**
+     * Used in map creation to mark the center of the map.
+     */
+    MapCenter: {
+      schema: "bool",
     },
     /**
      * Marks an entity as able to move.
@@ -376,6 +372,18 @@ const config = mudConfig({
       schema: "bytes32",
     },
     /**
+     * Index for finding a player in a given Match.
+     */
+    MatchPlayer: {
+      keySchema: {
+        matchId: "uint32",
+        playerAddress: "address",
+      },
+      schema: {
+        playerEntity: "bytes32",
+      },
+    },
+    /**
      * Marks a player address as a player.
      * Value is an incrementing integer.
      */
@@ -399,45 +407,52 @@ const config = mudConfig({
       },
     },
     /**
-     * Used in templates to store the table IDs a template is composed of.
+     * Store the table IDs a template is composed of.
      */
-    Prototype: {
+    TemplateTables: {
       schema: "bytes32[]",
     },
     /**
-     * Used in templates to store the content of each record in a template.
+     * Store the content of each record in a template.
      */
-    PrototypeContent: {
+    TemplateContent: {
       keySchema: {
         templateId: "bytes32",
-        tableId: "bytes32",
+        index: "uint256",
       },
       schema: "bytes",
     },
-    MapSize: {
+    /**
+     * Stores the number of entities that are in a level.
+     */
+    LevelSize: "uint256",
+    /**
+     * Stores the number of entities that are in a level.
+     */
+    LevelTemplates: {
       keySchema: {
         levelId: "bytes32",
+        index: "uint256",
       },
-      schema: "uint256",
-    },
-    MapTemplates: {
-      keySchema: {
-        levelId: "bytes32",
-        indexId: "bytes32",
+      schema: {
+        templateId: "bytes32",
+        tableIds: "bytes32[]",
       },
-      schema: "bytes32",
     },
-    Map: {
+    /**
+     * Stores the indices of Level entiites with a given `templateId`
+     */
+    LevelTemplatesIndex: {
       keySchema: {
         levelId: "bytes32",
-        indexId: "bytes32",
+        templateId: "bytes32",
       },
-      schema: "bytes32[]",
+      schema: "uint256[]",
     },
-    MapContent: {
+    LevelContent: {
       keySchema: {
         levelId: "bytes32",
-        indexId: "bytes32",
+        index: "uint256",
         tableId: "bytes32",
       },
       schema: "bytes",
@@ -452,9 +467,10 @@ const config = mudConfig({
       },
     },
     /**
-     * Set during Player registration to reserve a specific SpawnPoint for a player entity.
+     * Set during Player registration to reserve a specific SpawnPoint in a level for a player entity.
      */
     SpawnReservedBy: {
+      keySchema: { matchEntity: "bytes32", index: "uint256" },
       schema: "bytes32",
     },
     /**
@@ -528,9 +544,27 @@ const config = mudConfig({
      */
     TokenMetadata: {
       schema: {
+        decimals: "uint8",
         name: "string",
         emoji: "string",
       },
+    },
+    /**
+     * The supply for each token.
+     */
+    TokenSupply: {
+      schema: "uint256",
+    },
+    /**
+     * The allowance of each entity for a given token.
+     */
+    TokenAllowance: {
+      keySchema: {
+        token: "bytes32",
+        account: "bytes32",
+        spender: "bytes32",
+      },
+      schema: "uint256",
     },
     /**
      * The number of tokens owned by each entity for a given token.
@@ -560,11 +594,6 @@ const config = mudConfig({
     {
       name: "KeysWithValueModule",
       root: true,
-      args: [resolveTableId("OwnedBy")],
-    },
-    {
-      name: "KeysWithValueModule",
-      root: true,
       args: [resolveTableId("Position")],
     },
     {
@@ -585,7 +614,7 @@ const config = mudConfig({
     {
       name: "KeysWithValueModule",
       root: true,
-      args: [resolveTableId("SpawnReservedBy")],
+      args: [resolveTableId("Name")],
     },
 
     // KeysInTableModule
@@ -602,19 +631,12 @@ const config = mudConfig({
     {
       name: "KeysInTableModule",
       root: true,
-      args: [resolveTableId("SpawnPoint")],
-    },
-    {
-      name: "KeysInTableModule",
-      root: true,
-      args: [resolveTableId("OwnedBy")],
-    },
-    {
-      name: "KeysInTableModule",
-      root: true,
       args: [resolveTableId("MatchSky")],
+    },
+    {
+      name: "KeysInTableModule",
+      root: true,
+      args: [resolveTableId("SpawnPoint")],
     },
   ],
 });
-
-export default config;

@@ -1,5 +1,8 @@
-import { MUDChain, latticeTestnet } from "@latticexyz/common/chains";
-import { foundry } from "viem/chains";
+import { MUDChain, latticeTestnet, mudFoundry } from "@latticexyz/common/chains";
+
+type SkyStrifeChain = MUDChain & {
+    indexerUrl?: string;
+};
 
 export const latticeTestnet2 = {
     name: "Lattice Testnet 2",
@@ -26,9 +29,28 @@ export const latticeTestnet2 = {
             url: "https://explorer.testnet2-chain.linfra.xyz",
         },
     },
-    modeUrl: "https://mode.testnet2-mud-services.linfra.xyz",
     faucetUrl: "https://faucet.testnet2-mud-services.linfra.xyz",
-} as const satisfies MUDChain;
+    indexerUrl: "https://indexer.testnet2-mud-services.linfra.xyz/trpc",
+} as const satisfies SkyStrifeChain;
+
+export const redstone = {
+    name: "Redstone Testnet",
+    id: 901,
+    network: "redstone-testnet",
+    nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
+    rpcUrls: {
+        default: {
+            http: ["https://redstone.linfra.xyz"],
+            webSocket: ["wss://redstone.linfra.xyz/ws"],
+        },
+        public: {
+            http: ["https://redstone.linfra.xyz"],
+            webSocket: ["wss://redstone.linfra.xyz/ws"],
+        },
+    },
+    faucetUrl: "https://faucet.redstone.linfra.xyz",
+    indexerUrl: "https://indexer.redstone.linfra.xyz/trpc",
+} as const satisfies SkyStrifeChain;
 
 // If you are deploying to chains other than anvil or Lattice testnet, add them here
-export const supportedChains: MUDChain[] = [foundry, latticeTestnet, latticeTestnet2];
+export const supportedChains: SkyStrifeChain[] = [mudFoundry, latticeTestnet, latticeTestnet2, redstone];
