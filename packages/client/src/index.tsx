@@ -3,6 +3,7 @@ import { mount as mountDevTools } from "@latticexyz/dev-tools";
 import { App } from "./App";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
+import mudConfig from "./mud/skystrife-config/mud.config";
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
@@ -21,5 +22,15 @@ setup().then((result) => {
       <App />
     </MUDProvider>
   );
-  mountDevTools();
+  mountDevTools({
+    config: mudConfig,
+    publicClient: result.network.publicClient,
+    walletClient: result.network.walletClient,
+    latestBlock$: result.network.latestBlock$,
+    blockStorageOperations$: result.network.blockStorageOperations$,
+    worldAddress: result.network.worldContract.address,
+    worldAbi: result.network.worldContract.abi,
+    write$: result.network.write$,
+    recsWorld: result.network.world,
+  });
 });
