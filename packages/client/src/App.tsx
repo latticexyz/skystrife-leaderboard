@@ -50,7 +50,7 @@ const MatchData = ({ matchId }: { matchId: number }) => {
     <div>
       <table>
         <tbody>
-          {tableData("Enity for the match itself", matchEntity)}
+          {tableData("Entity for the match itself", matchEntity)}
           {tableData("Match entities", entitiesInMatch.length)}
           {tableDataBool(
             "Match over?",
