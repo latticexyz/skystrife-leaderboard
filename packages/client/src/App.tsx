@@ -7,7 +7,10 @@ import {
   getComponentValueStrict,
 } from "@latticexyz/recs";
 import { toEthAddress } from "@latticexyz/utils";
-import { decodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
+import { 
+  decodeEntity, 
+  singletonEntity 
+} from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
 import { OverlineLarge, OverlineSmall } from "./Theme/SkyStrife/Typography";
 import { Orbs } from "./Theme/SkyStrife/Orbs";
@@ -33,10 +36,17 @@ const tableDataBool = (label: string, bool: boolean) => (
 
 const MatchData = ({ matchId }: { matchId: number }) => {
   const {
-    components: { Match, MatchConfig, MatchFinished, MatchReady },
+    components: { 
+      Match, 
+      MatchConfig, 
+      MatchFinished, 
+      MatchReady 
+    },
   } = useMUD();
 
-  const entitiesInMatch = useEntityQuery([HasValue(Match, { value: matchId })]);
+  const entitiesInMatch = useEntityQuery([
+    HasValue(Match, { value: matchId })
+  ]);
 
   const matchEntity = useEntityQuery([
     Has(MatchConfig),
