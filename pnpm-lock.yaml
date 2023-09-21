@@ -53,6 +53,9 @@ importers:
       '@latticexyz/store-sync':
         specifier: 2.0.0-main-7e6e5157
         version: 2.0.0-main-7e6e5157(typescript@5.1.6)
+      '@latticexyz/utils':
+        specifier: 2.0.0-main-7e6e5157
+        version: 2.0.0-main-7e6e5157
       '@latticexyz/world':
         specifier: 2.0.0-main-7e6e5157
         version: 2.0.0-main-7e6e5157(typescript@5.1.6)

@@ -1,15 +1,13 @@
 import { useEntityQuery } from "@latticexyz/react";
-import { useMUD } from "./MUDContext";
 import { Has, getComponentValueStrict } from "@latticexyz/recs";
-import { Hex, formatEther } from "viem";
+import { toEthAddress } from "@latticexyz/utils";
+import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { useMUD } from "./MUDContext";
 import { OverlineLarge, OverlineSmall } from "./Theme/SkyStrife/Typography";
 import { Orbs } from "./Theme/SkyStrife/Orbs";
-import { decodeEntity } from "@latticexyz/store-sync/recs";
 
 const TOKEN_ID =
   "0x4d616e6100000000000000000000000000000000000000000000000000000000";
-
-const bytes32ToAddress = (s: Hex) => s.slice(0, 2) + s.slice(26);
 
 export const App = () => {
   const {
@@ -17,10 +15,11 @@ export const App = () => {
   } = useMUD();
 
   const balances = useEntityQuery([Has(TokenBalance)])
-    .filter(
-      (entity) =>
+    .filter((entity) => {
+      return (
         decodeEntity(TokenBalance.metadata.keySchema, entity).token === TOKEN_ID
-    )
+      );
+    })
     .map((entity) => {
       const owner = decodeEntity(
         TokenBalance.metadata.keySchema,
@@ -44,7 +43,7 @@ export const App = () => {
               Player
             </OverlineSmall>
             {balances.map((b) => (
-              <div key={b.entity}>{bytes32ToAddress(b.entity as Hex)}</div>
+              <div key={b.entity}>{toEthAddress(b.entity)}</div>
             ))}
             <div className="h-2" />
           </div>
