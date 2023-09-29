@@ -128,14 +128,7 @@ const Gm = () => {
       {units.map(
         ({ entity, owner, position, structureType, terrainType, unitType }) =>
           unitType || structureType ? (
-            <sprite
-              key={entity}
-              position={[
-                position.x,
-                structureType || unitType ? 1 : 0,
-                position.y,
-              ]}
-            >
+            <sprite key={entity} position={[position.x, 0.5, position.y]}>
               <spriteMaterial
                 map={
                   unitType
@@ -157,11 +150,7 @@ const Gm = () => {
                     : "gray"
                   : "black"
               }
-              position={[
-                position.x,
-                structureType || unitType ? 1 : 0,
-                position.y,
-              ]}
+              position={[position.x, -0.5, position.y]}
             />
           )
       )}
