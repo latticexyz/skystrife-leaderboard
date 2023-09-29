@@ -87,6 +87,7 @@ export async function getNetworkConfig() {
     faucetServiceUrl: params.get("faucet") ?? chain.faucetUrl,
     worldAddress,
     initialBlockNumber,
-    indexerUrl: chain.indexerUrl
+    indexerUrl: chain.indexerUrl,
+    matchId: 250
   };
 }

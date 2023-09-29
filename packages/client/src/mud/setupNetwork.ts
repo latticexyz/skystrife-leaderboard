@@ -31,7 +31,7 @@ export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 type TableName = keyof (typeof mudConfig)["tables"];
 
-const TABLES: TableName[] = ["TokenBalance"]
+const TABLES: TableName[] = ["Position", "OwnedBy", "StructureType", "UnitType"]
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -95,7 +95,8 @@ export async function setupNetwork() {
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
-    tableIds
+    tableIds,
+    matchId: networkConfig.matchId
   });
 
   /*
@@ -136,5 +137,6 @@ export async function setupNetwork() {
     blockStorageOperations$,
     worldContract,
     write$: write$.asObservable().pipe(share()),
+    matchId: networkConfig.matchId
   };
 }

@@ -5,7 +5,9 @@ import {
   getComponentValue,
   getComponentValueStrict,
 } from "@latticexyz/recs";
-import { useState } from "react";
+import mudConfig from "./mud/skystrife-config/mud.config";
+
+const WIDTH = 30;
 
 const stringToColour = (str: string) => {
   let hash = 0;
@@ -20,15 +22,12 @@ const stringToColour = (str: string) => {
   return colour;
 };
 
-const WIDTH = 30;
-
 // TODO: create a mapping between unit types and emojis
 export const App = () => {
   const {
     components: { Position, OwnedBy, StructureType, UnitType },
+    network: { matchId },
   } = useMUD();
-
-  const [matchId, setMatchId] = useState(1);
 
   const units = useEntityQuery([Has(Position)])
     .map((entity) => ({
@@ -38,18 +37,11 @@ export const App = () => {
       unitType: getComponentValue(UnitType, entity),
       owner: getComponentValue(OwnedBy, entity),
     }))
-    .filter(({ position }) => {
-      return position.z === matchId;
-    });
+    .filter(({ position }) => position.z === matchId);
 
   return (
     <div>
-      Match ID:
-      <input
-        value={matchId}
-        onChange={(e) => setMatchId(parseInt(e.target.value))}
-        type="number"
-      />
+      Match #{matchId}
       {units.map(({ entity, position, structureType, unitType, owner }) => {
         return (
           <div
@@ -70,7 +62,11 @@ export const App = () => {
                   : "green",
             }}
           >
-            {structureType ? "🏰" : unitType ? "🥷" : ""}
+            {structureType
+              ? mudConfig.enums.StructureTypes[structureType.value]
+              : unitType
+              ? mudConfig.enums.UnitTypes[unitType.value]
+              : ""}
           </div>
         );
       })}
