@@ -23,6 +23,7 @@
     "@latticexyz/world": "2.0.0-skystrife-playtest-17b5d20f",
     "@react-three/drei": "^9.86.2",
     "@react-three/fiber": "^8.14.3",
+    "@react-three/xr": "^5.7.1",
     "@types/three": "^0.156.0",
     "autoprefixer": "^10.4.15",
     "react": "^18.2.0",

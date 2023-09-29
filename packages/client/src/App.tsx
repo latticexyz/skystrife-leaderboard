@@ -8,6 +8,7 @@ import {
 import { Canvas, ThreeElements } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Edges, OrbitControls } from "@react-three/drei";
+import { VRButton, XR, Controllers, Hands } from "@react-three/xr";
 
 const stringToColour = (str: string) => {
   let hash = 0;
@@ -88,8 +89,13 @@ export const App = () => {
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-2xl">
       Match #{matchId}
+      <VRButton />
       <Canvas camera={{ position: [0, 0, 3] }}>
-        <Gm />
+        <XR>
+          <Controllers />
+          <Hands />
+          <Gm />
+        </XR>
       </Canvas>
       ,
     </div>

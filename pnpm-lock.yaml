@@ -68,6 +68,9 @@ importers:
       '@react-three/fiber':
         specifier: ^8.14.3
         version: 8.14.3(react-dom@18.2.0)(react@18.2.0)(three@0.157.0)
+      '@react-three/xr':
+        specifier: ^5.7.1
+        version: 5.7.1(@react-three/fiber@8.14.3)(react@18.2.0)(three@0.157.0)
       '@types/three':
         specifier: ^0.156.0
         version: 0.156.0
@@ -1607,6 +1610,21 @@ packages:
       scheduler: 0.21.0
       suspend-react: 0.1.3(react@18.2.0)
       three: 0.157.0
+      zustand: 3.7.2(react@18.2.0)
+    dev: false
+
+  /@react-three/xr@5.7.1(@react-three/fiber@8.14.3)(react@18.2.0)(three@0.157.0):
+    resolution: {integrity: sha512-GaRUSA+lE8VJF/NrXq7QQByZ4UGHbQQ4rs3QCphZs9fVidK86hGrMOQ0kL79gZc5pa3V5uFGlOhNcUdsTYE3Bg==}
+    peerDependencies:
+      '@react-three/fiber': '>=8.0.0'
+      react: '>=18.0'
+      three: '>=0.141'
+    dependencies:
+      '@react-three/fiber': 8.14.3(react-dom@18.2.0)(react@18.2.0)(three@0.157.0)
+      '@types/webxr': 0.5.5
+      react: 18.2.0
+      three: 0.157.0
+      three-stdlib: 2.26.9(three@0.157.0)
       zustand: 3.7.2(react@18.2.0)
     dev: false
 
