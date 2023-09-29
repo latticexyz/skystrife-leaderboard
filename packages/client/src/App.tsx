@@ -125,41 +125,45 @@ const Gm = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <OrbitControls />
-      {units.map(({ entity, owner, position, structureType, unitType }) =>
-        unitType || structureType ? (
-          <sprite
-            key={entity}
-            position={[
-              position.x,
-              structureType || unitType ? 1 : 0,
-              position.y,
-            ]}
-          >
-            <spriteMaterial
-              map={
-                unitType
-                  ? UnitTypesToTexture[unitType.value]
-                  : StructureTypesToTexture[structureType.value]
+      {units.map(
+        ({ entity, owner, position, structureType, terrainType, unitType }) =>
+          unitType || structureType ? (
+            <sprite
+              key={entity}
+              position={[
+                position.x,
+                structureType || unitType ? 1 : 0,
+                position.y,
+              ]}
+            >
+              <spriteMaterial
+                map={
+                  unitType
+                    ? UnitTypesToTexture[unitType.value]
+                    : StructureTypesToTexture[structureType.value]
+                }
+                color={owner ? stringToColour(owner.value) : "0xFFFFFF"}
+              />
+            </sprite>
+          ) : (
+            <Box
+              key={entity}
+              color={
+                terrainType
+                  ? terrainType.value === 1
+                    ? "#59A608"
+                    : terrainType.value === 2
+                    ? "#228b22"
+                    : "gray"
+                  : "black"
               }
+              position={[
+                position.x,
+                structureType || unitType ? 1 : 0,
+                position.y,
+              ]}
             />
-          </sprite>
-        ) : (
-          <Box
-            key={entity}
-            color={
-              structureType || unitType
-                ? owner
-                  ? stringToColour(owner.value)
-                  : "grey"
-                : "#59A608"
-            }
-            position={[
-              position.x,
-              structureType || unitType ? 1 : 0,
-              position.y,
-            ]}
-          />
-        )
+          )
       )}
     </>
   );
