@@ -1,5 +1,10 @@
 import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValueStrict } from "@latticexyz/recs";
+import {
+  Entity,
+  Has,
+  getComponentValue,
+  getComponentValueStrict,
+} from "@latticexyz/recs";
 import { toEthAddress } from "@latticexyz/utils";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
@@ -11,7 +16,7 @@ const TOKEN_ID =
 
 export const App = () => {
   const {
-    components: { TokenBalance },
+    components: { Name, TokenBalance },
   } = useMUD();
 
   const balances = useEntityQuery([Has(TokenBalance)])
@@ -26,8 +31,9 @@ export const App = () => {
         entity
       ).entity;
       const { value } = getComponentValueStrict(TokenBalance, entity);
+      const name = getComponentValue(Name, owner as Entity);
 
-      return { entity: owner, value };
+      return { entity: owner, name, value };
     });
 
   balances.sort((a, b) => Number(b.value - a.value));
@@ -42,8 +48,8 @@ export const App = () => {
             <OverlineSmall className="mb-3 text-ss-text-x-light">
               Player
             </OverlineSmall>
-            {balances.map((b) => (
-              <div key={b.entity}>{toEthAddress(b.entity)}</div>
+            {balances.map(({ entity, name }) => (
+              <div key={entity}>{name ? name.value : toEthAddress(entity)}</div>
             ))}
             <div className="h-2" />
           </div>
