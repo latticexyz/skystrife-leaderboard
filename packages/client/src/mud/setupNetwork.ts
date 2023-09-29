@@ -10,7 +10,10 @@ import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
 import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
-import { createBurnerAccount, createContract, transportObserver, ContractWrite } from "@latticexyz/common";
+import { createBurnerAccount, createContract, transportObserver, ContractWrite, tableIdToHex } from "@latticexyz/common";
+
+import storeConfig from "@latticexyz/store/mud.config";
+import worldConfig from "@latticexyz/world/mud.config";
 
 import { Subject, share } from "rxjs";
 
@@ -25,6 +28,10 @@ import { Subject, share } from "rxjs";
 import mudConfig from "./skystrife-config/mud.config";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
+
+type TableName = keyof (typeof mudConfig)["tables"];
+
+const TABLES: TableName[] = ["TokenBalance"]
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -68,6 +75,13 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
+
+  const mudTableIds = TABLES.map((name) => tableIdToHex(mudConfig.namespace, name));
+  const storeTableIds = Object.keys(storeConfig.tables).map((name) => tableIdToHex(storeConfig.namespace, name));
+  const worldTableIds = Object.keys(worldConfig.tables).map((name) => tableIdToHex(worldConfig.namespace, name));
+
+  const tableIds = [...storeTableIds, ...worldTableIds, ...mudTableIds];
+
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
    * Uses the MUD indexer if available, otherwise falls back
@@ -81,6 +95,7 @@ export async function setupNetwork() {
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
+    tableIds
   });
 
   /*

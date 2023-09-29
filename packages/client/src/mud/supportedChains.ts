@@ -49,7 +49,7 @@ export const redstone = {
         },
     },
     faucetUrl: "https://faucet.redstone.linfra.xyz",
-    indexerUrl: "https://indexer.redstone.linfra.xyz/trpc",
+    indexerUrl: "https://skystrife-indexer.redstone.linfra.xyz/trpc",
 } as const satisfies SkyStrifeChain;
 
 // If you are deploying to chains other than anvil or Lattice testnet, add them here
