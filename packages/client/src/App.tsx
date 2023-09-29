@@ -163,10 +163,11 @@ export const App = () => {
   } = useMUD();
 
   return (
-    <div className="flex justify-center h-screen bg-blue-500 text-2xl">
+    <div className="flex justify-center h-screen  text-2xl">
       Match #{matchId}
       <VRButton />
       <Canvas camera={{ position: [0, 0, 3] }}>
+        <color attach="background" args={["#87ceeb"]} />
         <XR>
           <Controllers />
           <Hands />
