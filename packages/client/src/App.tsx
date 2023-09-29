@@ -7,8 +7,9 @@ import {
 } from "@latticexyz/recs";
 import { Canvas, ThreeElements } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { Edges, OrbitControls } from "@react-three/drei";
+import { Edges, OrbitControls, useTexture } from "@react-three/drei";
 import { VRButton, XR, Controllers, Hands } from "@react-three/xr";
+import { NearestFilter, sRGBEncoding } from "three";
 
 const stringToColour = (str: string) => {
   let hash = 0;
@@ -60,24 +61,64 @@ const Gm = () => {
     }))
     .filter(({ position }) => position.z === matchId);
 
+  const [archer, swordman, hero, pikeman] = useTexture([
+    "./archer.png",
+    "./swordman.png",
+    "./hero.png",
+    "./pikeman.png",
+  ]);
+  swordman.minFilter = NearestFilter;
+  swordman.magFilter = NearestFilter;
+  swordman.encoding = sRGBEncoding;
+
+  const UnitTypesToTexture = [
+    swordman,
+    swordman,
+    pikeman,
+    hero,
+    swordman,
+    swordman,
+    swordman,
+    archer,
+    swordman,
+    swordman,
+  ];
+
   return (
     <>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <OrbitControls />
-      {units.map(({ entity, owner, position, structureType, unitType }) => (
-        <Box
-          key={entity}
-          color={
-            structureType || unitType
-              ? owner
-                ? stringToColour(owner.value)
-                : "grey"
-              : "#59A608"
-          }
-          position={[position.x, structureType || unitType ? 1 : 0, position.y]}
-        />
-      ))}
+      {units.map(({ entity, owner, position, structureType, unitType }) =>
+        unitType ? (
+          <sprite
+            key={entity}
+            position={[
+              position.x,
+              structureType || unitType ? 1 : 0,
+              position.y,
+            ]}
+          >
+            <spriteMaterial map={UnitTypesToTexture[unitType.value]} />
+          </sprite>
+        ) : (
+          <Box
+            key={entity}
+            color={
+              structureType || unitType
+                ? owner
+                  ? stringToColour(owner.value)
+                  : "grey"
+                : "#59A608"
+            }
+            position={[
+              position.x,
+              structureType || unitType ? 1 : 0,
+              position.y,
+            ]}
+          />
+        )
+      )}
     </>
   );
 };
