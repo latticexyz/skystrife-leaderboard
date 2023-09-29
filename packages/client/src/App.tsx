@@ -61,15 +61,34 @@ const Gm = () => {
     }))
     .filter(({ position }) => position.z === matchId);
 
-  const [archer, swordman, hero, pikeman] = useTexture([
+  const textures = useTexture([
     "./archer.png",
     "./swordman.png",
     "./hero.png",
     "./pikeman.png",
+    "./crystal.png",
+    "./settlement.png",
+    "./village.png",
+    "./wooden-barricade.png",
   ]);
-  swordman.minFilter = NearestFilter;
-  swordman.magFilter = NearestFilter;
-  swordman.encoding = sRGBEncoding;
+  textures.map((t) => {
+    t.minFilter = NearestFilter;
+    t.magFilter = NearestFilter;
+    t.encoding = sRGBEncoding;
+
+    return t;
+  });
+
+  const [
+    archer,
+    swordman,
+    hero,
+    pikeman,
+    crystal,
+    settlement,
+    village,
+    woodenBarricade,
+  ] = textures;
 
   const UnitTypesToTexture = [
     swordman,
@@ -84,13 +103,30 @@ const Gm = () => {
     swordman,
   ];
 
+  const StructureTypesToTexture = [
+    swordman,
+    village,
+    settlement,
+    crystal,
+    crystal,
+    woodenBarricade,
+    woodenBarricade,
+    woodenBarricade,
+    woodenBarricade,
+    woodenBarricade,
+    crystal,
+    crystal,
+    crystal,
+    crystal,
+  ];
+
   return (
     <>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <OrbitControls />
       {units.map(({ entity, owner, position, structureType, unitType }) =>
-        unitType ? (
+        unitType || structureType ? (
           <sprite
             key={entity}
             position={[
@@ -99,7 +135,13 @@ const Gm = () => {
               position.y,
             ]}
           >
-            <spriteMaterial map={UnitTypesToTexture[unitType.value]} />
+            <spriteMaterial
+              map={
+                unitType
+                  ? UnitTypesToTexture[unitType.value]
+                  : StructureTypesToTexture[structureType.value]
+              }
+            />
           </sprite>
         ) : (
           <Box
