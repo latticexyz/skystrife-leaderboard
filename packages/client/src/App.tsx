@@ -5,56 +5,9 @@ import {
   getComponentValue,
   getComponentValueStrict,
 } from "@latticexyz/recs";
-
-const WIDTH = 35;
-
-const UnitTypeToEmoji = [
-  "Unknown",
-  "🛵",
-  "🚚",
-  "🚌",
-  "🏍️",
-  "🏎️",
-  "Dragon",
-  "🚁",
-  "Catapult",
-  "Wizard",
-];
-
-const TerrainTypeToEmoji = [
-  "Unknown",
-  "",
-  "🏢",
-  "",
-  "",
-  "🌳",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-];
-
-const StructureTypeToEmoji = [
-  "Unknown",
-  "🏠",
-  "🏡",
-  "GoldShrine",
-  "EscapePortal",
-  "Portal",
-  "Container",
-  "SummoningAltar",
-  "BlazingHeartShrine",
-  "🚧",
-  "🏦",
-  "Village",
-  "EmberCrownShrine",
-  "CrystalGenerator",
-  "MetalGenerator",
-  "FossilGenerator",
-  "WidgetGenerator",
-];
+import { Canvas, ThreeElements } from "@react-three/fiber";
+import { useRef, useState } from "react";
+import { Edges, OrbitControls } from "@react-three/drei";
 
 const stringToColour = (str: string) => {
   let hash = 0;
@@ -69,7 +22,27 @@ const stringToColour = (str: string) => {
   return colour;
 };
 
-export const App = () => {
+function Box(props: ThreeElements["mesh"] & { color: string }) {
+  const { color } = props;
+
+  const ref = useRef<THREE.Mesh>(null!);
+  const [hovered, hover] = useState(false);
+
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      onPointerOver={() => hover(true)}
+      onPointerOut={() => hover(false)}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? "black" : color} />
+      <Edges scale={1} color="black" />
+    </mesh>
+  );
+}
+
+const Gm = () => {
   const {
     components: { Position, OwnedBy, StructureType, TerrainType, UnitType },
     network: { matchId },
@@ -87,47 +60,38 @@ export const App = () => {
     .filter(({ position }) => position.z === matchId);
 
   return (
+    <>
+      <ambientLight />
+      <pointLight position={[10, 10, 10]} />
+      <OrbitControls />
+      {units.map(({ entity, owner, position, structureType, unitType }) => (
+        <Box
+          key={entity}
+          color={
+            structureType || unitType
+              ? owner
+                ? stringToColour(owner.value)
+                : "grey"
+              : "#59A608"
+          }
+          position={[position.x, structureType || unitType ? 1 : 0, position.y]}
+        />
+      ))}
+    </>
+  );
+};
+export const App = () => {
+  const {
+    network: { matchId },
+  } = useMUD();
+
+  return (
     <div className="flex justify-center h-screen bg-blue-500 text-2xl">
       Match #{matchId}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        {units.map(
-          ({
-            entity,
-            position,
-            structureType,
-            terrainType,
-            unitType,
-            owner,
-          }) => {
-            return (
-              <div
-                key={entity}
-                className="absolute border border-gray-900 text-3xl"
-                style={{
-                  left: WIDTH * position.x,
-                  top: WIDTH * position.y,
-                  width: WIDTH,
-                  height: WIDTH,
-                  backgroundColor:
-                    structureType || unitType
-                      ? owner
-                        ? stringToColour(owner.value)
-                        : "grey"
-                      : "gray",
-                }}
-              >
-                {structureType
-                  ? StructureTypeToEmoji[structureType.value]
-                  : terrainType
-                  ? TerrainTypeToEmoji[terrainType.value]
-                  : unitType
-                  ? UnitTypeToEmoji[unitType.value]
-                  : ""}
-              </div>
-            );
-          }
-        )}
-      </div>
+      <Canvas camera={{ position: [0, 0, 3] }}>
+        <Gm />
+      </Canvas>
+      ,
     </div>
   );
 };
