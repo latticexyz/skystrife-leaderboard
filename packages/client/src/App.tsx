@@ -5,9 +5,56 @@ import {
   getComponentValue,
   getComponentValueStrict,
 } from "@latticexyz/recs";
-import mudConfig from "./mud/skystrife-config/mud.config";
 
-const WIDTH = 30;
+const WIDTH = 35;
+
+const UnitTypeToEmoji = [
+  "Unknown",
+  "🛵",
+  "🚚",
+  "🚌",
+  "🏍️",
+  "🏎️",
+  "Dragon",
+  "🚁",
+  "Catapult",
+  "Wizard",
+];
+
+const TerrainTypeToEmoji = [
+  "Unknown",
+  "",
+  "🏢",
+  "",
+  "",
+  "🌳",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+];
+
+const StructureTypeToEmoji = [
+  "Unknown",
+  "🏠",
+  "🏡",
+  "GoldShrine",
+  "EscapePortal",
+  "Portal",
+  "Container",
+  "SummoningAltar",
+  "BlazingHeartShrine",
+  "🚧",
+  "🏦",
+  "Village",
+  "EmberCrownShrine",
+  "CrystalGenerator",
+  "MetalGenerator",
+  "FossilGenerator",
+  "WidgetGenerator",
+];
 
 const stringToColour = (str: string) => {
   let hash = 0;
@@ -22,10 +69,9 @@ const stringToColour = (str: string) => {
   return colour;
 };
 
-// TODO: create a mapping between unit types and emojis
 export const App = () => {
   const {
-    components: { Position, OwnedBy, StructureType, UnitType },
+    components: { Position, OwnedBy, StructureType, TerrainType, UnitType },
     network: { matchId },
   } = useMUD();
 
@@ -34,42 +80,54 @@ export const App = () => {
       entity,
       position: getComponentValueStrict(Position, entity),
       structureType: getComponentValue(StructureType, entity),
+      terrainType: getComponentValue(TerrainType, entity),
       unitType: getComponentValue(UnitType, entity),
       owner: getComponentValue(OwnedBy, entity),
     }))
     .filter(({ position }) => position.z === matchId);
 
   return (
-    <div>
+    <div className="flex justify-center h-screen bg-blue-500 text-2xl">
       Match #{matchId}
-      {units.map(({ entity, position, structureType, unitType, owner }) => {
-        return (
-          <div
-            key={entity}
-            style={{
-              position: "absolute",
-              left: WIDTH * (15 + position.x),
-              top: WIDTH * (15 + position.y),
-              width: WIDTH,
-              height: WIDTH,
-              border: "solid",
-              borderWidth: 0.1,
-              backgroundColor:
-                structureType || unitType
-                  ? owner
-                    ? stringToColour(owner.value)
-                    : "grey"
-                  : "green",
-            }}
-          >
-            {structureType
-              ? mudConfig.enums.StructureTypes[structureType.value]
-              : unitType
-              ? mudConfig.enums.UnitTypes[unitType.value]
-              : ""}
-          </div>
-        );
-      })}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        {units.map(
+          ({
+            entity,
+            position,
+            structureType,
+            terrainType,
+            unitType,
+            owner,
+          }) => {
+            return (
+              <div
+                key={entity}
+                className="absolute border border-gray-900 text-3xl"
+                style={{
+                  left: WIDTH * position.x,
+                  top: WIDTH * position.y,
+                  width: WIDTH,
+                  height: WIDTH,
+                  backgroundColor:
+                    structureType || unitType
+                      ? owner
+                        ? stringToColour(owner.value)
+                        : "grey"
+                      : "gray",
+                }}
+              >
+                {structureType
+                  ? StructureTypeToEmoji[structureType.value]
+                  : terrainType
+                  ? TerrainTypeToEmoji[terrainType.value]
+                  : unitType
+                  ? UnitTypeToEmoji[unitType.value]
+                  : ""}
+              </div>
+            );
+          }
+        )}
+      </div>
     </div>
   );
 };

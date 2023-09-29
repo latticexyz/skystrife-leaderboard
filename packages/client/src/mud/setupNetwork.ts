@@ -31,7 +31,7 @@ export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 type TableName = keyof (typeof mudConfig)["tables"];
 
-const TABLES: TableName[] = ["Position", "OwnedBy", "StructureType", "UnitType"]
+const TABLES: TableName[] = ["Position", "OwnedBy", "StructureType", "TerrainType", "UnitType"]
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
