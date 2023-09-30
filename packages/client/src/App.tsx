@@ -6,15 +6,13 @@ import {
   getComponentValueStrict,
 } from "@latticexyz/recs";
 import { Canvas, ThreeElements } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Edges, OrbitControls, useTexture } from "@react-three/drei";
 import {
   VRButton,
   XR,
   Controllers,
   Hands,
-  Interactive,
-  useTeleportation,
   TeleportationPlane,
 } from "@react-three/xr";
 import { NearestFilter, sRGBEncoding } from "three";
@@ -32,27 +30,17 @@ const stringToColour = (str: string) => {
   return colour;
 };
 
-function Box(props: ThreeElements["mesh"] & { color: string }) {
+function Box(props: ThreeElements["mesh"] & { color: string; height: number }) {
   const { color } = props;
 
-  const [hovered, setHovered] = useState(false);
   const ref = useRef<THREE.Mesh>(null!);
 
   return (
-    <Interactive
-      onHover={() => {
-        setHovered(true);
-      }}
-      onBlur={() => {
-        setHovered(false);
-      }}
-    >
-      <mesh {...props} ref={ref}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={color} />
-        <Edges scale={1} color={hovered ? "white" : "black"} />
-      </mesh>
-    </Interactive>
+    <mesh {...props} ref={ref}>
+      <boxGeometry args={[1, height, 1]} />
+      <meshStandardMaterial color={color} />
+      <Edges scale={1} color={"black"} />
+    </mesh>
   );
 }
 
@@ -187,15 +175,14 @@ const Board = () => {
                   ? "gray"
                   : "#228b22"
               }
-              position={[
-                position.x,
+              position={[position.x, -0.51, position.y]}
+              height={
                 terrainType.value === 1
-                  ? -0.5
+                  ? 1
                   : terrainType.value === 2
-                  ? -0.4
-                  : -0.45,
-                position.y,
-              ]}
+                  ? 0.9
+                  : 0.95
+              }
             />
           ) : null
       )}
