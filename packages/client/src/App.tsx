@@ -6,7 +6,7 @@ import {
   getComponentValueStrict,
 } from "@latticexyz/recs";
 import { Canvas, ThreeElements } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Edges, OrbitControls, useTexture } from "@react-three/drei";
 import { VRButton, XR, Controllers, Hands } from "@react-three/xr";
 import { NearestFilter, sRGBEncoding } from "three";
@@ -28,17 +28,11 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
   const { color } = props;
 
   const ref = useRef<THREE.Mesh>(null!);
-  const [hovered, hover] = useState(false);
 
   return (
-    <mesh
-      {...props}
-      ref={ref}
-      onPointerOver={() => hover(true)}
-      onPointerOut={() => hover(false)}
-    >
+    <mesh {...props} ref={ref}>
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "black" : color} />
+      <meshStandardMaterial color={color} />
       <Edges scale={1} color="black" />
     </mesh>
   );
