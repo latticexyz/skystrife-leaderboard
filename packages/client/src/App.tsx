@@ -31,7 +31,7 @@ const stringToColour = (str: string) => {
 };
 
 function Box(props: ThreeElements["mesh"] & { color: string; height: number }) {
-  const { color } = props;
+  const { color, height } = props;
 
   const ref = useRef<THREE.Mesh>(null!);
 
@@ -180,8 +180,8 @@ const Board = () => {
                 terrainType.value === 1
                   ? 1
                   : terrainType.value === 2
-                  ? 1.1
-                  : 1.05
+                  ? 1.2
+                  : 1.1
               }
             />
           ) : null
