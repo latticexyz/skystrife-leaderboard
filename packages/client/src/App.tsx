@@ -48,6 +48,7 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
         setHovered(false);
       }}
       onSelect={() => teleport([props.position[0], 0, props.position[2]])}
+      onSqueeze={() => teleport([props.position[0], 0, props.position[2]])}
     >
       <mesh {...props} ref={ref}>
         <boxGeometry args={[1, 1, 1]} />
