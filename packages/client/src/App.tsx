@@ -44,7 +44,7 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
   );
 }
 
-const Gm = () => {
+const Board = () => {
   const {
     components: { Position, OwnedBy, StructureType, TerrainType, UnitType },
     network: { matchId },
@@ -204,7 +204,7 @@ export const App = () => {
         <XR>
           <Controllers />
           <Hands />
-          <Gm />
+          <Board />
         </XR>
       </Canvas>
     </div>
