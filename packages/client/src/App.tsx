@@ -15,6 +15,7 @@ import {
   Hands,
   Interactive,
   useTeleportation,
+  TeleportationPlane,
 } from "@react-three/xr";
 import { NearestFilter, sRGBEncoding } from "three";
 
@@ -35,10 +36,7 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
   const { color } = props;
 
   const [hovered, setHovered] = useState(false);
-  const [selected, setSelected] = useState(false);
   const ref = useRef<THREE.Mesh>(null!);
-
-  const teleport = useTeleportation();
 
   return (
     <Interactive
@@ -48,14 +46,10 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
       onBlur={() => {
         setHovered(false);
       }}
-      onSelect={() => {
-        setSelected(true);
-        teleport([props.position[0], 0, props.position[2]]);
-      }}
     >
       <mesh {...props} ref={ref}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={selected ? "black" : color} />
+        <meshStandardMaterial color={color} />
         <Edges scale={1} color={hovered ? "white" : "black"} />
       </mesh>
     </Interactive>
@@ -222,6 +216,7 @@ export const App = () => {
         <XR>
           <Controllers />
           <Hands />
+          <TeleportationPlane rightHand={true} />
           <Board />
         </XR>
       </Canvas>
