@@ -132,7 +132,30 @@ const Gm = () => {
       {units.map(
         ({ entity, owner, position, structureType, terrainType, unitType }) =>
           unitType || structureType ? (
-            <sprite key={entity} position={[position.x, 0.5, position.y]}>
+            <sprite
+              key={entity}
+              position={[
+                position.x,
+                units.some(
+                  (unit) =>
+                    unit.position.x === position.x &&
+                    unit.position.y === position.y &&
+                    unit.terrainType &&
+                    unit.terrainType.value === 1
+                )
+                  ? 0.5
+                  : units.some(
+                      (unit) =>
+                        unit.position.x === position.x &&
+                        unit.position.y === position.y &&
+                        unit.terrainType &&
+                        unit.terrainType.value === 2
+                    )
+                  ? 0.6
+                  : 0.55,
+                position.y,
+              ]}
+            >
               <spriteMaterial
                 map={
                   unitType
@@ -142,21 +165,27 @@ const Gm = () => {
                 color={owner ? stringToColour(owner.value) : "0xFFFFFF"}
               />
             </sprite>
-          ) : (
+          ) : terrainType ? (
             <Box
               key={entity}
               color={
-                terrainType
-                  ? terrainType.value === 1
-                    ? "#59A608"
-                    : terrainType.value === 2
-                    ? "#228b22"
-                    : "gray"
-                  : "black"
+                terrainType.value === 1
+                  ? "#59A608"
+                  : terrainType.value === 2
+                  ? "gray"
+                  : "#228b22"
               }
-              position={[position.x, -0.5, position.y]}
+              position={[
+                position.x,
+                terrainType.value === 1
+                  ? -0.5
+                  : terrainType.value === 2
+                  ? -0.4
+                  : -0.45,
+                position.y,
+              ]}
             />
-          )
+          ) : null
       )}
     </>
   );
