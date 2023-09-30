@@ -28,6 +28,7 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
   const { color } = props;
 
   const [hovered, setHovered] = useState(false);
+  const [selected, setSelected] = useState(false);
   const ref = useRef<THREE.Mesh>(null!);
 
   return (
@@ -38,11 +39,12 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
       onBlur={() => {
         setHovered(false);
       }}
+      onSelect={() => setSelected(true)}
     >
       <mesh {...props} ref={ref}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? "red" : color} />
-        <Edges scale={1} color="black" />
+        <meshStandardMaterial color={hovered ? "black" : color} />
+        <Edges scale={1} color={selected ? "pink" : "black"} />
       </mesh>
     </Interactive>
   );
