@@ -8,14 +8,7 @@ import {
 import { Canvas, ThreeElements } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Edges, OrbitControls, useTexture } from "@react-three/drei";
-import {
-  VRButton,
-  XR,
-  Controllers,
-  Hands,
-  Interactive,
-  XRInteractionEvent,
-} from "@react-three/xr";
+import { VRButton, XR, Controllers, Hands, Interactive } from "@react-three/xr";
 import { NearestFilter, sRGBEncoding } from "three";
 
 const stringToColour = (str: string) => {
