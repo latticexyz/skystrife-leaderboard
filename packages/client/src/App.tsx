@@ -6,9 +6,16 @@ import {
   getComponentValueStrict,
 } from "@latticexyz/recs";
 import { Canvas, ThreeElements } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Edges, OrbitControls, useTexture } from "@react-three/drei";
-import { VRButton, XR, Controllers, Hands } from "@react-three/xr";
+import {
+  VRButton,
+  XR,
+  Controllers,
+  Hands,
+  Interactive,
+  XRInteractionEvent,
+} from "@react-three/xr";
 import { NearestFilter, sRGBEncoding } from "three";
 
 const stringToColour = (str: string) => {
@@ -27,14 +34,24 @@ const stringToColour = (str: string) => {
 function Box(props: ThreeElements["mesh"] & { color: string }) {
   const { color } = props;
 
+  const [hovered, setHovered] = useState(false);
   const ref = useRef<THREE.Mesh>(null!);
 
   return (
-    <mesh {...props} ref={ref}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={color} />
-      <Edges scale={1} color="black" />
-    </mesh>
+    <Interactive
+      onHover={() => {
+        setHovered(true);
+      }}
+      onBlur={() => {
+        setHovered(false);
+      }}
+    >
+      <mesh {...props} ref={ref}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={hovered ? "red" : color} />
+        <Edges scale={1} color="black" />
+      </mesh>
+    </Interactive>
   );
 }
 
