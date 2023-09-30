@@ -35,6 +35,7 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
   const { color } = props;
 
   const [hovered, setHovered] = useState(false);
+  const [selected, setSelected] = useState(false);
   const ref = useRef<THREE.Mesh>(null!);
 
   const teleport = useTeleportation();
@@ -47,12 +48,14 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
       onBlur={() => {
         setHovered(false);
       }}
-      onSelect={() => teleport([props.position[0], 0, props.position[2]])}
-      onSqueeze={() => teleport([props.position[0], 0, props.position[2]])}
+      onSelect={() => {
+        setSelected(true);
+        teleport([props.position[0], 0, props.position[2]]);
+      }}
     >
       <mesh {...props} ref={ref}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial color={selected ? "black" : color} />
         <Edges scale={1} color={hovered ? "white" : "black"} />
       </mesh>
     </Interactive>
