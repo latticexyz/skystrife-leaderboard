@@ -8,7 +8,14 @@ import {
 import { Canvas, ThreeElements } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Edges, OrbitControls, useTexture } from "@react-three/drei";
-import { VRButton, XR, Controllers, Hands, Interactive } from "@react-three/xr";
+import {
+  VRButton,
+  XR,
+  Controllers,
+  Hands,
+  Interactive,
+  useTeleportation,
+} from "@react-three/xr";
 import { NearestFilter, sRGBEncoding } from "three";
 
 const stringToColour = (str: string) => {
@@ -28,8 +35,9 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
   const { color } = props;
 
   const [hovered, setHovered] = useState(false);
-  const [selected, setSelected] = useState(false);
   const ref = useRef<THREE.Mesh>(null!);
+
+  const teleport = useTeleportation();
 
   return (
     <Interactive
@@ -39,12 +47,12 @@ function Box(props: ThreeElements["mesh"] & { color: string }) {
       onBlur={() => {
         setHovered(false);
       }}
-      onSelect={() => setSelected(true)}
+      onSelect={() => teleport([props.position[0], 0, props.position[2]])}
     >
       <mesh {...props} ref={ref}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? "black" : color} />
-        <Edges scale={1} color={selected ? "pink" : "black"} />
+        <meshStandardMaterial color={color} />
+        <Edges scale={1} color={hovered ? "white" : "black"} />
       </mesh>
     </Interactive>
   );
