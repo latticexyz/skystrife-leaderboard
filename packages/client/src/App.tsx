@@ -180,8 +180,8 @@ const Board = () => {
                 terrainType.value === 1
                   ? 1
                   : terrainType.value === 2
-                  ? 0.9
-                  : 0.95
+                  ? 1.1
+                  : 1.05
               }
             />
           ) : null
