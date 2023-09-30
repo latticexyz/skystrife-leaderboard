@@ -162,7 +162,7 @@ const Board = () => {
                     ? UnitTypesToTexture[unitType.value]
                     : StructureTypesToTexture[structureType.value]
                 }
-                color={owner ? stringToColour(owner.value) : "0xFFFFFF"}
+                color={"0xFFFFFF"}
               />
             </sprite>
           ) : terrainType ? (
