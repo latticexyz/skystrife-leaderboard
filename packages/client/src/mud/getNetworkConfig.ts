@@ -88,6 +88,6 @@ export async function getNetworkConfig() {
     worldAddress,
     initialBlockNumber,
     indexerUrl: chain.indexerUrl,
-    matchId: 304
+    matchId: 360
   };
 }
