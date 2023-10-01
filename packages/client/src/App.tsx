@@ -55,7 +55,7 @@ const Board = () => {
     "./rider.png",
     "./knight.png",
     "./pikeman.png",
-    "./crystal.png",
+    "./mine.png",
     "./settlement.png",
     "./village.png",
     "./wooden-barricade.png",
