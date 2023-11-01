@@ -2,11 +2,10 @@
 pragma solidity >=0.8.21;
 
 import { Script } from "forge-std/Script.sol";
-import { console } from "forge-std/console.sol";
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
-import {Counter} from "../src/codegen/index.sol";
+import { Position } from "../src/codegen/index.sol";
 
 import { worldAddress } from "./constants.sol";
 
@@ -16,8 +15,8 @@ contract RegisterNamespace is Script {
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
     vm.startBroadcast(deployerPrivateKey);
-    
-    Counter.register();
+
+    Position.register();
 
     vm.stopBroadcast();
   }

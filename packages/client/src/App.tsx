@@ -6,10 +6,11 @@ import {
   getComponentValueStrict,
 } from "@latticexyz/recs";
 import { decodeValue } from "@latticexyz/protocol-parser";
-import { decodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { stringToColour } from "./stringToColor";
+import { useEffect } from "react";
 
 const MATCH_ENTITY =
   "0x4cd52d8c00000000000000000000000000000000000000000000000000000000" as Entity;
@@ -39,16 +40,14 @@ export const App = () => {
   const {
     network: { worldContract },
     components: {
-      Counter,
       OwnedBy,
       MatchConfig,
       LevelContent,
       Position,
       StructureType,
+      ScavengerPosition,
     },
   } = useMUD();
-
-  const counter = useComponentValue(Counter, singletonEntity);
 
   const config = useComponentValue(MatchConfig, MATCH_ENTITY);
 
@@ -76,21 +75,35 @@ export const App = () => {
       return decodeValue(Position.metadata.valueSchema, staticData as Hex);
     });
 
+  const scavengers = useEntityQuery([Has(ScavengerPosition)]).map((entity) => ({
+    entity,
+    position: getComponentValueStrict(ScavengerPosition, entity),
+  }));
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.code === "KeyS") {
+        worldContract.write.scavenger_MoveSystem_move([1]);
+      } else if (event.code === "KeyW") {
+        worldContract.write.scavenger_MoveSystem_move([0]);
+      } else if (event.code === "KeyA") {
+        worldContract.write.scavenger_MoveSystem_move([2]);
+      } else if (event.code === "KeyD") {
+        worldContract.write.scavenger_MoveSystem_move([3]);
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    // Don't forget to clean up
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
       <div>Match #{MATCH_ENTITY}</div>
-      <div>
-        <button
-          onClick={() => {
-            worldContract.write
-              .gm_IncrementSystem_increment()
-              .then(console.log);
-          }}
-        >
-          gm
-        </button>
-        <div>{counter ? counter.value : "null"}</div>
-      </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {
           return (
@@ -123,6 +136,20 @@ export const App = () => {
                 ? StructureTypeToSymbol[structureType.value]
                 : "🧙"}
             </div>
+          );
+        })}
+        {scavengers.map(({ position }, i) => {
+          return (
+            <div
+              key={i}
+              className="absolute border border-gray-900 bg-red-600 rounded-2xl"
+              style={{
+                left: WIDTH * position.x,
+                top: WIDTH * position.y,
+                width: WIDTH,
+                height: WIDTH,
+              }}
+            />
           );
         })}
       </div>

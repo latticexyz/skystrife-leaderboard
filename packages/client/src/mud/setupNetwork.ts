@@ -64,7 +64,7 @@ const filters: SyncFilter[] = TABLES.map((name) => ({
   tableId: resourceToHex({
     type: "table",
     namespace: mudConfig.namespace,
-    name: "Counter",
+    name: "Position",
   })
 }]);
 
@@ -125,13 +125,16 @@ export async function setupNetwork() {
     startBlock: BigInt(networkConfig.initialBlockNumber),
     filters,
     tables: {
-      Counter: {
+      ScavengerPosition: {
         namespace: mudConfig.namespace,
-        name: "Counter",
-        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Counter" }),
-        keySchema: {},
+        name: "Position",
+        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Position" }),
+        keySchema: {
+          account: { type: "address" },
+        },
         valueSchema: {
-          value: { type: "uint32" },
+          x: { type: "uint32" },
+          y: { type: "uint32" },
         },
       },
     }

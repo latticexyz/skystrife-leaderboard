@@ -2,7 +2,6 @@
 pragma solidity >=0.8.21;
 
 import { Script } from "forge-std/Script.sol";
-import { console } from "forge-std/console.sol";
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { ResourceId, ResourceIdLib } from "@latticexyz/store/src/ResourceId.sol";
@@ -16,12 +15,10 @@ contract RegisterNamespace is Script {
     StoreSwitch.setStoreAddress(worldAddress);
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
-    ResourceId namespaceId = ResourceIdLib.encode(
-      RESOURCE_NAMESPACE, namespace
-    );
+    ResourceId namespaceId = ResourceIdLib.encode(RESOURCE_NAMESPACE, namespace);
 
     vm.startBroadcast(deployerPrivateKey);
-    
+
     IBaseWorld(worldAddress).registerNamespace(namespaceId);
 
     vm.stopBroadcast();
