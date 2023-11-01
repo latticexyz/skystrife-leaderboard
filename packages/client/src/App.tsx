@@ -6,7 +6,7 @@ import {
   getComponentValueStrict,
 } from "@latticexyz/recs";
 import { decodeValue } from "@latticexyz/protocol-parser";
-import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { stringToColour } from "./stringToColor";
@@ -37,8 +37,18 @@ const StructureTypeToSymbol = [
 
 export const App = () => {
   const {
-    components: { OwnedBy, MatchConfig, LevelContent, Position, StructureType },
+    network: { worldContract },
+    components: {
+      Counter,
+      OwnedBy,
+      MatchConfig,
+      LevelContent,
+      Position,
+      StructureType,
+    },
   } = useMUD();
+
+  const counter = useComponentValue(Counter, singletonEntity);
 
   const config = useComponentValue(MatchConfig, MATCH_ENTITY);
 
@@ -68,7 +78,19 @@ export const App = () => {
 
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
-      Match #{MATCH_ENTITY}
+      <div>Match #{MATCH_ENTITY}</div>
+      <div>
+        <button
+          onClick={() => {
+            worldContract.write
+              .gm_IncrementSystem_increment()
+              .then(console.log);
+          }}
+        >
+          gm
+        </button>
+        <div>{counter ? counter.value : "n"}</div>
+      </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {
           return (

@@ -19,6 +19,7 @@ import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
 import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
+import Abi from "./IWorld.abi.json";
 import {
   createBurnerAccount,
   createContract,
@@ -57,7 +58,7 @@ const filters: SyncFilter[] = TABLES.map((name) => ({
     namespace: mudConfig.namespace,
     name,
   }),
-}))
+}));
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -95,7 +96,7 @@ export async function setupNetwork() {
    */
   const worldContract = createContract({
     address: networkConfig.worldAddress as Hex,
-    abi: IWorldAbi,
+    abi: IWorldAbi.concat(Abi),
     publicClient,
     walletClient: burnerWalletClient,
     onWrite: (write) => write$.next(write),
@@ -114,7 +115,18 @@ export async function setupNetwork() {
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
-    filters,
+    // filters,
+    tables: {
+      Counter: {
+        namespace: "gm",
+        name: "Counter",
+        tableId: resourceToHex({ type: "table", namespace: "gm", name: "Counter" }),
+        keySchema: {},
+        valueSchema: {
+          value: { type: "uint32" },
+        },
+      },
+    }
   });
 
   /*
