@@ -57,15 +57,7 @@ const filters: SyncFilter[] = TABLES.map((name) => ({
     namespace: mudConfig.namespace,
     name,
   }),
-})).concat([
-  {
-    tableId: resourceToHex({
-      type: "offchainTable",
-      namespace: mudConfig.namespace,
-      name: "UnitType",
-    }),
-  },
-]);
+}))
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();

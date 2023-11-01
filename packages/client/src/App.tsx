@@ -35,29 +35,9 @@ const StructureTypeToSymbol = [
   "WidgetGenerator",
 ];
 
-const UnitTypeToSymbol = [
-  "Unknown",
-  "🛵",
-  "🚚",
-  "🚌",
-  "🏍️",
-  "🏎️",
-  "Dragon",
-  "🚁",
-  "Catapult",
-  "Wizard",
-];
-
 export const App = () => {
   const {
-    components: {
-      OwnedBy,
-      MatchConfig,
-      LevelContent,
-      Position,
-      StructureType,
-      UnitType,
-    },
+    components: { OwnedBy, MatchConfig, LevelContent, Position, StructureType },
   } = useMUD();
 
   const config = useComponentValue(MatchConfig, MATCH_ENTITY);
@@ -71,7 +51,6 @@ export const App = () => {
       entity,
       position: getComponentValueStrict(Position, entity),
       structureType: getComponentValue(StructureType, entity),
-      unitType: getComponentValue(UnitType, entity),
       owner: getComponentValue(OwnedBy, entity),
     }));
 
@@ -105,7 +84,7 @@ export const App = () => {
             />
           );
         })}
-        {units.map(({ position, structureType, unitType, owner }, i) => {
+        {units.map(({ position, structureType, owner }, i) => {
           return (
             <div
               key={i}
@@ -120,8 +99,6 @@ export const App = () => {
             >
               {structureType
                 ? StructureTypeToSymbol[structureType.value]
-                : unitType
-                ? UnitTypeToSymbol[unitType.value]
                 : "🧙"}
             </div>
           );
