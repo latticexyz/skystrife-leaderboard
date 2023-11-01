@@ -1,52 +1,76 @@
-import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValueStrict } from "@latticexyz/recs";
-import { toEthAddress } from "@latticexyz/utils";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { Entity, Has, getComponentValueStrict } from "@latticexyz/recs";
+import { decodeValue } from "@latticexyz/protocol-parser";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
-import { OverlineLarge, OverlineSmall } from "./Theme/SkyStrife/Typography";
-import { Orbs } from "./Theme/SkyStrife/Orbs";
+import { Hex } from "viem";
+
+const MATCH_ENTITY =
+  "0x4cd52d8c00000000000000000000000000000000000000000000000000000000" as Entity;
+const WIDTH = 35;
 
 export const App = () => {
   const {
-    components: { TokenBalance },
+    components: { MatchConfig, LevelContent, Position },
   } = useMUD();
 
-  const balances = useEntityQuery([Has(TokenBalance)]).map((entity) => {
-    const owner = decodeEntity(TokenBalance.metadata.keySchema, entity).entity;
-    const { value } = getComponentValueStrict(TokenBalance, entity);
+  const config = useComponentValue(MatchConfig, MATCH_ENTITY);
 
-    return { entity: owner, value };
-  });
+  const units = useEntityQuery([Has(Position)])
+    .filter((entity) => {
+      const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
+      return matchEntity === MATCH_ENTITY;
+    })
+    .map((entity) => getComponentValueStrict(Position, entity));
 
-  balances.sort((a, b) => Number(b.value - a.value));
+  const terrain = useEntityQuery([Has(LevelContent)])
+    .filter((entity) => {
+      const { levelId } = decodeEntity(LevelContent.metadata.keySchema, entity);
+
+      return config && levelId === config.levelId;
+    })
+    .map((entity) => {
+      const { staticData } = getComponentValueStrict(LevelContent, entity);
+
+      return decodeValue(Position.metadata.valueSchema, staticData as Hex);
+    });
 
   return (
-    <div className="bg-slate-200 min-h-screen h-fit">
-      <div className="p-8">
-        <OverlineLarge>Sky Strife Leaderboard</OverlineLarge>
-
-        <div className="flex">
-          <div>
-            <OverlineSmall className="mb-3 text-ss-text-x-light">
-              Player
-            </OverlineSmall>
-            {balances.map((b) => (
-              <div key={b.entity}>{toEthAddress(b.entity)}</div>
-            ))}
-            <div className="h-2" />
-          </div>
-
-          <div className="w-16" />
-
-          <div>
-            <OverlineSmall className="mb-3 text-ss-text-x-light">
-              Balance
-            </OverlineSmall>
-            {balances.map((b) => (
-              <Orbs key={b.entity} amount={b.value} />
-            ))}
-          </div>
-        </div>
+    <div className="flex justify-center h-screen bg-blue-500 text-2xl">
+      Match #{MATCH_ENTITY}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        {terrain.map((position, i) => {
+          return (
+            <div
+              key={i}
+              className="absolute border border-gray-900 text-3xl bg-green-600"
+              style={{
+                left: WIDTH * position.x,
+                top: WIDTH * position.y,
+                width: WIDTH,
+                height: WIDTH,
+              }}
+            >
+              S
+            </div>
+          );
+        })}
+        {units.map((position, i) => {
+          return (
+            <div
+              key={i}
+              className="absolute border border-gray-900 text-3xl bg-red-600"
+              style={{
+                left: WIDTH * position.x,
+                top: WIDTH * position.y,
+                width: WIDTH,
+                height: WIDTH,
+              }}
+            >
+              U
+            </div>
+          );
+        })}
       </div>
     </div>
   );

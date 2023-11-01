@@ -29,7 +29,7 @@ export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 type TableName = keyof (typeof mudConfig)["tables"];
 
-const TABLES: TableName[] = ["TokenBalance"]
+const TABLES: TableName[] = ["MatchConfig", "LevelContent", "Position"]
 const filters: SyncFilter[] = TABLES.map(name => ({ tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name }) }))
 
 export async function setupNetwork() {
