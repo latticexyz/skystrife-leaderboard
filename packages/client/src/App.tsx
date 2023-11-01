@@ -89,7 +89,7 @@ export const App = () => {
         >
           gm
         </button>
-        <div>{counter ? counter.value : "n"}</div>
+        <div>{counter ? counter.value : "null"}</div>
       </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {

@@ -18,8 +18,8 @@ import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
-import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
-import Abi from "./IWorld.abi.json";
+import SkystrifeAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
+import IWorldAbi from "contracts/out/IWorld.sol/IWorld.abi.json";
 import {
   createBurnerAccount,
   createContract,
@@ -38,12 +38,13 @@ import { Subject, share } from "rxjs";
  * See https://mud.dev/tutorials/walkthrough/minimal-onchain#mudconfigts
  * for the source of this information.
  */
-import mudConfig from "./skystrife-config/mud.config";
+import skystrifeConfig from "./skystrife-config/mud.config";
+import mudConfig from "contracts/mud.config";
 import { SyncFilter } from "@latticexyz/store-sync";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
-type TableName = keyof (typeof mudConfig)["tables"];
+type TableName = keyof (typeof skystrifeConfig)["tables"];
 
 const TABLES: TableName[] = [
   "MatchConfig",
@@ -52,13 +53,20 @@ const TABLES: TableName[] = [
   "OwnedBy",
   "StructureType",
 ];
+
 const filters: SyncFilter[] = TABLES.map((name) => ({
   tableId: resourceToHex({
     type: "table",
-    namespace: mudConfig.namespace,
+    namespace: skystrifeConfig.namespace,
     name,
   }),
-}));
+})).concat([{
+  tableId: resourceToHex({
+    type: "table",
+    namespace: mudConfig.namespace,
+    name: "Counter",
+  })
+}]);
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -96,7 +104,7 @@ export async function setupNetwork() {
    */
   const worldContract = createContract({
     address: networkConfig.worldAddress as Hex,
-    abi: IWorldAbi.concat(Abi),
+    abi: SkystrifeAbi.concat(IWorldAbi),
     publicClient,
     walletClient: burnerWalletClient,
     onWrite: (write) => write$.next(write),
@@ -110,17 +118,17 @@ export async function setupNetwork() {
    */
   const { components, latestBlock$, storedBlockLogs$ } = await syncToRecs({
     world,
-    config: mudConfig,
+    config: skystrifeConfig,
     address: networkConfig.worldAddress as Hex,
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
-    // filters,
+    filters,
     tables: {
       Counter: {
-        namespace: "gm",
+        namespace: mudConfig.namespace,
         name: "Counter",
-        tableId: resourceToHex({ type: "table", namespace: "gm", name: "Counter" }),
+        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Counter" }),
         keySchema: {},
         valueSchema: {
           value: { type: "uint32" },

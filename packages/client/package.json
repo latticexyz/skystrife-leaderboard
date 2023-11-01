@@ -23,6 +23,7 @@
     "@latticexyz/utils": "2.0.0-main-52182f70",
     "@latticexyz/world": "2.0.0-main-52182f70",
     "autoprefixer": "^10.4.15",
+    "contracts": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rxjs": "7.5.5",

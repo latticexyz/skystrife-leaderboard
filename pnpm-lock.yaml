@@ -68,6 +68,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.15
         version: 10.4.15(postcss@8.4.30)
+      contracts:
+        specifier: workspace:*
+        version: link:../contracts
       react:
         specifier: ^18.2.0
         version: 18.2.0
