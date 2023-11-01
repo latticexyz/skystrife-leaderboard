@@ -21,7 +21,7 @@ import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 import { RESOURCE_TABLE, RESOURCE_OFFCHAIN_TABLE } from "@latticexyz/store/src/storeResourceTypes.sol";
 
 ResourceId constant _tableId = ResourceId.wrap(
-  bytes32(abi.encodePacked(RESOURCE_TABLE, bytes14("scavenger"), bytes16("Position")))
+  bytes32(abi.encodePacked(RESOURCE_TABLE, bytes14("scavenger1"), bytes16("Position")))
 );
 ResourceId constant PositionTableId = _tableId;
 
@@ -48,8 +48,9 @@ library Position {
    * @return _keySchema The key schema for the table.
    */
   function getKeySchema() internal pure returns (Schema) {
-    SchemaType[] memory _keySchema = new SchemaType[](1);
-    _keySchema[0] = SchemaType.ADDRESS;
+    SchemaType[] memory _keySchema = new SchemaType[](2);
+    _keySchema[0] = SchemaType.BYTES32;
+    _keySchema[1] = SchemaType.ADDRESS;
 
     return SchemaLib.encode(_keySchema);
   }
@@ -71,8 +72,9 @@ library Position {
    * @return keyNames An array of strings with the names of key fields.
    */
   function getKeyNames() internal pure returns (string[] memory keyNames) {
-    keyNames = new string[](1);
-    keyNames[0] = "account";
+    keyNames = new string[](2);
+    keyNames[0] = "matchEntity";
+    keyNames[1] = "account";
   }
 
   /**
@@ -102,9 +104,10 @@ library Position {
   /**
    * @notice Get x.
    */
-  function getX(address account) internal view returns (int32 x) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function getX(bytes32 matchEntity, address account) internal view returns (int32 x) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (int32(uint32(bytes4(_blob))));
@@ -113,9 +116,10 @@ library Position {
   /**
    * @notice Get x.
    */
-  function _getX(address account) internal view returns (int32 x) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function _getX(bytes32 matchEntity, address account) internal view returns (int32 x) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (int32(uint32(bytes4(_blob))));
@@ -124,9 +128,10 @@ library Position {
   /**
    * @notice Set x.
    */
-  function setX(address account, int32 x) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function setX(bytes32 matchEntity, address account, int32 x) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((x)), _fieldLayout);
   }
@@ -134,9 +139,10 @@ library Position {
   /**
    * @notice Set x.
    */
-  function _setX(address account, int32 x) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function _setX(bytes32 matchEntity, address account, int32 x) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((x)), _fieldLayout);
   }
@@ -144,9 +150,10 @@ library Position {
   /**
    * @notice Get y.
    */
-  function getY(address account) internal view returns (int32 y) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function getY(bytes32 matchEntity, address account) internal view returns (int32 y) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (int32(uint32(bytes4(_blob))));
@@ -155,9 +162,10 @@ library Position {
   /**
    * @notice Get y.
    */
-  function _getY(address account) internal view returns (int32 y) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function _getY(bytes32 matchEntity, address account) internal view returns (int32 y) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (int32(uint32(bytes4(_blob))));
@@ -166,9 +174,10 @@ library Position {
   /**
    * @notice Set y.
    */
-  function setY(address account, int32 y) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function setY(bytes32 matchEntity, address account, int32 y) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((y)), _fieldLayout);
   }
@@ -176,9 +185,10 @@ library Position {
   /**
    * @notice Set y.
    */
-  function _setY(address account, int32 y) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function _setY(bytes32 matchEntity, address account, int32 y) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((y)), _fieldLayout);
   }
@@ -186,9 +196,10 @@ library Position {
   /**
    * @notice Get the full data.
    */
-  function get(address account) internal view returns (PositionData memory _table) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function get(bytes32 matchEntity, address account) internal view returns (PositionData memory _table) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     (bytes memory _staticData, PackedCounter _encodedLengths, bytes memory _dynamicData) = StoreSwitch.getRecord(
       _tableId,
@@ -201,9 +212,10 @@ library Position {
   /**
    * @notice Get the full data.
    */
-  function _get(address account) internal view returns (PositionData memory _table) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function _get(bytes32 matchEntity, address account) internal view returns (PositionData memory _table) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     (bytes memory _staticData, PackedCounter _encodedLengths, bytes memory _dynamicData) = StoreCore.getRecord(
       _tableId,
@@ -216,14 +228,15 @@ library Position {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(address account, int32 x, int32 y) internal {
+  function set(bytes32 matchEntity, address account, int32 x, int32 y) internal {
     bytes memory _staticData = encodeStatic(x, y);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData);
   }
@@ -231,14 +244,15 @@ library Position {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(address account, int32 x, int32 y) internal {
+  function _set(bytes32 matchEntity, address account, int32 x, int32 y) internal {
     bytes memory _staticData = encodeStatic(x, y);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreCore.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData, _fieldLayout);
   }
@@ -246,14 +260,15 @@ library Position {
   /**
    * @notice Set the full data using the data struct.
    */
-  function set(address account, PositionData memory _table) internal {
+  function set(bytes32 matchEntity, address account, PositionData memory _table) internal {
     bytes memory _staticData = encodeStatic(_table.x, _table.y);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData);
   }
@@ -261,14 +276,15 @@ library Position {
   /**
    * @notice Set the full data using the data struct.
    */
-  function _set(address account, PositionData memory _table) internal {
+  function _set(bytes32 matchEntity, address account, PositionData memory _table) internal {
     bytes memory _staticData = encodeStatic(_table.x, _table.y);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreCore.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData, _fieldLayout);
   }
@@ -299,9 +315,10 @@ library Position {
   /**
    * @notice Delete all data for given keys.
    */
-  function deleteRecord(address account) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function deleteRecord(bytes32 matchEntity, address account) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
@@ -309,9 +326,10 @@ library Position {
   /**
    * @notice Delete all data for given keys.
    */
-  function _deleteRecord(address account) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function _deleteRecord(bytes32 matchEntity, address account) internal {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     StoreCore.deleteRecord(_tableId, _keyTuple, _fieldLayout);
   }
@@ -342,9 +360,10 @@ library Position {
   /**
    * @notice Encode keys as a bytes32 array using this table's field layout.
    */
-  function encodeKeyTuple(address account) internal pure returns (bytes32[] memory) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(uint160(account)));
+  function encodeKeyTuple(bytes32 matchEntity, address account) internal pure returns (bytes32[] memory) {
+    bytes32[] memory _keyTuple = new bytes32[](2);
+    _keyTuple[0] = matchEntity;
+    _keyTuple[1] = bytes32(uint256(uint160(account)));
 
     return _keyTuple;
   }

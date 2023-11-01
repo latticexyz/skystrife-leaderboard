@@ -75,21 +75,29 @@ export const App = () => {
       return decodeValue(Position.metadata.valueSchema, staticData as Hex);
     });
 
-  const scavengers = useEntityQuery([Has(ScavengerPosition)]).map((entity) => ({
-    entity,
-    position: getComponentValueStrict(ScavengerPosition, entity),
-  }));
+  const scavengers = useEntityQuery([Has(ScavengerPosition)])
+    .filter((entity) => {
+      const { matchEntity } = decodeEntity(
+        ScavengerPosition.metadata.keySchema,
+        entity
+      );
+      return matchEntity === MATCH_ENTITY;
+    })
+    .map((entity) => ({
+      entity,
+      position: getComponentValueStrict(ScavengerPosition, entity),
+    }));
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.scavenger_MoveSystem_move([1]);
+        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.scavenger_MoveSystem_move([0]);
+        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.scavenger_MoveSystem_move([2]);
+        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.scavenger_MoveSystem_move([3]);
+        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 3]);
       }
     }
 
@@ -99,7 +107,7 @@ export const App = () => {
     return function cleanup() {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [worldContract.write]);
+  }, [worldContract]);
 
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">

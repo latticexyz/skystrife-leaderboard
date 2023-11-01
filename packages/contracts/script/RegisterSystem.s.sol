@@ -20,7 +20,7 @@ contract RegisterNamespace is Script {
     MoveSystem system = new MoveSystem();
 
     IBaseWorld(worldAddress).registerSystem(systemId, system, true);
-    IBaseWorld(worldAddress).registerFunctionSelector(systemId, "move(uint8)");
+    IBaseWorld(worldAddress).registerFunctionSelector(systemId, "move(bytes32,uint8)");
 
     vm.stopBroadcast();
   }

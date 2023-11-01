@@ -1,13 +1,14 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
-  namespace: "scavenger",
+  namespace: "scavenger1",
   enums: {
     Direction: ["DOWN", "UP", "LEFT", "RIGHT"]
   },
   tables: {
     Position: {
       keySchema: {
+        matchEntity: "bytes32",
         account: "address"
       },
       valueSchema: {

@@ -6,8 +6,8 @@ import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { ROOT_NAMESPACE } from "@latticexyz/world/src/constants.sol";
 
 address constant worldAddress = 0x1e589d0f5eee235bA1c677fb4F173e052a16f754;
-bytes30 constant namespace = bytes30("scavenger");
-bytes14 constant NAMESPACE = bytes14("scavenger");
+bytes30 constant namespace = bytes30("scavenger1");
+bytes14 constant NAMESPACE = bytes14("scavenger1");
 ResourceId constant systemId = ResourceId.wrap(
   bytes32(abi.encodePacked(RESOURCE_SYSTEM, NAMESPACE, bytes16("MoveSystem")))
 );

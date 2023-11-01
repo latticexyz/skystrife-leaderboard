@@ -130,6 +130,7 @@ export async function setupNetwork() {
         name: "Position",
         tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Position" }),
         keySchema: {
+          matchEntity: { type: "bytes32" },
           account: { type: "address" },
         },
         valueSchema: {

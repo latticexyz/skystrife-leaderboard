@@ -6,17 +6,17 @@ import { Position, PositionData } from "../codegen/index.sol";
 import { Direction } from "../codegen/common.sol";
 
 contract MoveSystem is System {
-  function move(Direction direction) public {
-    PositionData memory position = Position.get(_msgSender());
+  function move(bytes32 matchEntity, Direction direction) public {
+    PositionData memory position = Position.get(matchEntity, _msgSender());
 
     if (direction == Direction.DOWN) {
-      Position.setY(_msgSender(), position.y - 1);
+      Position.setY(matchEntity, _msgSender(), position.y - 1);
     } else if (direction == Direction.UP) {
-      Position.setY(_msgSender(), position.y + 1);
+      Position.setY(matchEntity, _msgSender(), position.y + 1);
     } else if (direction == Direction.LEFT) {
-      Position.setX(_msgSender(), position.x - 1);
+      Position.setX(matchEntity, _msgSender(), position.x - 1);
     } else {
-      Position.setX(_msgSender(), position.x + 1);
+      Position.setX(matchEntity, _msgSender(), position.x + 1);
     }
   }
 }
