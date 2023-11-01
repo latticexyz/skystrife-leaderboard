@@ -11,6 +11,7 @@ import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { useEffect } from "react";
 import { encodeMatchEntity } from "./encodeMatchEntity";
+import { toEthAddress } from "@latticexyz/utils";
 
 const MATCH_ENTITY =
   "0x4cd52d8c00000000000000000000000000000000000000000000000000000000" as Entity;
@@ -38,7 +39,7 @@ const StructureTypeToSymbol = [
 
 export const App = () => {
   const {
-    network: { worldContract },
+    network: { walletClient, worldContract },
     components: {
       OwnedBy,
       MatchConfig,
@@ -158,7 +159,12 @@ export const App = () => {
             </div>
           );
         })}
-        {scavengers.map(({ position }, i) => {
+        {scavengers.map(({ entity, position }, i) => {
+          const backgroundColor =
+            toEthAddress(entity) === walletClient.account.address.toLowerCase()
+              ? "gold"
+              : "blue";
+
           return (
             <div
               key={i}
@@ -168,6 +174,7 @@ export const App = () => {
                 top: WIDTH * position.y,
                 width: WIDTH,
                 height: WIDTH,
+                backgroundColor,
               }}
             />
           );
