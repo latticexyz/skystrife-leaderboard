@@ -5,7 +5,7 @@ import { Script } from "forge-std/Script.sol";
 
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
-import { Position } from "../src/codegen/index.sol";
+import { Position, Pilfered } from "../src/codegen/index.sol";
 
 import { worldAddress } from "./constants.sol";
 
@@ -17,6 +17,7 @@ contract RegisterNamespace is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     Position.register();
+    Pilfered.register();
 
     vm.stopBroadcast();
   }

@@ -7,8 +7,9 @@ import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IBaseWorld } from "@latticexyz/world/src/codegen/interfaces/IBaseWorld.sol";
 
 import { MoveSystem } from "../src/systems/MoveSystem.sol";
+import { PilferSystem } from "../src/systems/PilferSystem.sol";
 
-import { worldAddress, systemId } from "./constants.sol";
+import { worldAddress, moveSystemId, pilferSystemId } from "./constants.sol";
 
 contract RegisterNamespace is Script {
   function run() external {
@@ -17,10 +18,17 @@ contract RegisterNamespace is Script {
 
     vm.startBroadcast(deployerPrivateKey);
 
-    MoveSystem system = new MoveSystem();
+    {
+      MoveSystem system = new MoveSystem();
+      IBaseWorld(worldAddress).registerSystem(moveSystemId, system, true);
+      IBaseWorld(worldAddress).registerFunctionSelector(moveSystemId, "move(bytes32,uint8)");
+    }
 
-    IBaseWorld(worldAddress).registerSystem(systemId, system, true);
-    IBaseWorld(worldAddress).registerFunctionSelector(systemId, "move(bytes32,uint8)");
+    {
+      PilferSystem system = new PilferSystem();
+      IBaseWorld(worldAddress).registerSystem(pilferSystemId, system, true);
+      IBaseWorld(worldAddress).registerFunctionSelector(pilferSystemId, "pilfer(bytes32,bytes32)");
+    }
 
     vm.stopBroadcast();
   }

@@ -2,14 +2,17 @@ import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import {
   Entity,
   Has,
+  HasValue,
   getComponentValue,
   getComponentValueStrict,
+  runQuery,
 } from "@latticexyz/recs";
 import { decodeValue } from "@latticexyz/protocol-parser";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
-import { Hex } from "viem";
+import { Hex, pad } from "viem";
 import { useEffect } from "react";
+import { decodeMatchEntity } from "./decodeMatchEntity";
 import { encodeMatchEntity } from "./encodeMatchEntity";
 import { toEthAddress } from "@latticexyz/utils";
 
@@ -37,42 +40,54 @@ const StructureTypeToSymbol = [
   "WidgetGenerator",
 ];
 
+const Unit = ({ entity }: { entity: Entity }) => {
+  const {
+    components: { OwnedBy, Position, StructureType, Pilfered },
+  } = useMUD();
+
+  const position = useComponentValue(Position, entity);
+  const structureType = useComponentValue(StructureType, entity);
+  const player = useComponentValue(OwnedBy, entity);
+  const owner = player
+    ? getComponentValue(
+        OwnedBy,
+        encodeMatchEntity(MATCH_ENTITY, player.value as Entity)
+      )
+    : null;
+  const pilfered = useComponentValue(Pilfered, entity);
+
+  const backgroundColor = owner ? `#${owner.value.slice(-6)}` : "gray";
+
+  return position ? (
+    <div
+      key={entity}
+      className="absolute border border-gray-900 text-3xl"
+      style={{
+        left: WIDTH * position.x,
+        top: WIDTH * position.y,
+        width: WIDTH,
+        height: WIDTH,
+        backgroundColor,
+        opacity: pilfered ? "50%" : "100%",
+      }}
+    >
+      {structureType ? StructureTypeToSymbol[structureType.value] : "🧙"}
+    </div>
+  ) : null;
+};
+
 export const App = () => {
   const {
     network: { walletClient, worldContract },
-    components: {
-      OwnedBy,
-      MatchConfig,
-      LevelContent,
-      Position,
-      StructureType,
-      ScavengerPosition,
-    },
+    components: { MatchConfig, LevelContent, Position, ScavengerPosition },
   } = useMUD();
 
   const config = useComponentValue(MatchConfig, MATCH_ENTITY);
 
-  const units = useEntityQuery([Has(Position)])
-    .filter((entity) => {
-      const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
-      return matchEntity === MATCH_ENTITY;
-    })
-    .map((entity) => {
-      const player = getComponentValue(OwnedBy, entity);
-
-      return {
-        entity,
-        position: getComponentValueStrict(Position, entity),
-        structureType: getComponentValue(StructureType, entity),
-        player: getComponentValue(OwnedBy, entity),
-        owner: player
-          ? getComponentValue(
-              OwnedBy,
-              encodeMatchEntity(MATCH_ENTITY, player.value as Entity)
-            )
-          : null,
-      };
-    });
+  const units = useEntityQuery([Has(Position)]).filter((entity) => {
+    const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
+    return matchEntity === MATCH_ENTITY;
+  });
 
   const terrain = useEntityQuery([Has(LevelContent)])
     .filter((entity) => {
@@ -102,13 +117,33 @@ export const App = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 1]);
+        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 0]);
+        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 2]);
+        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 3]);
+        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 3]);
+      } else if (event.code === "KeyE") {
+        const playerPosition = getComponentValueStrict(
+          ScavengerPosition,
+          encodeMatchEntity(
+            MATCH_ENTITY,
+            pad(walletClient.account.address).toLowerCase() as Entity
+          )
+        );
+
+        const entitiesAtPosition = Array.from(
+          runQuery([HasValue(Position, playerPosition)])
+        );
+        if (entitiesAtPosition.length > 0) {
+          worldContract.write
+            .batman4_PilferSystem_pilfer([
+              MATCH_ENTITY,
+              decodeMatchEntity(entitiesAtPosition[0]).entity,
+            ])
+            .then(console.log);
+        }
       }
     }
 
@@ -118,7 +153,7 @@ export const App = () => {
     return function cleanup() {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [worldContract]);
+  }, [Position, worldContract.write]);
 
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
@@ -138,27 +173,10 @@ export const App = () => {
             />
           );
         })}
-        {units.map(({ entity, position, structureType, owner }) => {
-          const backgroundColor = owner ? `#${owner.value.slice(-6)}` : "gray";
+        {units.map((entity) => (
+          <Unit key={entity} entity={entity} />
+        ))}
 
-          return (
-            <div
-              key={entity}
-              className="absolute border border-gray-900 text-3xl"
-              style={{
-                left: WIDTH * position.x,
-                top: WIDTH * position.y,
-                width: WIDTH,
-                height: WIDTH,
-                backgroundColor,
-              }}
-            >
-              {structureType
-                ? StructureTypeToSymbol[structureType.value]
-                : "🧙"}
-            </div>
-          );
-        })}
         {scavengers.map(({ entity, position }, i) => {
           const backgroundColor =
             toEthAddress(entity) === walletClient.account.address.toLowerCase()

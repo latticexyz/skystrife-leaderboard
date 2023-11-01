@@ -60,13 +60,22 @@ const filters: SyncFilter[] = TABLES.map((name) => ({
     namespace: skystrifeConfig.namespace,
     name,
   }),
-})).concat([{
-  tableId: resourceToHex({
-    type: "table",
-    namespace: mudConfig.namespace,
-    name: "Position",
-  })
-}]);
+})).concat([
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: mudConfig.namespace,
+      name: "Position",
+    })
+  },
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: mudConfig.namespace,
+      name: "Pilfered",
+    })
+  }
+]);
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -136,6 +145,18 @@ export async function setupNetwork() {
         valueSchema: {
           x: { type: "uint32" },
           y: { type: "uint32" },
+        },
+      },
+      Pilfered: {
+        namespace: mudConfig.namespace,
+        name: "Pilfered",
+        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Pilfered" }),
+        keySchema: {
+          matchEntity: { type: "bytes32" },
+          entity: { type: "bytes32" },
+        },
+        valueSchema: {
+          value: { type: "bool" },
         },
       },
     }

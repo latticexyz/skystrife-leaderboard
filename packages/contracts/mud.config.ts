@@ -1,7 +1,7 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
-  namespace: "batman2",
+  namespace: "batman4",
   enums: {
     Direction: ["DOWN", "UP", "LEFT", "RIGHT"]
   },
@@ -14,6 +14,15 @@ export default mudConfig({
       valueSchema: {
         x: "int32",
         y: "int32"
+      }
+    },
+    Pilfered: {
+      keySchema: {
+        matchEntity: "bytes32",
+        entity: "bytes32"
+      },
+      valueSchema: {
+        value: "bool"
       }
     },
   },

@@ -8,14 +8,14 @@ import { ResourceId, ResourceIdLib } from "@latticexyz/store/src/ResourceId.sol"
 import { IBaseWorld } from "@latticexyz/world/src/codegen/interfaces/IBaseWorld.sol";
 import { RESOURCE_NAMESPACE } from "@latticexyz/world/src/worldResourceTypes.sol";
 
-import { worldAddress, namespace } from "./constants.sol";
+import { worldAddress } from "./constants.sol";
 
 contract RegisterNamespace is Script {
+  ResourceId namespaceId = ResourceIdLib.encode(RESOURCE_NAMESPACE, bytes30("batman4"));
+
   function run() external {
     StoreSwitch.setStoreAddress(worldAddress);
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-
-    ResourceId namespaceId = ResourceIdLib.encode(RESOURCE_NAMESPACE, namespace);
 
     vm.startBroadcast(deployerPrivateKey);
 
