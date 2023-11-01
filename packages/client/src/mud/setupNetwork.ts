@@ -26,12 +26,14 @@ import { Subject, share } from "rxjs";
  * for the source of this information.
  */
 import mudConfig from "./skystrife-config/mud.config";
+import { SyncFilter } from "@latticexyz/store-sync";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 type TableName = keyof (typeof mudConfig)["tables"];
 
 const TABLES: TableName[] = ["TokenBalance"]
+const filters: SyncFilter[] = TABLES.map(name => ({ tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name }) }))
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -75,12 +77,6 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
-  const mudTableIds = TABLES.map((name) => resourceToHex({ type: "table", namespace: mudConfig.namespace, name }));
-  const storeTableIds = Object.keys(storeConfig.tables).map((name) => resourceToHex({ type: "table", namespace: storeConfig.namespace, name }));
-  const worldTableIds = Object.keys(worldConfig.tables).map((name) => resourceToHex({ type: "table", namespace: worldConfig.namespace, name }));
-
-  const tableIds = [...storeTableIds, ...worldTableIds, ...mudTableIds];
-
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
    * Uses the MUD indexer if available, otherwise falls back
@@ -94,7 +90,7 @@ export async function setupNetwork() {
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
-    tableIds
+    filters
   });
 
   /*
