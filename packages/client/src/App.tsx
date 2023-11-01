@@ -10,11 +10,12 @@ import {
 import { decodeValue } from "@latticexyz/protocol-parser";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
-import { Hex, pad } from "viem";
+import { Hex } from "viem";
 import { useEffect } from "react";
 import { decodeMatchEntity } from "./decodeMatchEntity";
 import { encodeMatchEntity } from "./encodeMatchEntity";
 import { toEthAddress } from "@latticexyz/utils";
+import { addressToEntity } from "./addressToEntity";
 
 const MATCH_ENTITY =
   "0x4cd52d8c00000000000000000000000000000000000000000000000000000000" as Entity;
@@ -79,10 +80,22 @@ const Unit = ({ entity }: { entity: Entity }) => {
 export const App = () => {
   const {
     network: { walletClient, worldContract },
-    components: { MatchConfig, LevelContent, Position, ScavengerPosition },
+    components: {
+      MatchConfig,
+      LevelContent,
+      Position,
+      ScavengerBalances,
+      ScavengerPosition,
+    },
   } = useMUD();
 
   const config = useComponentValue(MatchConfig, MATCH_ENTITY);
+  const balance = useComponentValue(
+    ScavengerBalances,
+    addressToEntity(walletClient.account.address)
+  );
+  const gm = useEntityQuery([Has(ScavengerBalances)]);
+  console.log(gm);
 
   const units = useEntityQuery([Has(Position)]).filter((entity) => {
     const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
@@ -117,19 +130,19 @@ export const App = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 1]);
+        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 0]);
+        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 2]);
+        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.batman4_MoveSystem_move([MATCH_ENTITY, 3]);
+        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 3]);
       } else if (event.code === "KeyE") {
         const playerPosition = getComponentValueStrict(
           ScavengerPosition,
           encodeMatchEntity(
             MATCH_ENTITY,
-            pad(walletClient.account.address).toLowerCase() as Entity
+            addressToEntity(walletClient.account.address)
           )
         );
 
@@ -137,12 +150,10 @@ export const App = () => {
           runQuery([HasValue(Position, playerPosition)])
         );
         if (entitiesAtPosition.length > 0) {
-          worldContract.write
-            .batman4_PilferSystem_pilfer([
-              MATCH_ENTITY,
-              decodeMatchEntity(entitiesAtPosition[0]).entity,
-            ])
-            .then(console.log);
+          worldContract.write.batman6_PilferSystem_pilfer([
+            MATCH_ENTITY,
+            decodeMatchEntity(entitiesAtPosition[0]).entity,
+          ]);
         }
       }
     }
@@ -162,7 +173,10 @@ export const App = () => {
 
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
-      <div>Match #{MATCH_ENTITY}</div>
+      <div className="flex flex-col">
+        <div>Match #{MATCH_ENTITY}</div>
+        <div>Balance: {balance ? balance.value.toString() : "Null"} ⚙️</div>
+      </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {
           return (

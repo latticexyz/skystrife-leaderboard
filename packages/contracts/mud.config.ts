@@ -1,7 +1,7 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
-  namespace: "batman4",
+  namespace: "batman6",
   enums: {
     Direction: ["DOWN", "UP", "LEFT", "RIGHT"]
   },
@@ -23,6 +23,14 @@ export default mudConfig({
       },
       valueSchema: {
         value: "bool"
+      }
+    },
+    Balances: {
+      keySchema: {
+        account: "address"
+      },
+      valueSchema: {
+        value: "uint256"
       }
     },
   },

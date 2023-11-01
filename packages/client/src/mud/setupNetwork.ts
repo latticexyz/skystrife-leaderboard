@@ -74,6 +74,13 @@ const filters: SyncFilter[] = TABLES.map((name) => ({
       namespace: mudConfig.namespace,
       name: "Pilfered",
     })
+  },
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: mudConfig.namespace,
+      name: "Balances",
+    })
   }
 ]);
 
@@ -157,6 +164,17 @@ export async function setupNetwork() {
         },
         valueSchema: {
           value: { type: "bool" },
+        },
+      },
+      ScavengerBalances: {
+        namespace: mudConfig.namespace,
+        name: "Balances",
+        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Balances" }),
+        keySchema: {
+          account: { type: "address" },
+        },
+        valueSchema: {
+          value: { type: "uint256" },
         },
       },
     }

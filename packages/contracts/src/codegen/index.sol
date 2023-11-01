@@ -5,3 +5,4 @@ pragma solidity >=0.8.21;
 
 import { Position, PositionData, PositionTableId } from "./tables/Position.sol";
 import { Pilfered, PilferedTableId } from "./tables/Pilfered.sol";
+import { Balances, BalancesTableId } from "./tables/Balances.sol";
