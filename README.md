@@ -1,6 +1,6 @@
 # SkyStrife Leaderboard
 
-## Steps
+## Setup
 
 1. `git clone` this repository.
 2. Run `pnpm install` in the base directory to install all dependencies.
