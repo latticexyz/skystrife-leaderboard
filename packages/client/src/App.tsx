@@ -36,7 +36,7 @@ export const App = () => {
     });
 
   return (
-    <div className="flex justify-center h-screen bg-blue-500 text-2xl">
+    <div className="flex justify-center h-screen bg-blue-500 text-lg">
       Match #{MATCH_ENTITY}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {
