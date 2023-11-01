@@ -61,7 +61,6 @@ const Unit = ({ entity }: { entity: Entity }) => {
 
   return position ? (
     <div
-      key={entity}
       className="absolute border border-gray-900 text-3xl"
       style={{
         left: WIDTH * position.x,
@@ -74,6 +73,33 @@ const Unit = ({ entity }: { entity: Entity }) => {
     >
       {structureType ? StructureTypeToSymbol[structureType.value] : "🧙"}
     </div>
+  ) : null;
+};
+
+const Scavenger = ({ entity }: { entity: Entity }) => {
+  const {
+    network: { walletClient },
+    components: { ScavengerPosition },
+  } = useMUD();
+
+  const position = getComponentValueStrict(ScavengerPosition, entity);
+
+  const backgroundColor =
+    toEthAddress(entity) === walletClient.account.address.toLowerCase()
+      ? "gold"
+      : "blue";
+
+  return position ? (
+    <div
+      className="absolute border border-gray-900 bg-red-600 rounded-2xl"
+      style={{
+        left: WIDTH * position.x,
+        top: WIDTH * position.y,
+        width: WIDTH,
+        height: WIDTH,
+        backgroundColor,
+      }}
+    />
   ) : null;
 };
 
@@ -94,8 +120,6 @@ export const App = () => {
     ScavengerBalances,
     addressToEntity(walletClient.account.address)
   );
-  const gm = useEntityQuery([Has(ScavengerBalances)]);
-  console.log(gm);
 
   const units = useEntityQuery([Has(Position)]).filter((entity) => {
     const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
@@ -114,18 +138,15 @@ export const App = () => {
       return decodeValue(Position.metadata.valueSchema, staticData as Hex);
     });
 
-  const scavengers = useEntityQuery([Has(ScavengerPosition)])
-    .filter((entity) => {
+  const scavengers = useEntityQuery([Has(ScavengerPosition)]).filter(
+    (entity) => {
       const { matchEntity } = decodeEntity(
         ScavengerPosition.metadata.keySchema,
         entity
       );
       return matchEntity === MATCH_ENTITY;
-    })
-    .map((entity) => ({
-      entity,
-      position: getComponentValueStrict(ScavengerPosition, entity),
-    }));
+    }
+  );
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -175,7 +196,7 @@ export const App = () => {
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
       <div className="flex flex-col">
         <div>Match #{MATCH_ENTITY}</div>
-        <div>Balance: {balance ? balance.value.toString() : "Null"} ⚙️</div>
+        <div>Balance: {balance ? balance.value.toString() : "0"} ⚙️</div>
       </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {
@@ -196,26 +217,9 @@ export const App = () => {
           <Unit key={entity} entity={entity} />
         ))}
 
-        {scavengers.map(({ entity, position }, i) => {
-          const backgroundColor =
-            toEthAddress(entity) === walletClient.account.address.toLowerCase()
-              ? "gold"
-              : "blue";
-
-          return (
-            <div
-              key={i}
-              className="absolute border border-gray-900 bg-red-600 rounded-2xl"
-              style={{
-                left: WIDTH * position.x,
-                top: WIDTH * position.y,
-                width: WIDTH,
-                height: WIDTH,
-                backgroundColor,
-              }}
-            />
-          );
-        })}
+        {scavengers.map((entity) => (
+          <Scavenger key={entity} entity={entity} />
+        ))}
       </div>
     </div>
   );
