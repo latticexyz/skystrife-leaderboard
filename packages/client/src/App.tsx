@@ -153,7 +153,12 @@ export const App = () => {
     return function cleanup() {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [Position, worldContract.write]);
+  }, [
+    Position,
+    ScavengerPosition,
+    walletClient.account.address,
+    worldContract.write,
+  ]);
 
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
