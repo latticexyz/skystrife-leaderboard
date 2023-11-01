@@ -1,17 +1,63 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import { Entity, Has, getComponentValueStrict } from "@latticexyz/recs";
+import {
+  Entity,
+  Has,
+  getComponentValue,
+  getComponentValueStrict,
+} from "@latticexyz/recs";
 import { decodeValue } from "@latticexyz/protocol-parser";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
+import { stringToColour } from "./stringToColor";
 
 const MATCH_ENTITY =
   "0x4cd52d8c00000000000000000000000000000000000000000000000000000000" as Entity;
 const WIDTH = 35;
 
+const StructureTypeToSymbol = [
+  "Unknown",
+  "🏠",
+  "🏰",
+  "GoldShrine",
+  "EscapePortal",
+  "Portal",
+  "Container",
+  "SummoningAltar",
+  "BlazingHeartShrine",
+  "🚧",
+  "🏦",
+  "Village",
+  "EmberCrownShrine",
+  "CrystalGenerator",
+  "MetalGenerator",
+  "FossilGenerator",
+  "WidgetGenerator",
+];
+
+const UnitTypeToSymbol = [
+  "Unknown",
+  "🛵",
+  "🚚",
+  "🚌",
+  "🏍️",
+  "🏎️",
+  "Dragon",
+  "🚁",
+  "Catapult",
+  "Wizard",
+];
+
 export const App = () => {
   const {
-    components: { MatchConfig, LevelContent, Position },
+    components: {
+      OwnedBy,
+      MatchConfig,
+      LevelContent,
+      Position,
+      StructureType,
+      UnitType,
+    },
   } = useMUD();
 
   const config = useComponentValue(MatchConfig, MATCH_ENTITY);
@@ -21,7 +67,13 @@ export const App = () => {
       const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
       return matchEntity === MATCH_ENTITY;
     })
-    .map((entity) => getComponentValueStrict(Position, entity));
+    .map((entity) => ({
+      entity,
+      position: getComponentValueStrict(Position, entity),
+      structureType: getComponentValue(StructureType, entity),
+      unitType: getComponentValue(UnitType, entity),
+      owner: getComponentValue(OwnedBy, entity),
+    }));
 
   const terrain = useEntityQuery([Has(LevelContent)])
     .filter((entity) => {
@@ -50,12 +102,10 @@ export const App = () => {
                 width: WIDTH,
                 height: WIDTH,
               }}
-            >
-              S
-            </div>
+            />
           );
         })}
-        {units.map((position, i) => {
+        {units.map(({ position, structureType, unitType, owner }, i) => {
           return (
             <div
               key={i}
@@ -65,9 +115,14 @@ export const App = () => {
                 top: WIDTH * position.y,
                 width: WIDTH,
                 height: WIDTH,
+                backgroundColor: owner ? stringToColour(owner.value) : "gray",
               }}
             >
-              U
+              {structureType
+                ? StructureTypeToSymbol[structureType.value]
+                : unitType
+                ? UnitTypeToSymbol[unitType.value]
+                : "🧙"}
             </div>
           );
         })}

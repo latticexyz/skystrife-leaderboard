@@ -617,7 +617,6 @@ export default mudConfig({
       valueSchema: {
         startTime: "uint256",
         turnLength: "uint256",
-        actionCooldownLength: "uint256",
         levelId: "bytes32",
         createdBy: "bytes32",
       },

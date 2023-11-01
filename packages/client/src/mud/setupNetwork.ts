@@ -3,14 +3,29 @@
  * (https://viem.sh/docs/getting-started.html).
  * This line imports the functions we need from it.
  */
-import { createPublicClient, fallback, webSocket, http, createWalletClient, Hex, parseEther, ClientConfig } from "viem";
+import {
+  createPublicClient,
+  fallback,
+  webSocket,
+  http,
+  createWalletClient,
+  Hex,
+  parseEther,
+  ClientConfig,
+} from "viem";
 import { createFaucetService } from "@latticexyz/services/faucet";
 import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
 import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
-import { createBurnerAccount, createContract, transportObserver, ContractWrite, resourceToHex } from "@latticexyz/common";
+import {
+  createBurnerAccount,
+  createContract,
+  transportObserver,
+  ContractWrite,
+  resourceToHex,
+} from "@latticexyz/common";
 
 import { Subject, share } from "rxjs";
 
@@ -29,8 +44,28 @@ export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 type TableName = keyof (typeof mudConfig)["tables"];
 
-const TABLES: TableName[] = ["MatchConfig", "LevelContent", "Position"]
-const filters: SyncFilter[] = TABLES.map(name => ({ tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name }) }))
+const TABLES: TableName[] = [
+  "MatchConfig",
+  "LevelContent",
+  "Position",
+  "OwnedBy",
+  "StructureType",
+];
+const filters: SyncFilter[] = TABLES.map((name) => ({
+  tableId: resourceToHex({
+    type: "table",
+    namespace: mudConfig.namespace,
+    name,
+  }),
+})).concat([
+  {
+    tableId: resourceToHex({
+      type: "offchainTable",
+      namespace: mudConfig.namespace,
+      name: "UnitType",
+    }),
+  },
+]);
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
@@ -87,7 +122,7 @@ export async function setupNetwork() {
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
-    filters
+    filters,
   });
 
   /*
@@ -121,7 +156,10 @@ export async function setupNetwork() {
   return {
     world,
     components,
-    playerEntity: encodeEntity({ address: "address" }, { address: burnerWalletClient.account.address }),
+    playerEntity: encodeEntity(
+      { address: "address" },
+      { address: burnerWalletClient.account.address }
+    ),
     publicClient,
     walletClient: burnerWalletClient,
     latestBlock$,
