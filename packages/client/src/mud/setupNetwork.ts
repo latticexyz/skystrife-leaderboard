@@ -12,9 +12,6 @@ import { world } from "./world";
 import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
 import { createBurnerAccount, createContract, transportObserver, ContractWrite, resourceToHex } from "@latticexyz/common";
 
-import storeConfig from "@latticexyz/store/mud.config";
-import worldConfig from "@latticexyz/world/mud.config";
-
 import { Subject, share } from "rxjs";
 
 /*
