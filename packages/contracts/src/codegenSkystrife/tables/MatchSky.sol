@@ -21,20 +21,20 @@ import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 import { RESOURCE_TABLE, RESOURCE_OFFCHAIN_TABLE } from "@latticexyz/store/src/storeResourceTypes.sol";
 
 ResourceId constant _tableId = ResourceId.wrap(
-  bytes32(abi.encodePacked(RESOURCE_TABLE, bytes14("batman1"), bytes16("Position")))
+  bytes32(abi.encodePacked(RESOURCE_TABLE, bytes14(""), bytes16("MatchSky")))
 );
-ResourceId constant PositionTableId = _tableId;
+ResourceId constant MatchSkyTableId = _tableId;
 
 FieldLayout constant _fieldLayout = FieldLayout.wrap(
-  0x0008020004040000000000000000000000000000000000000000000000000000
+  0x0040020020200000000000000000000000000000000000000000000000000000
 );
 
-struct PositionData {
-  int32 x;
-  int32 y;
+struct MatchSkyData {
+  uint256 createdAt;
+  uint256 reward;
 }
 
-library Position {
+library MatchSky {
   /**
    * @notice Get the table values' field layout.
    * @return _fieldLayout The field layout for the table.
@@ -48,9 +48,8 @@ library Position {
    * @return _keySchema The key schema for the table.
    */
   function getKeySchema() internal pure returns (Schema) {
-    SchemaType[] memory _keySchema = new SchemaType[](2);
+    SchemaType[] memory _keySchema = new SchemaType[](1);
     _keySchema[0] = SchemaType.BYTES32;
-    _keySchema[1] = SchemaType.ADDRESS;
 
     return SchemaLib.encode(_keySchema);
   }
@@ -61,8 +60,8 @@ library Position {
    */
   function getValueSchema() internal pure returns (Schema) {
     SchemaType[] memory _valueSchema = new SchemaType[](2);
-    _valueSchema[0] = SchemaType.INT32;
-    _valueSchema[1] = SchemaType.INT32;
+    _valueSchema[0] = SchemaType.UINT256;
+    _valueSchema[1] = SchemaType.UINT256;
 
     return SchemaLib.encode(_valueSchema);
   }
@@ -72,9 +71,8 @@ library Position {
    * @return keyNames An array of strings with the names of key fields.
    */
   function getKeyNames() internal pure returns (string[] memory keyNames) {
-    keyNames = new string[](2);
-    keyNames[0] = "matchEntity";
-    keyNames[1] = "account";
+    keyNames = new string[](1);
+    keyNames[0] = "key";
   }
 
   /**
@@ -83,8 +81,8 @@ library Position {
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
     fieldNames = new string[](2);
-    fieldNames[0] = "x";
-    fieldNames[1] = "y";
+    fieldNames[0] = "createdAt";
+    fieldNames[1] = "reward";
   }
 
   /**
@@ -102,104 +100,95 @@ library Position {
   }
 
   /**
-   * @notice Get x.
+   * @notice Get createdAt.
    */
-  function getX(bytes32 matchEntity, address account) internal view returns (int32 x) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function getCreatedAt(bytes32 key) internal view returns (uint256 createdAt) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return (int32(uint32(bytes4(_blob))));
+    return (uint256(bytes32(_blob)));
   }
 
   /**
-   * @notice Get x.
+   * @notice Get createdAt.
    */
-  function _getX(bytes32 matchEntity, address account) internal view returns (int32 x) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function _getCreatedAt(bytes32 key) internal view returns (uint256 createdAt) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return (int32(uint32(bytes4(_blob))));
+    return (uint256(bytes32(_blob)));
   }
 
   /**
-   * @notice Set x.
+   * @notice Set createdAt.
    */
-  function setX(bytes32 matchEntity, address account, int32 x) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function setCreatedAt(bytes32 key, uint256 createdAt) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((x)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((createdAt)), _fieldLayout);
   }
 
   /**
-   * @notice Set x.
+   * @notice Set createdAt.
    */
-  function _setX(bytes32 matchEntity, address account, int32 x) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function _setCreatedAt(bytes32 key, uint256 createdAt) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((x)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((createdAt)), _fieldLayout);
   }
 
   /**
-   * @notice Get y.
+   * @notice Get reward.
    */
-  function getY(bytes32 matchEntity, address account) internal view returns (int32 y) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function getReward(bytes32 key) internal view returns (uint256 reward) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
-    return (int32(uint32(bytes4(_blob))));
+    return (uint256(bytes32(_blob)));
   }
 
   /**
-   * @notice Get y.
+   * @notice Get reward.
    */
-  function _getY(bytes32 matchEntity, address account) internal view returns (int32 y) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function _getReward(bytes32 key) internal view returns (uint256 reward) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
-    return (int32(uint32(bytes4(_blob))));
+    return (uint256(bytes32(_blob)));
   }
 
   /**
-   * @notice Set y.
+   * @notice Set reward.
    */
-  function setY(bytes32 matchEntity, address account, int32 y) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function setReward(bytes32 key, uint256 reward) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((y)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((reward)), _fieldLayout);
   }
 
   /**
-   * @notice Set y.
+   * @notice Set reward.
    */
-  function _setY(bytes32 matchEntity, address account, int32 y) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function _setReward(bytes32 key, uint256 reward) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((y)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((reward)), _fieldLayout);
   }
 
   /**
    * @notice Get the full data.
    */
-  function get(bytes32 matchEntity, address account) internal view returns (PositionData memory _table) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function get(bytes32 key) internal view returns (MatchSkyData memory _table) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     (bytes memory _staticData, PackedCounter _encodedLengths, bytes memory _dynamicData) = StoreSwitch.getRecord(
       _tableId,
@@ -212,10 +201,9 @@ library Position {
   /**
    * @notice Get the full data.
    */
-  function _get(bytes32 matchEntity, address account) internal view returns (PositionData memory _table) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function _get(bytes32 key) internal view returns (MatchSkyData memory _table) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     (bytes memory _staticData, PackedCounter _encodedLengths, bytes memory _dynamicData) = StoreCore.getRecord(
       _tableId,
@@ -228,15 +216,14 @@ library Position {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(bytes32 matchEntity, address account, int32 x, int32 y) internal {
-    bytes memory _staticData = encodeStatic(x, y);
+  function set(bytes32 key, uint256 createdAt, uint256 reward) internal {
+    bytes memory _staticData = encodeStatic(createdAt, reward);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData);
   }
@@ -244,15 +231,14 @@ library Position {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(bytes32 matchEntity, address account, int32 x, int32 y) internal {
-    bytes memory _staticData = encodeStatic(x, y);
+  function _set(bytes32 key, uint256 createdAt, uint256 reward) internal {
+    bytes memory _staticData = encodeStatic(createdAt, reward);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     StoreCore.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData, _fieldLayout);
   }
@@ -260,15 +246,14 @@ library Position {
   /**
    * @notice Set the full data using the data struct.
    */
-  function set(bytes32 matchEntity, address account, PositionData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.x, _table.y);
+  function set(bytes32 key, MatchSkyData memory _table) internal {
+    bytes memory _staticData = encodeStatic(_table.createdAt, _table.reward);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData);
   }
@@ -276,15 +261,14 @@ library Position {
   /**
    * @notice Set the full data using the data struct.
    */
-  function _set(bytes32 matchEntity, address account, PositionData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.x, _table.y);
+  function _set(bytes32 key, MatchSkyData memory _table) internal {
+    bytes memory _staticData = encodeStatic(_table.createdAt, _table.reward);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
 
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     StoreCore.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData, _fieldLayout);
   }
@@ -292,10 +276,10 @@ library Position {
   /**
    * @notice Decode the tightly packed blob of static data using this table's field layout.
    */
-  function decodeStatic(bytes memory _blob) internal pure returns (int32 x, int32 y) {
-    x = (int32(uint32(Bytes.slice4(_blob, 0))));
+  function decodeStatic(bytes memory _blob) internal pure returns (uint256 createdAt, uint256 reward) {
+    createdAt = (uint256(Bytes.slice32(_blob, 0)));
 
-    y = (int32(uint32(Bytes.slice4(_blob, 4))));
+    reward = (uint256(Bytes.slice32(_blob, 32)));
   }
 
   /**
@@ -308,17 +292,16 @@ library Position {
     bytes memory _staticData,
     PackedCounter,
     bytes memory
-  ) internal pure returns (PositionData memory _table) {
-    (_table.x, _table.y) = decodeStatic(_staticData);
+  ) internal pure returns (MatchSkyData memory _table) {
+    (_table.createdAt, _table.reward) = decodeStatic(_staticData);
   }
 
   /**
    * @notice Delete all data for given keys.
    */
-  function deleteRecord(bytes32 matchEntity, address account) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function deleteRecord(bytes32 key) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
@@ -326,10 +309,9 @@ library Position {
   /**
    * @notice Delete all data for given keys.
    */
-  function _deleteRecord(bytes32 matchEntity, address account) internal {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function _deleteRecord(bytes32 key) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     StoreCore.deleteRecord(_tableId, _keyTuple, _fieldLayout);
   }
@@ -338,8 +320,8 @@ library Position {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(int32 x, int32 y) internal pure returns (bytes memory) {
-    return abi.encodePacked(x, y);
+  function encodeStatic(uint256 createdAt, uint256 reward) internal pure returns (bytes memory) {
+    return abi.encodePacked(createdAt, reward);
   }
 
   /**
@@ -348,8 +330,8 @@ library Position {
    * @return The lengths of the dynamic fields (packed into a single bytes32 value).
    * @return The dyanmic (variable length) data, encoded into a sequence of bytes.
    */
-  function encode(int32 x, int32 y) internal pure returns (bytes memory, PackedCounter, bytes memory) {
-    bytes memory _staticData = encodeStatic(x, y);
+  function encode(uint256 createdAt, uint256 reward) internal pure returns (bytes memory, PackedCounter, bytes memory) {
+    bytes memory _staticData = encodeStatic(createdAt, reward);
 
     PackedCounter _encodedLengths;
     bytes memory _dynamicData;
@@ -360,10 +342,9 @@ library Position {
   /**
    * @notice Encode keys as a bytes32 array using this table's field layout.
    */
-  function encodeKeyTuple(bytes32 matchEntity, address account) internal pure returns (bytes32[] memory) {
-    bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = matchEntity;
-    _keyTuple[1] = bytes32(uint256(uint160(account)));
+  function encodeKeyTuple(bytes32 key) internal pure returns (bytes32[] memory) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = key;
 
     return _keyTuple;
   }

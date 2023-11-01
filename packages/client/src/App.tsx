@@ -91,13 +91,15 @@ export const App = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 1]);
+        worldContract.write.batman1_MoveSystem_move([MATCH_ENTITY, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 0]);
+        worldContract.write
+          .batman1_MoveSystem_move([MATCH_ENTITY, 0])
+          .then(console.log);
       } else if (event.code === "KeyA") {
-        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 2]);
+        worldContract.write.batman1_MoveSystem_move([MATCH_ENTITY, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.scavenger1_MoveSystem_move([MATCH_ENTITY, 3]);
+        worldContract.write.batman1_MoveSystem_move([MATCH_ENTITY, 3]);
       }
     }
 

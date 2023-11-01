@@ -516,7 +516,6 @@ export default mudConfig({
       valueSchema: {
         cost: "uint256",
         window: "uint256",
-        entity: "bytes32",
         token: "bytes32",
       },
     },
@@ -617,6 +616,7 @@ export default mudConfig({
       valueSchema: {
         startTime: "uint256",
         turnLength: "uint256",
+        actionCooldownLength: "uint256",
         levelId: "bytes32",
         createdBy: "bytes32",
       },
@@ -651,6 +651,15 @@ export default mudConfig({
     MatchRanking: {
       valueSchema: "bytes32[]",
     },
+
+    MatchSweepstake: {
+      dataStruct: false,
+      valueSchema: {
+        entranceFee: "uint256",
+        rewardPercentages: "uint256[]",
+      },
+    },
+
     /**
      * The rewards for each place (1st, 2nd etc...) of match players.
      */

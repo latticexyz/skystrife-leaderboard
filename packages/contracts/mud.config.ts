@@ -1,7 +1,7 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
-  namespace: "scavenger1",
+  namespace: "batman1",
   enums: {
     Direction: ["DOWN", "UP", "LEFT", "RIGHT"]
   },
