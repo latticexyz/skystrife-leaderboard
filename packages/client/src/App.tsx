@@ -9,8 +9,8 @@ import { decodeValue } from "@latticexyz/protocol-parser";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
-import { stringToColour } from "./stringToColor";
 import { useEffect } from "react";
+import { encodeMatchEntity } from "./encodeMatchEntity";
 
 const MATCH_ENTITY =
   "0x4cd52d8c00000000000000000000000000000000000000000000000000000000" as Entity;
@@ -56,12 +56,22 @@ export const App = () => {
       const { matchEntity } = decodeEntity(Position.metadata.keySchema, entity);
       return matchEntity === MATCH_ENTITY;
     })
-    .map((entity) => ({
-      entity,
-      position: getComponentValueStrict(Position, entity),
-      structureType: getComponentValue(StructureType, entity),
-      owner: getComponentValue(OwnedBy, entity),
-    }));
+    .map((entity) => {
+      const player = getComponentValue(OwnedBy, entity);
+
+      return {
+        entity,
+        position: getComponentValueStrict(Position, entity),
+        structureType: getComponentValue(StructureType, entity),
+        player: getComponentValue(OwnedBy, entity),
+        owner: player
+          ? getComponentValue(
+              OwnedBy,
+              encodeMatchEntity(MATCH_ENTITY, player.value as Entity)
+            )
+          : null,
+      };
+    });
 
   const terrain = useEntityQuery([Has(LevelContent)])
     .filter((entity) => {
@@ -91,15 +101,13 @@ export const App = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.batman1_MoveSystem_move([MATCH_ENTITY, 1]);
+        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write
-          .batman1_MoveSystem_move([MATCH_ENTITY, 0])
-          .then(console.log);
+        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.batman1_MoveSystem_move([MATCH_ENTITY, 2]);
+        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.batman1_MoveSystem_move([MATCH_ENTITY, 3]);
+        worldContract.write.batman2_MoveSystem_move([MATCH_ENTITY, 3]);
       }
     }
 
@@ -129,17 +137,19 @@ export const App = () => {
             />
           );
         })}
-        {units.map(({ position, structureType, owner }, i) => {
+        {units.map(({ entity, position, structureType, owner }) => {
+          const backgroundColor = owner ? `#${owner.value.slice(-6)}` : "gray";
+
           return (
             <div
-              key={i}
-              className="absolute border border-gray-900 text-3xl bg-red-600"
+              key={entity}
+              className="absolute border border-gray-900 text-3xl"
               style={{
                 left: WIDTH * position.x,
                 top: WIDTH * position.y,
                 width: WIDTH,
                 height: WIDTH,
-                backgroundColor: owner ? stringToColour(owner.value) : "gray",
+                backgroundColor,
               }}
             >
               {structureType

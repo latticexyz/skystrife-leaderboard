@@ -8,7 +8,7 @@ import { PackedCounter } from "@latticexyz/store/src/PackedCounter.sol";
 import { Position, PositionData } from "../codegen/index.sol";
 import { Direction } from "../codegen/common.sol";
 
-import { MatchConfig, MoveDifficultyTableId, TemplateContent, LevelTemplates, LevelContentIndex, PositionTableId } from "../codegenSkystrife/index.sol";
+import { MatchConfig, MoveDifficultyTableId, LevelTemplates, LevelContentIndex, PositionTableId, TemplateContent } from "../codegenSkystrife/index.sol";
 
 function getIndicesAtPosition(bytes32 levelId, PositionData memory position) view returns (uint256[] memory) {
   (bytes memory staticData, PackedCounter encodedLengths, bytes memory dynamicData) = Position.encode(
@@ -19,10 +19,7 @@ function getIndicesAtPosition(bytes32 levelId, PositionData memory position) vie
 }
 
 contract MoveSystem is System {
-  function getMovementDifficultyAtPosition(
-    bytes32 levelId,
-    PositionData memory position
-  ) internal view returns (int32 movementDifficulty) {
+  function anyMovementDifficultyAtPosition(bytes32 levelId, PositionData memory position) internal view returns (bool) {
     uint256[] memory indices = getIndicesAtPosition(levelId, position);
 
     for (uint256 i; i < indices.length; i++) {
@@ -30,13 +27,19 @@ contract MoveSystem is System {
       bytes memory staticData = TemplateContent.getStaticData(templateId, MoveDifficultyTableId);
 
       // Manual MUD decoding
-      movementDifficulty += (int32(uint32(Bytes.slice4(staticData, 0))));
+      int32 movementDifficulty = (int32(uint32(Bytes.slice4(staticData, 0))));
+
+      if (movementDifficulty > 0) {
+        return true;
+      }
     }
+
+    return false;
   }
 
   function move(bytes32 matchEntity, Direction direction) public {
     bytes32 levelId = MatchConfig.getLevelId(matchEntity);
-    
+
     PositionData memory position = Position.get(matchEntity, _msgSender());
 
     if (direction == Direction.DOWN) {
@@ -49,8 +52,7 @@ contract MoveSystem is System {
       position.x += 1;
     }
 
-    int32 movementDifficulty = getMovementDifficultyAtPosition(levelId, position);
-    require(movementDifficulty > 0, "no terrain here");
+    require(anyMovementDifficultyAtPosition(levelId, position), "no terrain here");
 
     Position.set(matchEntity, _msgSender(), position);
   }

@@ -10,5 +10,5 @@ import { Direction } from "./../common.sol";
  * @dev This interface is automatically generated from the corresponding system contract. Do not edit manually.
  */
 interface IMoveSystem {
-  function batman1_MoveSystem_move(bytes32 matchEntity, Direction direction) external;
+  function batman2_MoveSystem_move(bytes32 matchEntity, Direction direction) external;
 }
