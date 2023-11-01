@@ -10,7 +10,7 @@ import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
 import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
-import { createBurnerAccount, createContract, transportObserver, ContractWrite, tableIdToHex } from "@latticexyz/common";
+import { createBurnerAccount, createContract, transportObserver, ContractWrite, resourceToHex } from "@latticexyz/common";
 
 import storeConfig from "@latticexyz/store/mud.config";
 import worldConfig from "@latticexyz/world/mud.config";
@@ -75,10 +75,9 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
-
-  const mudTableIds = TABLES.map((name) => tableIdToHex(mudConfig.namespace, name));
-  const storeTableIds = Object.keys(storeConfig.tables).map((name) => tableIdToHex(storeConfig.namespace, name));
-  const worldTableIds = Object.keys(worldConfig.tables).map((name) => tableIdToHex(worldConfig.namespace, name));
+  const mudTableIds = TABLES.map((name) => resourceToHex({ type: "table", namespace: mudConfig.namespace, name }));
+  const storeTableIds = Object.keys(storeConfig.tables).map((name) => resourceToHex({ type: "table", namespace: storeConfig.namespace, name }));
+  const worldTableIds = Object.keys(worldConfig.tables).map((name) => resourceToHex({ type: "table", namespace: worldConfig.namespace, name }));
 
   const tableIds = [...storeTableIds, ...worldTableIds, ...mudTableIds];
 
@@ -88,7 +87,7 @@ export async function setupNetwork() {
    * to the viem publicClient to make RPC calls to fetch MUD
    * events from the chain.
    */
-  const { components, latestBlock$, blockStorageOperations$ } = await syncToRecs({
+  const { components, latestBlock$, storedBlockLogs$ } = await syncToRecs({
     world,
     config: mudConfig,
     address: networkConfig.worldAddress as Hex,
@@ -133,7 +132,7 @@ export async function setupNetwork() {
     publicClient,
     walletClient: burnerWalletClient,
     latestBlock$,
-    blockStorageOperations$,
+    storedBlockLogs$,
     worldContract,
     write$: write$.asObservable().pipe(share()),
   };

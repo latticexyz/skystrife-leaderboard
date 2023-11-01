@@ -6,29 +6,17 @@ import { useMUD } from "./MUDContext";
 import { OverlineLarge, OverlineSmall } from "./Theme/SkyStrife/Typography";
 import { Orbs } from "./Theme/SkyStrife/Orbs";
 
-const TOKEN_ID =
-  "0x4d616e6100000000000000000000000000000000000000000000000000000000";
-
 export const App = () => {
   const {
     components: { TokenBalance },
   } = useMUD();
 
-  const balances = useEntityQuery([Has(TokenBalance)])
-    .filter((entity) => {
-      return (
-        decodeEntity(TokenBalance.metadata.keySchema, entity).token === TOKEN_ID
-      );
-    })
-    .map((entity) => {
-      const owner = decodeEntity(
-        TokenBalance.metadata.keySchema,
-        entity
-      ).entity;
-      const { value } = getComponentValueStrict(TokenBalance, entity);
+  const balances = useEntityQuery([Has(TokenBalance)]).map((entity) => {
+    const owner = decodeEntity(TokenBalance.metadata.keySchema, entity).entity;
+    const { value } = getComponentValueStrict(TokenBalance, entity);
 
-      return { entity: owner, value };
-    });
+    return { entity: owner, value };
+  });
 
   balances.sort((a, b) => Number(b.value - a.value));
 

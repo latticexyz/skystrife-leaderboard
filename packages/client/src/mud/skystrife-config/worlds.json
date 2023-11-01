@@ -1,17 +1,6 @@
 {
   "901": {
-    "address": "0xB41e747bC9d07c85F020618A3A07d50F96703A78",
-    "blockNumber": 88338
-  },
-  "4242": {
-    "address": "0xb3E07bba6F2899b5528E5Dd331a6548Feb044eB5",
-    "blockNumber": 20074768
-  },
-  "4243": {
-    "address": "0x960c82BBB934c160365f2Bf73964a22992B819Ac",
-    "blockNumber": 4860686
-  },
-  "31337": {
-    "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    "address": "0x1e589d0f5eee235ba1c677fb4f173e052a16f754",
+    "blockNumber": 3724506
   }
 }
