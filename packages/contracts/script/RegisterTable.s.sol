@@ -8,7 +8,7 @@ import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
 import {Counter} from "../src/codegen/index.sol";
 
-address constant worldAddress = 0x1e589d0f5eee235bA1c677fb4F173e052a16f754;
+import { worldAddress } from "./constants.sol";
 
 contract RegisterNamespace is Script {
   function run() external {

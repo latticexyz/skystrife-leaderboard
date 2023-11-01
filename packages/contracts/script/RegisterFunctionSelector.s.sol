@@ -12,11 +12,9 @@ import { IBaseWorld } from "@latticexyz/world/src/codegen/interfaces/IBaseWorld.
 import { IncrementSystem } from "../src/systems/IncrementSystem.sol";
 import {Counter} from "../src/codegen/index.sol";
 
-address constant worldAddress = 0x1e589d0f5eee235bA1c677fb4F173e052a16f754;
+import { worldAddress, systemId } from "./constants.sol";
 
 contract RegisterFunctionSelector is Script {
-  ResourceId systemId = WorldResourceIdLib.encode({ typeId: RESOURCE_SYSTEM, namespace: "gm", name: "IncrementSystem" });
-  
   function run() external {
     StoreSwitch.setStoreAddress(worldAddress);
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
