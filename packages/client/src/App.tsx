@@ -2,11 +2,10 @@ import { decodeValue } from "@latticexyz/protocol-parser";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { useEffect } from "react";
+import { MATCH_ENTITY } from "./mud/setupNetwork";
 
 const BYTES32_ZERO =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
-const MATCH_ENTITY =
-  "0x4cd52d8c00000000000000000000000000000000000000000000000000000000";
 const WIDTH = 35;
 
 const StructureTypeToSymbol = [

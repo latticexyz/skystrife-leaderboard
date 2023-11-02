@@ -44,36 +44,66 @@ import { drip } from "./faucet";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
-type TableName = keyof (typeof skystrifeConfig)["tables"];
+export const MATCH_ENTITY =
+  "0x4cd52d8c00000000000000000000000000000000000000000000000000000000";
 
-const TABLES: TableName[] = [
-  "MatchConfig",
-  "LevelContent",
-  "Position",
-  "OwnedBy",
-  "StructureType",
-];
+const filters: SyncFilter[] = [
+  // Root tables
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: skystrifeConfig.namespace,
+      name: "MatchConfig",
+    })
+  },
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: skystrifeConfig.namespace,
+      name: "LevelContent",
+    })
+  },
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: skystrifeConfig.namespace,
+      name: "Position",
+    }),
+    key0: MATCH_ENTITY,
+  },
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: skystrifeConfig.namespace,
+      name: "OwnedBy",
+    }),
+    key0: MATCH_ENTITY
+  },
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: skystrifeConfig.namespace,
+      name: "StructureType",
+    }),
+    key0: MATCH_ENTITY,
+  },
 
-const filters: SyncFilter[] = TABLES.map((name) => ({
-  tableId: resourceToHex({
-    type: "table",
-    namespace: skystrifeConfig.namespace,
-    name,
-  }),
-})).concat([
+  // Sky Scavenger tables
   {
     tableId: resourceToHex({
       type: "table",
       namespace: mudConfig.namespace,
       name: "Position",
-    })
+    }),
+    key0: MATCH_ENTITY,
   },
   {
     tableId: resourceToHex({
       type: "table",
       namespace: mudConfig.namespace,
       name: "Pilfered",
-    })
+    }),
+    key0: MATCH_ENTITY,
   },
   {
     tableId: resourceToHex({
@@ -82,7 +112,7 @@ const filters: SyncFilter[] = TABLES.map((name) => ({
       name: "Balances",
     })
   }
-]);
+];
 
 export async function setupNetwork() {
   const networkConfig = await getNetworkConfig();
