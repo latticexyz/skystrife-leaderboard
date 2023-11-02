@@ -13,11 +13,10 @@ import {
   parseEther,
   ClientConfig,
 } from "viem";
-import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
+import { syncToZustand } from "@latticexyz/store-sync/zustand";
 import { resolveConfig } from "@latticexyz/store";
 
 import { getNetworkConfig } from "./getNetworkConfig";
-import { world } from "./world";
 import SkystrifeAbi from "contracts-skystrife/out/world/IWorld.sol/IWorld.abi.json";
 import IWorldAbi from "contracts/out/world/IWorld.sol/IWorld.abi.json";
 import {
@@ -130,7 +129,7 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
-  const { tables } = resolveConfig(mudConfig);
+  const { tables: x } = resolveConfig(mudConfig);
 
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
@@ -138,8 +137,7 @@ export async function setupNetwork() {
    * to the viem publicClient to make RPC calls to fetch MUD
    * events from the chain.
    */
-  const { components, latestBlock$, storedBlockLogs$ } = await syncToRecs({
-    world,
+  const { tables, useStore, latestBlock$, storedBlockLogs$ } = await syncToZustand({
     config: skystrifeConfig,
     address: networkConfig.worldAddress as Hex,
     publicClient,
@@ -147,9 +145,9 @@ export async function setupNetwork() {
     startBlock: BigInt(networkConfig.initialBlockNumber),
     filters,
     tables: {
-      Pilfered: tables.Pilfered,
-      ScavengerPosition: tables.Position,
-      ScavengerBalances: tables.Balances
+      Pilfered: x.Pilfered,
+      ScavengerPosition: x.Position,
+      ScavengerBalances: x.Balances
     }
   });
 
@@ -180,12 +178,8 @@ export async function setupNetwork() {
   }
 
   return {
-    world,
-    components,
-    playerEntity: encodeEntity(
-      { address: "address" },
-      { address: burnerWalletClient.account.address }
-    ),
+    tables,
+    useStore,
     publicClient,
     walletClient: burnerWalletClient,
     latestBlock$,
