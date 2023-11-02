@@ -2,7 +2,6 @@ import { decodeValue } from "@latticexyz/protocol-parser";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { useEffect } from "react";
-import { toEthAddress } from "@latticexyz/utils";
 
 const BYTES32_ZERO =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -88,10 +87,7 @@ const Scavenger = ({
     state.getValue(tables.ScavengerPosition, keyObject)
   );
   const backgroundColor =
-    toEthAddress(keyObject.account) ===
-    walletClient.account.address.toLowerCase()
-      ? "gold"
-      : "blue";
+    keyObject.account === walletClient.account.address ? "gold" : "blue";
 
   return position ? (
     <div
