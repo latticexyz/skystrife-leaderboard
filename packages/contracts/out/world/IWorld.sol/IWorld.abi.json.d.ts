@@ -499,42 +499,6 @@ declare const abi: [
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "matchEntity",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "enum Direction",
-        "name": "direction",
-        "type": "uint8"
-      }
-    ],
-    "name": "bananas_MoveSystem_move",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "matchEntity",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "entity",
-        "type": "bytes32"
-      }
-    ],
-    "name": "bananas_PilferSystem_pilfer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "components": [
           {
             "internalType": "ResourceId",
@@ -1133,6 +1097,42 @@ declare const abi: [
       }
     ],
     "name": "installRootModule",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "enum Direction",
+        "name": "direction",
+        "type": "uint8"
+      }
+    ],
+    "name": "mangos_MoveSystem_move",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "entity",
+        "type": "bytes32"
+      }
+    ],
+    "name": "mangos_PilferSystem_pilfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

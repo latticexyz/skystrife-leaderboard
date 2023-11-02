@@ -13,7 +13,7 @@
           "type": "uint8"
         }
       ],
-      "name": "bananas_MoveSystem_move",
+      "name": "mangos_MoveSystem_move",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -30,9 +30,9 @@
     "linkReferences": {}
   },
   "methodIdentifiers": {
-    "bananas_MoveSystem_move(bytes32,uint8)": "27eca841"
+    "mangos_MoveSystem_move(bytes32,uint8)": "fbbc0100"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"matchEntity\",\"type\":\"bytes32\"},{\"internalType\":\"enum Direction\",\"name\":\"direction\",\"type\":\"uint8\"}],\"name\":\"bananas_MoveSystem_move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This interface is automatically generated from the corresponding system contract. Do not edit manually.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IMoveSystem\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IMoveSystem.sol\":\"IMoveSystem\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":contracts-skystrife/=node_modules/contracts-skystrife/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/codegen/common.sol\":{\"keccak256\":\"0x7fed449228a3e42dc671e9077d5b9230b739ebc0f57deeee7ce1aa73a7fdb050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6314d39dcb59a9c74b64b4eeeea7090ca7120102087e2b2b819e2d7b37625e7b\",\"dweb:/ipfs/QmS6A4npJkM4fc9TDjYFuCdgyNmDC8HAsPDiTQj2Rcraqb\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0x3cd014d455bc5f40d358cb3129031a06f527e4990e8bcbb1ee07e649a5b1d0a6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://262250ed1c474ee6e6ed38c915241f10fde6f3ec7d476b489b650c587171c1ce\",\"dweb:/ipfs/QmeE8QkoJgxhwQNN5kk4fmK3FWjZAQ3vxMPykcb7tYMsAu\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"matchEntity\",\"type\":\"bytes32\"},{\"internalType\":\"enum Direction\",\"name\":\"direction\",\"type\":\"uint8\"}],\"name\":\"mangos_MoveSystem_move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This interface is automatically generated from the corresponding system contract. Do not edit manually.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IMoveSystem\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IMoveSystem.sol\":\"IMoveSystem\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":contracts-skystrife/=node_modules/contracts-skystrife/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/codegen/common.sol\":{\"keccak256\":\"0x7fed449228a3e42dc671e9077d5b9230b739ebc0f57deeee7ce1aa73a7fdb050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6314d39dcb59a9c74b64b4eeeea7090ca7120102087e2b2b819e2d7b37625e7b\",\"dweb:/ipfs/QmS6A4npJkM4fc9TDjYFuCdgyNmDC8HAsPDiTQj2Rcraqb\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0x25fdd3c89b29dd162e13c39c492c17eb229aa4b9a3e5fc7a785171c41107a83a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5f2d510f6a115a047ce7759de99e3fe13c420c47d9d9eaad4be1838a79a9ad8c\",\"dweb:/ipfs/QmcwckfLGzTXroWbMfCE9PtcEHScUHp5BfVb8HAgoBN9kQ\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
       "version": "0.8.21+commit.d9974bed"
@@ -55,7 +55,7 @@
           ],
           "stateMutability": "nonpayable",
           "type": "function",
-          "name": "bananas_MoveSystem_move"
+          "name": "mangos_MoveSystem_move"
         }
       ],
       "devdoc": {
@@ -98,10 +98,10 @@
         "license": "MIT"
       },
       "src/codegen/world/IMoveSystem.sol": {
-        "keccak256": "0x3cd014d455bc5f40d358cb3129031a06f527e4990e8bcbb1ee07e649a5b1d0a6",
+        "keccak256": "0x25fdd3c89b29dd162e13c39c492c17eb229aa4b9a3e5fc7a785171c41107a83a",
         "urls": [
-          "bzz-raw://262250ed1c474ee6e6ed38c915241f10fde6f3ec7d476b489b650c587171c1ce",
-          "dweb:/ipfs/QmeE8QkoJgxhwQNN5kk4fmK3FWjZAQ3vxMPykcb7tYMsAu"
+          "bzz-raw://5f2d510f6a115a047ce7759de99e3fe13c420c47d9d9eaad4be1838a79a9ad8c",
+          "dweb:/ipfs/QmcwckfLGzTXroWbMfCE9PtcEHScUHp5BfVb8HAgoBN9kQ"
         ],
         "license": "MIT"
       }
@@ -110,22 +110,22 @@
   },
   "ast": {
     "absolutePath": "src/codegen/world/IMoveSystem.sol",
-    "id": 154529,
+    "id": 115383,
     "exportedSymbols": {
       "Direction": [
-        151470
+        112324
       ],
       "IMoveSystem": [
-        154528
+        115382
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "32:377:282",
+    "src": "32:376:251",
     "nodes": [
       {
-        "id": 154516,
+        "id": 115370,
         "nodeType": "PragmaDirective",
-        "src": "32:25:282",
+        "src": "32:25:251",
         "nodes": [],
         "literals": [
           "solidity",
@@ -135,24 +135,24 @@
         ]
       },
       {
-        "id": 154518,
+        "id": 115372,
         "nodeType": "ImportDirective",
-        "src": "108:44:282",
+        "src": "108:44:251",
         "nodes": [],
         "absolutePath": "src/codegen/common.sol",
         "file": "./../common.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 154529,
-        "sourceUnit": 151471,
+        "scope": 115383,
+        "sourceUnit": 112325,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 154517,
+              "id": 115371,
               "name": "Direction",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 151470,
-              "src": "117:9:282",
+              "referencedDeclaration": 112324,
+              "src": "117:9:251",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -161,34 +161,34 @@
         "unitAlias": ""
       },
       {
-        "id": 154528,
+        "id": 115382,
         "nodeType": "ContractDefinition",
-        "src": "296:112:282",
+        "src": "296:111:251",
         "nodes": [
           {
-            "id": 154527,
+            "id": 115381,
             "nodeType": "FunctionDefinition",
-            "src": "322:84:282",
+            "src": "322:83:251",
             "nodes": [],
-            "functionSelector": "27eca841",
+            "functionSelector": "fbbc0100",
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "bananas_MoveSystem_move",
-            "nameLocation": "331:23:282",
+            "name": "mangos_MoveSystem_move",
+            "nameLocation": "331:22:251",
             "parameters": {
-              "id": 154525,
+              "id": 115379,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 154521,
+                  "id": 115375,
                   "mutability": "mutable",
                   "name": "matchEntity",
-                  "nameLocation": "363:11:282",
+                  "nameLocation": "362:11:251",
                   "nodeType": "VariableDeclaration",
-                  "scope": 154527,
-                  "src": "355:19:282",
+                  "scope": 115381,
+                  "src": "354:19:251",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -196,10 +196,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 154520,
+                    "id": 115374,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "355:7:282",
+                    "src": "354:7:251",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -209,51 +209,51 @@
                 },
                 {
                   "constant": false,
-                  "id": 154524,
+                  "id": 115378,
                   "mutability": "mutable",
                   "name": "direction",
-                  "nameLocation": "386:9:282",
+                  "nameLocation": "385:9:251",
                   "nodeType": "VariableDeclaration",
-                  "scope": 154527,
-                  "src": "376:19:282",
+                  "scope": 115381,
+                  "src": "375:19:251",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Direction_$151470",
+                    "typeIdentifier": "t_enum$_Direction_$112324",
                     "typeString": "enum Direction"
                   },
                   "typeName": {
-                    "id": 154523,
+                    "id": 115377,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 154522,
+                      "id": 115376,
                       "name": "Direction",
                       "nameLocations": [
-                        "376:9:282"
+                        "375:9:251"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 151470,
-                      "src": "376:9:282"
+                      "referencedDeclaration": 112324,
+                      "src": "375:9:251"
                     },
-                    "referencedDeclaration": 151470,
-                    "src": "376:9:282",
+                    "referencedDeclaration": 112324,
+                    "src": "375:9:251",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Direction_$151470",
+                      "typeIdentifier": "t_enum$_Direction_$112324",
                       "typeString": "enum Direction"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "354:42:282"
+              "src": "353:42:251"
             },
             "returnParameters": {
-              "id": 154526,
+              "id": 115380,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "405:0:282"
+              "src": "404:0:251"
             },
-            "scope": 154528,
+            "scope": 115382,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
@@ -265,23 +265,23 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 154519,
+          "id": 115373,
           "nodeType": "StructuredDocumentation",
-          "src": "154:141:282",
+          "src": "154:141:251",
           "text": " @title IMoveSystem\n @dev This interface is automatically generated from the corresponding system contract. Do not edit manually."
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          154528
+          115382
         ],
         "name": "IMoveSystem",
-        "nameLocation": "306:11:282",
-        "scope": 154529,
+        "nameLocation": "306:11:251",
+        "scope": 115383,
         "usedErrors": [],
         "usedEvents": []
       }
     ],
     "license": "MIT"
   },
-  "id": 282
+  "id": 251
 }

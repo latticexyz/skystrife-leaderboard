@@ -8,15 +8,9 @@
     "build:abi": "forge build",
     "build:abi-ts": "mud abi-ts",
     "build:mud": "rimraf src/codegen && mud tablegen && mud worldgen",
-    "deploy:testnet": "pnpm run build && mud deploy --profile=lattice-testnet",
-    "dev": "pnpm mud dev-contracts",
     "lint": "pnpm run prettier && pnpm run solhint",
     "prettier": "prettier --write 'src/**/*.sol' && prettier --write 'script/**/*.sol'",
     "solhint": "solhint --config ./.solhint.json 'src/**/*.sol' --fix",
-    "registerNamespace": "forge script script/registerNamespace.s.sol --chain-id 901 --rpc-url https://redstone.linfra.xyz",
-    "registerTable": "forge script script/registerTable.s.sol --chain-id 901 --rpc-url https://redstone.linfra.xyz",
-    "registerSystem": "forge script script/registerSystem.s.sol --chain-id 901 --rpc-url https://redstone.linfra.xyz",
-    "register": "pnpm run registerNamespace --broadcast && pnpm run registerTable --broadcast && pnpm run registerSystem --broadcast"
   },
   "dependencies": {
     "@latticexyz/cli": "2.0.0-main-52182f70",
