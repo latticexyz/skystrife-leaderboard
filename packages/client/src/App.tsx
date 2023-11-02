@@ -207,6 +207,11 @@ export const App = () => {
       <div className="flex flex-col">
         <div>Match #{MATCH_ENTITY}</div>
         <div>Balance: {balance ? balance.value.toString() : "0"} ⚙️</div>
+        <div>
+          Press <b>WASD</b> to move. Press <b>E</b> to pilfer a unit when you
+          are on their tile. Pilfering can only be done once per unit and gives
+          you ⚙️.
+        </div>
       </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {terrain.map((position, i) => {
