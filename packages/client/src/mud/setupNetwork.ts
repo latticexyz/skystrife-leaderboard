@@ -127,7 +127,7 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
-  const tables = resolveConfig(mudConfig).tables
+  const { tables } = resolveConfig(mudConfig);
 
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
