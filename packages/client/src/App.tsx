@@ -40,39 +40,37 @@ const Unit = ({
   } = useMUD();
 
   const position = useStore((state) =>
-    state.getRecord(tables.Position, keyObject)
+    state.getValue(tables.Position, keyObject)
   );
   const structureType = useStore((state) =>
-    state.getRecord(tables.StructureType, keyObject)
+    state.getValue(tables.StructureType, keyObject)
   );
-  const player = useStore((state) =>
-    state.getRecord(tables.OwnedBy, keyObject)
-  );
+  const player = useStore((state) => state.getValue(tables.OwnedBy, keyObject));
   const owner = useStore((state) =>
-    state.getRecord(tables.OwnedBy, {
+    state.getValue(tables.OwnedBy, {
       matchEntity: MATCH_ENTITY,
-      entity: player ? player.value.value : BYTES32_ZERO,
+      entity: player ? player.value : BYTES32_ZERO,
     })
   );
   const pilfered = useStore((state) =>
-    state.getRecord(tables.Pilfered, keyObject)
+    state.getValue(tables.Pilfered, keyObject)
   );
 
-  const backgroundColor = owner ? `#${owner.value.value.slice(-6)}` : "gray";
+  const backgroundColor = owner ? `#${owner.value.slice(-6)}` : "gray";
 
   return position ? (
     <div
       className="absolute border border-gray-900 text-3xl"
       style={{
-        left: WIDTH * position.value.x,
-        top: WIDTH * position.value.y,
+        left: WIDTH * position.x,
+        top: WIDTH * position.y,
         width: WIDTH,
         height: WIDTH,
         backgroundColor,
         opacity: pilfered ? "50%" : "100%",
       }}
     >
-      {structureType ? StructureTypeToSymbol[structureType.value.value] : "🧙"}
+      {structureType ? StructureTypeToSymbol[structureType.value] : "🧙"}
     </div>
   ) : null;
 };
@@ -87,7 +85,7 @@ const Scavenger = ({
   } = useMUD();
 
   const position = useStore((state) =>
-    state.getRecord(tables.ScavengerPosition, keyObject)
+    state.getValue(tables.ScavengerPosition, keyObject)
   );
   const backgroundColor =
     toEthAddress(keyObject.account) ===
@@ -99,8 +97,8 @@ const Scavenger = ({
     <div
       className="absolute border border-gray-900 bg-red-600 rounded-2xl"
       style={{
-        left: WIDTH * position.value.x,
-        top: WIDTH * position.value.y,
+        left: WIDTH * position.x,
+        top: WIDTH * position.y,
         width: WIDTH,
         height: WIDTH,
         backgroundColor,
@@ -115,17 +113,17 @@ export const App = () => {
   } = useMUD();
 
   const config = useStore((state) =>
-    state.getRecord(tables.MatchConfig, { key: MATCH_ENTITY })
+    state.getValue(tables.MatchConfig, { key: MATCH_ENTITY })
   );
   const balance = useStore((state) =>
-    state.getRecord(tables.ScavengerBalances, {
+    state.getValue(tables.ScavengerBalances, {
       account: walletClient.account.address,
     })
   );
 
   const terrain = useStore((state) =>
     Object.values(state.getRecords(tables.LevelContent))
-      .filter((record) => config && record.key.levelId === config.value.levelId)
+      .filter((record) => config && record.key.levelId === config.levelId)
       .map((record) => {
         return decodeValue(
           { x: "int32", y: "int32" },
@@ -159,7 +157,7 @@ export const App = () => {
       } else if (event.code === "KeyE") {
         const playerPosition = useStore
           .getState()
-          .getRecord(tables.ScavengerPosition, {
+          .getValue(tables.ScavengerPosition, {
             matchEntity: MATCH_ENTITY,
             account: walletClient.account.address,
           });
@@ -170,8 +168,8 @@ export const App = () => {
           ).filter(
             (record) =>
               record.key.matchEntity === MATCH_ENTITY &&
-              record.value.x === playerPosition?.value.x &&
-              record.value.y === playerPosition?.value.y
+              record.value.x === playerPosition.x &&
+              record.value.y === playerPosition.y
           );
 
           if (entitiesAtPosition.length > 0) {
@@ -202,7 +200,7 @@ export const App = () => {
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
       <div className="flex flex-col">
         <div>Match #{MATCH_ENTITY}</div>
-        <div>Balance: {balance ? balance.value.value.toString() : "0"} ⚙️</div>
+        <div>Balance: {balance ? balance.value.toString() : "0"} ⚙️</div>
         <div>
           Press <b>WASD</b> to move. Press <b>E</b> to pilfer a unit when you
           are on their tile. Pilfering can only be done once per unit and gives
