@@ -44,10 +44,7 @@ import { drip } from "./faucet";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
-export const MATCH_ENTITY =
-  "0x4cd52d8c00000000000000000000000000000000000000000000000000000000";
-
-const filters: SyncFilter[] = [
+const createSyncFilters = (matchEntity: Hex): SyncFilter[] => [
   // Root tables
   {
     tableId: resourceToHex({
@@ -69,7 +66,7 @@ const filters: SyncFilter[] = [
       namespace: skystrifeConfig.namespace,
       name: "Position",
     }),
-    key0: MATCH_ENTITY,
+    key0: matchEntity,
   },
   {
     tableId: resourceToHex({
@@ -77,7 +74,7 @@ const filters: SyncFilter[] = [
       namespace: skystrifeConfig.namespace,
       name: "OwnedBy",
     }),
-    key0: MATCH_ENTITY
+    key0: matchEntity
   },
   {
     tableId: resourceToHex({
@@ -85,7 +82,7 @@ const filters: SyncFilter[] = [
       namespace: skystrifeConfig.namespace,
       name: "StructureType",
     }),
-    key0: MATCH_ENTITY,
+    key0: matchEntity,
   },
   // Sky Scavenger tables
   {
@@ -94,7 +91,7 @@ const filters: SyncFilter[] = [
       namespace: mudConfig.namespace,
       name: "Position",
     }),
-    key0: MATCH_ENTITY,
+    key0: matchEntity,
   },
   {
     tableId: resourceToHex({
@@ -102,7 +99,7 @@ const filters: SyncFilter[] = [
       namespace: mudConfig.namespace,
       name: "Pilfered",
     }),
-    key0: MATCH_ENTITY,
+    key0: matchEntity,
   },
   {
     tableId: resourceToHex({
@@ -132,10 +129,10 @@ export async function setupNetwork() {
    * Create a temporary wallet and a viem client for it
    * (see https://viem.sh/docs/clients/wallet.html).
    */
-  const burnerAccount = createBurnerAccount(networkConfig.privateKey as Hex);
-  const burnerWalletClient = createWalletClient({
+  const account = createBurnerAccount(networkConfig.privateKey as Hex);
+  const walletClient = createWalletClient({
     ...clientOptions,
-    account: burnerAccount,
+    account,
   });
 
   /*
@@ -154,7 +151,7 @@ export async function setupNetwork() {
       ...IWorldAbi
     ] as const,
     publicClient,
-    walletClient: burnerWalletClient,
+    walletClient,
     onWrite: (write) => write$.next(write),
   });
 
@@ -172,7 +169,7 @@ export async function setupNetwork() {
     publicClient,
     indexerUrl: networkConfig.indexerUrl,
     startBlock: BigInt(networkConfig.initialBlockNumber),
-    filters,
+    filters: createSyncFilters(networkConfig.matchEntity),
     tables: {
       Pilfered: scavengerTables.Pilfered,
       ScavengerPosition: scavengerTables.Position,
@@ -186,7 +183,7 @@ export async function setupNetwork() {
    * run out.
    */
   if (networkConfig.faucetServiceUrl) {
-    const { address } = burnerAccount;
+    const { address } = account;
     console.info("[Dev Faucet]: Player address -> ", address);
 
 
@@ -210,10 +207,11 @@ export async function setupNetwork() {
     tables,
     useStore,
     publicClient,
-    walletClient: burnerWalletClient,
+    walletClient,
     latestBlock$,
     storedBlockLogs$,
     worldContract,
     write$: write$.asObservable().pipe(share()),
+    matchEntity: networkConfig.matchEntity
   };
 }

@@ -35,6 +35,7 @@ import worlds from "contracts-skystrife/worlds.json";
  * for instructions on how to add networks.
  */
 import { supportedChains } from "./supportedChains";
+import { Hex } from "viem";
 
 export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
@@ -80,6 +81,11 @@ export async function getNetworkConfig() {
     ? Number(params.get("initialBlockNumber"))
     : world?.blockNumber ?? 0n;
 
+  const matchEntity = params.get("matchEntity") as Hex;
+  if (!matchEntity) {
+    throw new Error(`No match entity`);
+  }
+
   return {
     privateKey: getBurnerPrivateKey(),
     chainId,
@@ -87,6 +93,7 @@ export async function getNetworkConfig() {
     faucetServiceUrl: params.get("faucet") ?? chain.faucetUrl,
     worldAddress,
     initialBlockNumber,
-    indexerUrl: chain.indexerUrl
+    indexerUrl: chain.indexerUrl,
+    matchEntity
   };
 }

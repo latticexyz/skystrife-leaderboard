@@ -2,7 +2,6 @@ import { decodeValue } from "@latticexyz/protocol-parser";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { useEffect } from "react";
-import { MATCH_ENTITY } from "./mud/setupNetwork";
 import { Leaderboard } from "./Leaderboard";
 
 const BYTES32_ZERO =
@@ -48,7 +47,7 @@ const Unit = ({
   const player = useStore((state) => state.getValue(tables.OwnedBy, keyObject));
   const owner = useStore((state) =>
     state.getValue(tables.OwnedBy, {
-      matchEntity: MATCH_ENTITY,
+      matchEntity: keyObject.matchEntity,
       entity: player ? player.value : BYTES32_ZERO,
     })
   );
@@ -106,11 +105,11 @@ const Scavenger = ({
 
 export const App = () => {
   const {
-    network: { tables, useStore, walletClient, worldContract },
+    network: { tables, useStore, walletClient, worldContract, matchEntity },
   } = useMUD();
 
   const config = useStore((state) =>
-    state.getValue(tables.MatchConfig, { key: MATCH_ENTITY })
+    state.getValue(tables.MatchConfig, { key: matchEntity })
   );
   const balance = useStore((state) =>
     state.getValue(tables.ScavengerBalances, {
@@ -131,31 +130,31 @@ export const App = () => {
 
   const units = useStore((state) =>
     Object.values(state.getRecords(tables.Position)).filter(
-      (record) => record.key.matchEntity === MATCH_ENTITY
+      (record) => record.key.matchEntity === matchEntity
     )
   );
 
   const scavengers = useStore((state) =>
     Object.values(state.getRecords(tables.ScavengerPosition)).filter(
-      (record) => record.key.matchEntity === MATCH_ENTITY
+      (record) => record.key.matchEntity === matchEntity
     )
   );
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 1]);
+        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 0]);
+        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 2]);
+        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 3]);
+        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 3]);
       } else if (event.code === "KeyE") {
         const playerPosition = useStore
           .getState()
           .getValue(tables.ScavengerPosition, {
-            matchEntity: MATCH_ENTITY,
+            matchEntity: matchEntity,
             account: walletClient.account.address,
           });
 
@@ -164,7 +163,7 @@ export const App = () => {
             useStore.getState().getRecords(tables.Position)
           ).filter(
             (record) =>
-              record.key.matchEntity === MATCH_ENTITY &&
+              record.key.matchEntity === matchEntity &&
               record.value.x === playerPosition.x &&
               record.value.y === playerPosition.y
           );
@@ -186,6 +185,7 @@ export const App = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [
+    matchEntity,
     tables.Position,
     tables.ScavengerPosition,
     useStore,
@@ -196,7 +196,7 @@ export const App = () => {
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
       <div className="flex flex-col">
-        <div>Match #{MATCH_ENTITY}</div>
+        <div>Match #{matchEntity}</div>
         <div>
           Balance: {balance ? balance.value.toString() : "0"} {EMOJI}
         </div>
