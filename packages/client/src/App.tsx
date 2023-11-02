@@ -151,13 +151,13 @@ export const App = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 1]);
+        worldContract.write.batman7_MoveSystem_move([MATCH_ENTITY, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 0]);
+        worldContract.write.batman7_MoveSystem_move([MATCH_ENTITY, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 2]);
+        worldContract.write.batman7_MoveSystem_move([MATCH_ENTITY, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.batman6_MoveSystem_move([MATCH_ENTITY, 3]);
+        worldContract.write.batman7_MoveSystem_move([MATCH_ENTITY, 3]);
       } else if (event.code === "KeyE") {
         const playerPosition = getComponentValueStrict(
           ScavengerPosition,
@@ -181,7 +181,7 @@ export const App = () => {
           const { matchEntity, entity } = decodeMatchEntity(
             entitiesAtPosition[0]
           );
-          worldContract.write.batman6_PilferSystem_pilfer([
+          worldContract.write.batman7_PilferSystem_pilfer([
             matchEntity,
             entity,
           ]);

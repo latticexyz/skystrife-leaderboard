@@ -9,4 +9,4 @@ broadcast/
 # Ignore MUD deploy artifacts
 deploys/**/*.json
 
-!out/IWorld.sol/
+!out/world

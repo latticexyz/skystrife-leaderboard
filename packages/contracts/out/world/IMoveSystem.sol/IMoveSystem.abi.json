@@ -1,0 +1,20 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "enum Direction",
+        "name": "direction",
+        "type": "uint8"
+      }
+    ],
+    "name": "batman7_MoveSystem_move",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

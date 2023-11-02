@@ -11,7 +11,7 @@ import { RESOURCE_NAMESPACE } from "@latticexyz/world/src/worldResourceTypes.sol
 import { worldAddress } from "./constants.sol";
 
 contract RegisterNamespace is Script {
-  ResourceId namespaceId = ResourceIdLib.encode(RESOURCE_NAMESPACE, bytes30("batman6"));
+  ResourceId namespaceId = ResourceIdLib.encode(RESOURCE_NAMESPACE, bytes30("batman7"));
 
   function run() external {
     StoreSwitch.setStoreAddress(worldAddress);
