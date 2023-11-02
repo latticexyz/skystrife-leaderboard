@@ -15,6 +15,7 @@ import {
 } from "viem";
 import { createFaucetService } from "@latticexyz/services/faucet";
 import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
+import { resolveConfig } from "@latticexyz/store";
 
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
@@ -126,6 +127,8 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
+  const tables = resolveConfig(mudConfig).tables
+
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
    * Uses the MUD indexer if available, otherwise falls back
@@ -141,42 +144,9 @@ export async function setupNetwork() {
     startBlock: BigInt(networkConfig.initialBlockNumber),
     filters,
     tables: {
-      ScavengerPosition: {
-        namespace: mudConfig.namespace,
-        name: "Position",
-        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Position" }),
-        keySchema: {
-          matchEntity: { type: "bytes32" },
-          account: { type: "address" },
-        },
-        valueSchema: {
-          x: { type: "uint32" },
-          y: { type: "uint32" },
-        },
-      },
-      Pilfered: {
-        namespace: mudConfig.namespace,
-        name: "Pilfered",
-        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Pilfered" }),
-        keySchema: {
-          matchEntity: { type: "bytes32" },
-          entity: { type: "bytes32" },
-        },
-        valueSchema: {
-          value: { type: "bool" },
-        },
-      },
-      ScavengerBalances: {
-        namespace: mudConfig.namespace,
-        name: "Balances",
-        tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name: "Balances" }),
-        keySchema: {
-          account: { type: "address" },
-        },
-        valueSchema: {
-          value: { type: "uint256" },
-        },
-      },
+      Pilfered: tables.Pilfered,
+      ScavengerPosition: tables.Position,
+      ScavengerBalances: tables.Balances
     }
   });
 

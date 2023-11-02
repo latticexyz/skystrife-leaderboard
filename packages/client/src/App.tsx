@@ -169,11 +169,21 @@ export const App = () => {
 
         const entitiesAtPosition = Array.from(
           runQuery([HasValue(Position, playerPosition)])
-        );
+        ).filter((entity) => {
+          const { matchEntity } = decodeEntity(
+            Position.metadata.keySchema,
+            entity
+          );
+          return matchEntity === MATCH_ENTITY;
+        });
+
         if (entitiesAtPosition.length > 0) {
+          const { matchEntity, entity } = decodeMatchEntity(
+            entitiesAtPosition[0]
+          );
           worldContract.write.batman6_PilferSystem_pilfer([
-            MATCH_ENTITY,
-            decodeMatchEntity(entitiesAtPosition[0]).entity,
+            matchEntity,
+            entity,
           ]);
         }
       }
