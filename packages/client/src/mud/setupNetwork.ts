@@ -87,7 +87,6 @@ const filters: SyncFilter[] = [
     }),
     key0: MATCH_ENTITY,
   },
-
   // Sky Scavenger tables
   {
     tableId: resourceToHex({

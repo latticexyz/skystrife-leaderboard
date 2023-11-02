@@ -3,10 +3,12 @@ import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { useEffect } from "react";
 import { MATCH_ENTITY } from "./mud/setupNetwork";
+import { Leaderboard } from "./Leaderboard";
 
 const BYTES32_ZERO =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
 const WIDTH = 35;
+export const EMOJI = "⚙️";
 
 const StructureTypeToSymbol = [
   "Unknown",
@@ -195,11 +197,13 @@ export const App = () => {
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
       <div className="flex flex-col">
         <div>Match #{MATCH_ENTITY}</div>
-        <div>Balance: {balance ? balance.value.toString() : "0"} ⚙️</div>
+        <div>
+          Balance: {balance ? balance.value.toString() : "0"} {EMOJI}
+        </div>
         <div>
           Press <b>WASD</b> to move. Press <b>E</b> to pilfer a unit when you
           are on their tile. Pilfering can only be done once per unit and gives
-          you ⚙️.
+          you {EMOJI}.
         </div>
       </div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -224,6 +228,7 @@ export const App = () => {
           <Scavenger key={record.id} keyObject={record.key} />
         ))}
       </div>
+      <Leaderboard />
     </div>
   );
 };
