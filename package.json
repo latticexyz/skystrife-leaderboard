@@ -2,7 +2,7 @@
   "name": "mud-template-react",
   "private": true,
   "scripts": {
-    "build": "pnpm recursive run build",
+    "build": "pnpm --filter 'contracts' run dev && pnpm recursive run build",
     "dev": "pnpm --filter 'client' run dev",
     "foundry:up": "curl -L https://foundry.paradigm.xyz | bash && bash $HOME/.foundry/bin/foundryup",
     "mud:up": "pnpm mud set-version --tag main && pnpm install",
