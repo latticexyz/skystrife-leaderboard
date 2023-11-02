@@ -8,7 +8,7 @@
     "build:abi": "forge build",
     "build:abi-ts": "mud abi-ts",
     "build:mud": "rimraf src/codegen && mud tablegen && mud worldgen",
-    "deploy:redstone": "DEBUG=mud:* pnpm run deploy:redstone",
+    "deploy:redstone": "pnpm run build && mud deploy --profile=redstone --worldAddress 0x1e589d0f5eee235bA1c677fb4F173e052a16f754",
     "dev": "pnpm mud dev-contracts",
     "lint": "pnpm run prettier && pnpm run solhint",
     "prettier": "prettier --write 'src/**/*.sol' && prettier --write 'script/**/*.sol'",

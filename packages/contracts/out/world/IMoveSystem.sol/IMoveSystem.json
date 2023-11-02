@@ -13,7 +13,7 @@
           "type": "uint8"
         }
       ],
-      "name": "batman7_MoveSystem_move",
+      "name": "bananas_MoveSystem_move",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -30,9 +30,9 @@
     "linkReferences": {}
   },
   "methodIdentifiers": {
-    "batman7_MoveSystem_move(bytes32,uint8)": "4dc49747"
+    "bananas_MoveSystem_move(bytes32,uint8)": "27eca841"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"matchEntity\",\"type\":\"bytes32\"},{\"internalType\":\"enum Direction\",\"name\":\"direction\",\"type\":\"uint8\"}],\"name\":\"batman7_MoveSystem_move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This interface is automatically generated from the corresponding system contract. Do not edit manually.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IMoveSystem\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IMoveSystem.sol\":\"IMoveSystem\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/codegen/common.sol\":{\"keccak256\":\"0x7fed449228a3e42dc671e9077d5b9230b739ebc0f57deeee7ce1aa73a7fdb050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6314d39dcb59a9c74b64b4eeeea7090ca7120102087e2b2b819e2d7b37625e7b\",\"dweb:/ipfs/QmS6A4npJkM4fc9TDjYFuCdgyNmDC8HAsPDiTQj2Rcraqb\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0x300bea28d9386906cd621c39a8c9ea14c658d7fb07385385e609bf6ffde94fd1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8475c6e4cac3b0880bbbf18e5e4a4df3bfc67c0908d4143c32f06b6bc2825909\",\"dweb:/ipfs/QmQNjQMar47Gitt428axYrMjcG7VLKZmQTTwwTMcm6JZcc\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"matchEntity\",\"type\":\"bytes32\"},{\"internalType\":\"enum Direction\",\"name\":\"direction\",\"type\":\"uint8\"}],\"name\":\"bananas_MoveSystem_move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This interface is automatically generated from the corresponding system contract. Do not edit manually.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IMoveSystem\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IMoveSystem.sol\":\"IMoveSystem\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":contracts-skystrife/=node_modules/contracts-skystrife/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/codegen/common.sol\":{\"keccak256\":\"0x7fed449228a3e42dc671e9077d5b9230b739ebc0f57deeee7ce1aa73a7fdb050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6314d39dcb59a9c74b64b4eeeea7090ca7120102087e2b2b819e2d7b37625e7b\",\"dweb:/ipfs/QmS6A4npJkM4fc9TDjYFuCdgyNmDC8HAsPDiTQj2Rcraqb\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0x3cd014d455bc5f40d358cb3129031a06f527e4990e8bcbb1ee07e649a5b1d0a6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://262250ed1c474ee6e6ed38c915241f10fde6f3ec7d476b489b650c587171c1ce\",\"dweb:/ipfs/QmeE8QkoJgxhwQNN5kk4fmK3FWjZAQ3vxMPykcb7tYMsAu\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
       "version": "0.8.21+commit.d9974bed"
@@ -55,7 +55,7 @@
           ],
           "stateMutability": "nonpayable",
           "type": "function",
-          "name": "batman7_MoveSystem_move"
+          "name": "bananas_MoveSystem_move"
         }
       ],
       "devdoc": {
@@ -72,6 +72,7 @@
     "settings": {
       "remappings": [
         "@latticexyz/=node_modules/@latticexyz/",
+        "contracts-skystrife/=node_modules/contracts-skystrife/",
         "ds-test/=node_modules/ds-test/src/",
         "forge-std/=node_modules/forge-std/src/"
       ],
@@ -97,10 +98,10 @@
         "license": "MIT"
       },
       "src/codegen/world/IMoveSystem.sol": {
-        "keccak256": "0x300bea28d9386906cd621c39a8c9ea14c658d7fb07385385e609bf6ffde94fd1",
+        "keccak256": "0x3cd014d455bc5f40d358cb3129031a06f527e4990e8bcbb1ee07e649a5b1d0a6",
         "urls": [
-          "bzz-raw://8475c6e4cac3b0880bbbf18e5e4a4df3bfc67c0908d4143c32f06b6bc2825909",
-          "dweb:/ipfs/QmQNjQMar47Gitt428axYrMjcG7VLKZmQTTwwTMcm6JZcc"
+          "bzz-raw://262250ed1c474ee6e6ed38c915241f10fde6f3ec7d476b489b650c587171c1ce",
+          "dweb:/ipfs/QmeE8QkoJgxhwQNN5kk4fmK3FWjZAQ3vxMPykcb7tYMsAu"
         ],
         "license": "MIT"
       }
@@ -109,22 +110,22 @@
   },
   "ast": {
     "absolutePath": "src/codegen/world/IMoveSystem.sol",
-    "id": 72564,
+    "id": 154529,
     "exportedSymbols": {
       "Direction": [
-        69505
+        151470
       ],
       "IMoveSystem": [
-        72563
+        154528
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "32:377:141",
+    "src": "32:377:282",
     "nodes": [
       {
-        "id": 72551,
+        "id": 154516,
         "nodeType": "PragmaDirective",
-        "src": "32:25:141",
+        "src": "32:25:282",
         "nodes": [],
         "literals": [
           "solidity",
@@ -134,24 +135,24 @@
         ]
       },
       {
-        "id": 72553,
+        "id": 154518,
         "nodeType": "ImportDirective",
-        "src": "108:44:141",
+        "src": "108:44:282",
         "nodes": [],
         "absolutePath": "src/codegen/common.sol",
         "file": "./../common.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 72564,
-        "sourceUnit": 69506,
+        "scope": 154529,
+        "sourceUnit": 151471,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 72552,
+              "id": 154517,
               "name": "Direction",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 69505,
-              "src": "117:9:141",
+              "referencedDeclaration": 151470,
+              "src": "117:9:282",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -160,34 +161,34 @@
         "unitAlias": ""
       },
       {
-        "id": 72563,
+        "id": 154528,
         "nodeType": "ContractDefinition",
-        "src": "296:112:141",
+        "src": "296:112:282",
         "nodes": [
           {
-            "id": 72562,
+            "id": 154527,
             "nodeType": "FunctionDefinition",
-            "src": "322:84:141",
+            "src": "322:84:282",
             "nodes": [],
-            "functionSelector": "4dc49747",
+            "functionSelector": "27eca841",
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "batman7_MoveSystem_move",
-            "nameLocation": "331:23:141",
+            "name": "bananas_MoveSystem_move",
+            "nameLocation": "331:23:282",
             "parameters": {
-              "id": 72560,
+              "id": 154525,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 72556,
+                  "id": 154521,
                   "mutability": "mutable",
                   "name": "matchEntity",
-                  "nameLocation": "363:11:141",
+                  "nameLocation": "363:11:282",
                   "nodeType": "VariableDeclaration",
-                  "scope": 72562,
-                  "src": "355:19:141",
+                  "scope": 154527,
+                  "src": "355:19:282",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -195,10 +196,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 72555,
+                    "id": 154520,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "355:7:141",
+                    "src": "355:7:282",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -208,51 +209,51 @@
                 },
                 {
                   "constant": false,
-                  "id": 72559,
+                  "id": 154524,
                   "mutability": "mutable",
                   "name": "direction",
-                  "nameLocation": "386:9:141",
+                  "nameLocation": "386:9:282",
                   "nodeType": "VariableDeclaration",
-                  "scope": 72562,
-                  "src": "376:19:141",
+                  "scope": 154527,
+                  "src": "376:19:282",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Direction_$69505",
+                    "typeIdentifier": "t_enum$_Direction_$151470",
                     "typeString": "enum Direction"
                   },
                   "typeName": {
-                    "id": 72558,
+                    "id": 154523,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 72557,
+                      "id": 154522,
                       "name": "Direction",
                       "nameLocations": [
-                        "376:9:141"
+                        "376:9:282"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 69505,
-                      "src": "376:9:141"
+                      "referencedDeclaration": 151470,
+                      "src": "376:9:282"
                     },
-                    "referencedDeclaration": 69505,
-                    "src": "376:9:141",
+                    "referencedDeclaration": 151470,
+                    "src": "376:9:282",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Direction_$69505",
+                      "typeIdentifier": "t_enum$_Direction_$151470",
                       "typeString": "enum Direction"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "354:42:141"
+              "src": "354:42:282"
             },
             "returnParameters": {
-              "id": 72561,
+              "id": 154526,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "405:0:141"
+              "src": "405:0:282"
             },
-            "scope": 72563,
+            "scope": 154528,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
@@ -264,23 +265,23 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 72554,
+          "id": 154519,
           "nodeType": "StructuredDocumentation",
-          "src": "154:141:141",
+          "src": "154:141:282",
           "text": " @title IMoveSystem\n @dev This interface is automatically generated from the corresponding system contract. Do not edit manually."
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          72563
+          154528
         ],
         "name": "IMoveSystem",
-        "nameLocation": "306:11:141",
-        "scope": 72564,
+        "nameLocation": "306:11:282",
+        "scope": 154529,
         "usedErrors": [],
         "usedEvents": []
       }
     ],
     "license": "MIT"
   },
-  "id": 141
+  "id": 282
 }

@@ -12,7 +12,7 @@ declare const abi: [
         "type": "uint8"
       }
     ],
-    "name": "batman7_MoveSystem_move",
+    "name": "bananas_MoveSystem_move",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

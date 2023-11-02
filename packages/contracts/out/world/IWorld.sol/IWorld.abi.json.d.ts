@@ -499,6 +499,42 @@ declare const abi: [
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "enum Direction",
+        "name": "direction",
+        "type": "uint8"
+      }
+    ],
+    "name": "bananas_MoveSystem_move",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "entity",
+        "type": "bytes32"
+      }
+    ],
+    "name": "bananas_PilferSystem_pilfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "ResourceId",
@@ -560,42 +596,6 @@ declare const abi: [
         "type": "bytes[]"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "matchEntity",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "enum Direction",
-        "name": "direction",
-        "type": "uint8"
-      }
-    ],
-    "name": "batman7_MoveSystem_move",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "matchEntity",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "entity",
-        "type": "bytes32"
-      }
-    ],
-    "name": "batman7_PilferSystem_pilfer",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
