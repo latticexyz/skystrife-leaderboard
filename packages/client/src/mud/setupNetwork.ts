@@ -18,7 +18,7 @@ import { resolveConfig } from "@latticexyz/store";
 
 import { getNetworkConfig } from "./getNetworkConfig";
 import { world } from "./world";
-import SkystrifeAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
+import SkystrifeAbi from "contracts-skystrife/out/world/IWorld.sol/IWorld.abi.json";
 import IWorldAbi from "contracts/out/world/IWorld.sol/IWorld.abi.json";
 import {
   createBurnerAccount,
