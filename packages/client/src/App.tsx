@@ -151,13 +151,13 @@ export const App = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY, 1]);
+        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY, 0]);
+        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY, 2]);
+        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY, 3]);
+        worldContract.write.mangos_MoveSystem_move([MATCH_ENTITY as Hex, 3]);
       } else if (event.code === "KeyE") {
         const playerPosition = getComponentValueStrict(
           ScavengerPosition,

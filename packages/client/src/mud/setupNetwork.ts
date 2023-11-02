@@ -121,7 +121,10 @@ export async function setupNetwork() {
    */
   const worldContract = createContract({
     address: networkConfig.worldAddress as Hex,
-    abi: SkystrifeAbi.concat(IWorldAbi),
+    abi: [
+      ...SkystrifeAbi,
+      ...IWorldAbi
+    ] as const,
     publicClient,
     walletClient: burnerWalletClient,
     onWrite: (write) => write$.next(write),
