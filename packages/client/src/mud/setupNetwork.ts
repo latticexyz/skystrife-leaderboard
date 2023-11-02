@@ -158,7 +158,7 @@ export async function setupNetwork() {
     onWrite: (write) => write$.next(write),
   });
 
-  const { tables: x } = resolveConfig(mudConfig);
+  const { tables: scavengerTables } = resolveConfig(mudConfig);
 
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
@@ -174,9 +174,9 @@ export async function setupNetwork() {
     startBlock: BigInt(networkConfig.initialBlockNumber),
     filters,
     tables: {
-      Pilfered: x.Pilfered,
-      ScavengerPosition: x.Position,
-      ScavengerBalances: x.Balances
+      Pilfered: scavengerTables.Pilfered,
+      ScavengerPosition: scavengerTables.Position,
+      ScavengerBalances: scavengerTables.Balances
     }
   });
 
