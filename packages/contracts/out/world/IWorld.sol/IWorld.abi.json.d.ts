@@ -576,7 +576,7 @@ declare const abi: [
         "type": "uint8"
       }
     ],
-    "name": "batman6_MoveSystem_move",
+    "name": "batman7_MoveSystem_move",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -594,7 +594,7 @@ declare const abi: [
         "type": "bytes32"
       }
     ],
-    "name": "batman6_PilferSystem_pilfer",
+    "name": "batman7_PilferSystem_pilfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

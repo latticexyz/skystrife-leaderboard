@@ -1,5 +1,5 @@
 {
-  "name": "contracts",
+  "name": "contracts-skystrife",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -23,8 +23,7 @@
     "@latticexyz/schema-type": "2.0.0-main-52182f70",
     "@latticexyz/store": "2.0.0-main-52182f70",
     "@latticexyz/world": "2.0.0-main-52182f70",
-    "@latticexyz/world-modules": "2.0.0-main-52182f70",
-    "contracts-skystrife": "workspace:*"
+    "@latticexyz/world-modules": "2.0.0-main-52182f70"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

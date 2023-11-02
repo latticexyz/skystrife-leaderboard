@@ -5,10 +5,10 @@ import { Bytes } from "@latticexyz/store/src/Bytes.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { PackedCounter } from "@latticexyz/store/src/PackedCounter.sol";
 
+import { Position, PositionData } from "contracts-skystrife/src/codegen/index.sol";
+
 import { Balances, Position as ScavengerPosition, PositionData as ScavengerPositionData, Pilfered } from "../codegen/index.sol";
 import { Direction } from "../codegen/common.sol";
-
-import { Position, PositionData } from "../codegenSkystrife/index.sol";
 
 uint256 constant REWARD = 100;
 

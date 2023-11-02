@@ -13,7 +13,6 @@ import {
   parseEther,
   ClientConfig,
 } from "viem";
-import { createFaucetService } from "@latticexyz/services/faucet";
 import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
 import { resolveConfig } from "@latticexyz/store";
 
@@ -39,7 +38,7 @@ import { Subject, share } from "rxjs";
  * See https://mud.dev/tutorials/walkthrough/minimal-onchain#mudconfigts
  * for the source of this information.
  */
-import skystrifeConfig from "./skystrife-config/mud.config";
+import skystrifeConfig from "contracts-skystrife/mud.config";
 import mudConfig from "contracts/mud.config";
 import { SyncFilter } from "@latticexyz/store-sync";
 import { drip } from "./faucet";

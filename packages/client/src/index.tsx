@@ -3,7 +3,7 @@ import { mount as mountDevTools } from "@latticexyz/dev-tools";
 import { App } from "./App";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
-import mudConfig from "./mud/skystrife-config/mud.config";
+import mudConfig from "contracts-skystrife/mud.config";
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");

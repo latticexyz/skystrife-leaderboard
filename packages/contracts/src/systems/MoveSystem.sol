@@ -8,7 +8,7 @@ import { PackedCounter } from "@latticexyz/store/src/PackedCounter.sol";
 import { Position, PositionData } from "../codegen/index.sol";
 import { Direction } from "../codegen/common.sol";
 
-import { MatchConfig, MoveDifficultyTableId, LevelTemplates, LevelContentIndex, PositionTableId, TemplateContent } from "../codegenSkystrife/index.sol";
+import { MatchConfig, MoveDifficultyTableId, LevelTemplates, LevelContentIndex, PositionTableId, TemplateContent } from "contracts-skystrife/src/codegen/index.sol";
 
 function getIndicesAtPosition(bytes32 levelId, PositionData memory position) view returns (uint256[] memory) {
   (bytes memory staticData, PackedCounter encodedLengths, bytes memory dynamicData) = Position.encode(
