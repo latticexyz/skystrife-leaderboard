@@ -165,10 +165,10 @@ export async function setupNetwork() {
       const balance = await publicClient.getBalance({ address });
       console.info(`[Dev Faucet]: Player balance -> ${balance}`);
       const lowBalance = balance < parseEther("1");
-      if (lowBalance) {
+      if (lowBalance && networkConfig.faucetServiceUrl) {
         console.info("[Dev Faucet]: Balance is low, dripping funds to player");
         // Double drip
-        await drip(address, networkConfig.faucetServiceUrl, publicClient);
+        drip(address, networkConfig.faucetServiceUrl, publicClient);
       }
     };
 
