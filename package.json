@@ -6,7 +6,7 @@
     "dev": "pnpm --filter 'client' run dev",
     "foundry:up": "curl -L https://foundry.paradigm.xyz | bash && bash $HOME/.foundry/bin/foundryup",
     "mud:up": "pnpm mud set-version --tag main && pnpm install",
-    "prepare": "(forge --version || pnpm foundry:up) && pnpm --filter 'contracts' run dev",
+    "prepare": "(forge --version || pnpm foundry:up) && pnpm --filter 'contracts' run build",
     "test": "pnpm recursive run test"
   },
   "devDependencies": {
