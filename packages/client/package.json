@@ -13,6 +13,7 @@
   "dependencies": {
     "@latticexyz/common": "2.0.0-main-52182f70",
     "@latticexyz/dev-tools": "2.0.0-main-52182f70",
+    "@latticexyz/faucet": "2.0.0-main-52182f70",
     "@latticexyz/protocol-parser": "2.0.0-main-52182f70",
     "@latticexyz/react": "2.0.0-main-52182f70",
     "@latticexyz/recs": "2.0.0-main-52182f70",

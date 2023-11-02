@@ -42,6 +42,7 @@ import { Subject, share } from "rxjs";
 import skystrifeConfig from "./skystrife-config/mud.config";
 import mudConfig from "contracts/mud.config";
 import { SyncFilter } from "@latticexyz/store-sync";
+import { drip } from "./faucet";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
@@ -156,10 +157,9 @@ export async function setupNetwork() {
    * run out.
    */
   if (networkConfig.faucetServiceUrl) {
-    const address = burnerAccount.address;
+    const { address } = burnerAccount;
     console.info("[Dev Faucet]: Player address -> ", address);
 
-    const faucet = createFaucetService(networkConfig.faucetServiceUrl);
 
     const requestDrip = async () => {
       const balance = await publicClient.getBalance({ address });
@@ -168,8 +168,7 @@ export async function setupNetwork() {
       if (lowBalance) {
         console.info("[Dev Faucet]: Balance is low, dripping funds to player");
         // Double drip
-        await faucet.dripDev({ address });
-        await faucet.dripDev({ address });
+        await drip(address, networkConfig.faucetServiceUrl, publicClient);
       }
     };
 
