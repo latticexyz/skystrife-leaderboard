@@ -196,8 +196,10 @@ export const Match = () => {
   ]);
 
   return (
-    <div className="flex justify-center h-screen bg-blue-500 text-lg">
-      <Link to="/">Sky Scavenger</Link>
+    <div className="h-screen bg-blue-500 text-lg">
+      <Link className="text-3xl" to="/">
+        Sky Scavenger
+      </Link>
       <div className="flex flex-col">
         <div>Match #{matchEntity}</div>
         <div>

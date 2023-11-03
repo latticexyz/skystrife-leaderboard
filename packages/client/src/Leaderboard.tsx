@@ -8,31 +8,39 @@ export function Leaderboard() {
   } = useMUD();
 
   const balances = useStore((state) =>
-    state.getRecords(tables.Scavenger_Balances)
+    Object.values(state.getRecords(tables.Scavenger_Balances))
   );
 
   return (
-    <div className="h-screen bg-blue-500 text-xl">
-      <Link to="/">Sky Scavenger</Link>
-      <div>Leaderboard</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Account</th>
-            <th>Balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(balances).map((record) => (
-            <tr key={record.id}>
-              <td>{record.key.account}</td>
-              <td>
-                {record.value.value.toString()} {SYMBOL}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="min-h-screen w-full bg-blue-500">
+      <Link className="text-3xl" to="/">
+        Sky Scavenger
+      </Link>
+      <div className="m-2">
+        <div className="text-2xl">Leaderboard</div>
+        <div className="text-lg">
+          <table>
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {balances.length > 0
+                ? balances.map((record) => (
+                    <tr key={record.id}>
+                      <td>{record.key.account}</td>
+                      <td>
+                        {record.value.value.toString()} {SYMBOL}
+                      </td>
+                    </tr>
+                  ))
+                : "Nobody has pilfered yet :("}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
