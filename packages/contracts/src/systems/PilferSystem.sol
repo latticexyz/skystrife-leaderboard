@@ -5,7 +5,7 @@ import { System } from "@latticexyz/world/src/System.sol";
 
 import { Combat, Position, PositionData } from "contracts-skystrife/src/codegen/index.sol";
 
-import { Balances, Position as ScavengerPosition, PositionData as ScavengerPositionData, Pilfered } from "../codegen/index.sol";
+import { Balances, Pilfered, Position as ScavengerPosition, PositionData as ScavengerPositionData } from "../codegen/index.sol";
 
 uint256 constant REWARD = 100;
 
