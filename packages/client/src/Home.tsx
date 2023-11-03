@@ -1,0 +1,28 @@
+import { Link } from "react-router-dom";
+import { useMUD } from "./MUDContext";
+
+export function Home() {
+  const {
+    network: { tables, useStore },
+  } = useMUD();
+
+  const matches = useStore((state) => state.getRecords(tables.MatchConfig));
+
+  return (
+    <div className="bg-blue-500">
+      <div className="text-3xl">Sky Scavenger</div>
+      <div>
+        <Link to={`leaderboard`}>Go to the leaderboard</Link>
+      </div>
+      <div className="text-2xl">Leaderboard</div>
+      <div className="text-2xl">Matches</div>
+      <div>
+        {Object.values(matches).map((record) => (
+          <div key={record.id}>
+            <Link to={`match/${record.key.key}`}>{record.key.key}</Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

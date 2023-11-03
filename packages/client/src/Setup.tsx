@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { MUDProvider } from "./MUDContext";
-import { App } from "./App";
-import { setup } from "./mud/setup";
 
-export function SetupApp() {
+type Props = {
+  children: ReactNode;
+  setup: () => Promise<any>;
+};
+
+export function Setup({ children, setup }: Props) {
   const [result, setResult] = useState<Awaited<ReturnType<typeof setup>>>();
 
   useEffect(() => {
     setup().then((res) => setResult(res));
-  }, []);
+  }, [setup]);
 
   return (
     <div>
       {result ? (
-        <MUDProvider value={result}>
-          <App />
-        </MUDProvider>
+        <MUDProvider value={result}>{children}</MUDProvider>
       ) : (
         <div>Loading...</div>
       )}

@@ -1,9 +1,23 @@
-import { setupNetwork } from "./setupNetworkLeaderboard";
+import { resourceToHex } from "@latticexyz/common";
+import { setupNetwork } from "./setupNetwork";
 
-export type SetupResult = Awaited<ReturnType<typeof setup>>;
+import mudConfig from "contracts/mud.config";
 
-export async function setup() {
-  const network = await setupNetwork();
+export type SetupResult = Awaited<ReturnType<typeof setupLeaderboard>>;
+
+const FILTERS = [
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: mudConfig.namespace,
+      name: "Balances",
+    }),
+  },
+];
+
+export async function setupLeaderboard() {
+  const network = await setupNetwork(FILTERS);
+
   return {
     network,
   };

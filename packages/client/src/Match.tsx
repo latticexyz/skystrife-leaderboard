@@ -2,7 +2,7 @@ import { decodeValue } from "@latticexyz/protocol-parser";
 import { useMUD } from "./MUDContext";
 import { Hex } from "viem";
 import { useEffect } from "react";
-import { Leaderboard } from "./Leaderboard";
+import { Link, useParams } from "react-router-dom";
 
 const BYTES32_ZERO =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -103,10 +103,12 @@ const Scavenger = ({
   ) : null;
 };
 
-export const App = () => {
+export const Match = () => {
   const {
-    network: { tables, useStore, walletClient, worldContract, matchEntity },
+    network: { tables, useStore, walletClient, worldContract },
   } = useMUD();
+
+  const matchEntity = useParams().matchEntity as Hex;
 
   const config = useStore((state) =>
     state.getValue(tables.MatchConfig, { key: matchEntity })
@@ -195,6 +197,7 @@ export const App = () => {
 
   return (
     <div className="flex justify-center h-screen bg-blue-500 text-lg">
+      <Link to="/">Sky Scavenger</Link>
       <div className="flex flex-col">
         <div>Match #{matchEntity}</div>
         <div>
@@ -228,7 +231,6 @@ export const App = () => {
           <Scavenger key={record.id} keyObject={record.key} />
         ))}
       </div>
-      <Leaderboard />
     </div>
   );
 };

@@ -20,7 +20,6 @@ import {
   createContract,
   transportObserver,
   ContractWrite,
-  resourceToHex,
 } from "@latticexyz/common";
 import { SyncFilter } from "@latticexyz/store-sync";
 import { Subject, share } from "rxjs";
@@ -42,73 +41,7 @@ import skystrifeConfig from "contracts-skystrife/mud.config";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
-const createSyncFilters = (matchEntity: Hex): SyncFilter[] => [
-  // Root tables
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: skystrifeConfig.namespace,
-      name: "MatchConfig",
-    }),
-  },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: skystrifeConfig.namespace,
-      name: "LevelContent",
-    }),
-  },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: skystrifeConfig.namespace,
-      name: "Position",
-    }),
-    key0: matchEntity,
-  },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: skystrifeConfig.namespace,
-      name: "OwnedBy",
-    }),
-    key0: matchEntity,
-  },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: skystrifeConfig.namespace,
-      name: "StructureType",
-    }),
-    key0: matchEntity,
-  },
-  // Sky Scavenger tables
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: mudConfig.namespace,
-      name: "Balances",
-    }),
-  },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: mudConfig.namespace,
-      name: "Position",
-    }),
-    key0: matchEntity,
-  },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: mudConfig.namespace,
-      name: "Pilfered",
-    }),
-    key0: matchEntity,
-  },
-];
-
-export async function setupNetwork() {
+export async function setupNetwork(filters: SyncFilter[]) {
   const networkConfig = await getNetworkConfig();
 
   /*
@@ -165,7 +98,7 @@ export async function setupNetwork() {
       publicClient,
       indexerUrl: networkConfig.indexerUrl,
       startBlock: BigInt(networkConfig.initialBlockNumber),
-      filters: createSyncFilters(networkConfig.matchEntity),
+      filters,
       tables: {
         Scavenger_Pilfered: scavengerTables.Pilfered,
         Scavenger_Position: scavengerTables.Position,
@@ -207,6 +140,5 @@ export async function setupNetwork() {
     storedBlockLogs$,
     worldContract,
     write$: write$.asObservable().pipe(share()),
-    matchEntity: networkConfig.matchEntity,
   };
 }

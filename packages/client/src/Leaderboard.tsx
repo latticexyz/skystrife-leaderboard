@@ -1,4 +1,5 @@
-import { EMOJI as SYMBOL } from "./App";
+import { Link } from "react-router-dom";
+import { EMOJI as SYMBOL } from "./Match";
 import { useMUD } from "./MUDContext";
 
 export function Leaderboard() {
@@ -12,6 +13,7 @@ export function Leaderboard() {
 
   return (
     <div className="h-screen bg-blue-500 text-xl">
+      <Link to="/">Sky Scavenger</Link>
       <div>Leaderboard</div>
       <table>
         <thead>

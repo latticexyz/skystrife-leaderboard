@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext } from "react";
-import { SetupResult } from "./mud/setup";
+import { SetupResult } from "./mud/setupApp";
 
 const MUDContext = createContext<SetupResult | null>(null);
 
