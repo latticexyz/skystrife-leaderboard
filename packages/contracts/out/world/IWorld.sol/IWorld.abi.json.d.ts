@@ -617,42 +617,6 @@ declare const abi: [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "matchEntity",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "enum Direction",
-        "name": "direction",
-        "type": "uint8"
-      }
-    ],
-    "name": "cherry_MoveSystem_move",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "matchEntity",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "entity",
-        "type": "bytes32"
-      }
-    ],
-    "name": "cherry_PilferSystem_pilfer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "creator",
     "outputs": [
@@ -1133,6 +1097,42 @@ declare const abi: [
       }
     ],
     "name": "installRootModule",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "enum Direction",
+        "name": "direction",
+        "type": "uint8"
+      }
+    ],
+    "name": "orange_MoveSystem_move",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "matchEntity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "entity",
+        "type": "bytes32"
+      }
+    ],
+    "name": "orange_PilferSystem_pilfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
