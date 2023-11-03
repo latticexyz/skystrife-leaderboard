@@ -14,7 +14,6 @@ import {
   ClientConfig,
 } from "viem";
 import { syncToZustand } from "@latticexyz/store-sync/zustand";
-import { resolveConfig } from "@latticexyz/store";
 import {
   createBurnerAccount,
   createContract,
@@ -36,8 +35,8 @@ import { drip } from "./faucet";
  * See https://mud.dev/tutorials/walkthrough/minimal-onchain#mudconfigts
  * for the source of this information.
  */
-import mudConfig from "contracts/mud.config";
 import skystrifeConfig from "contracts-skystrife/mud.config";
+import { tablesPrefix } from "./scavengerTablesPrefix";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
@@ -83,8 +82,6 @@ export async function setupNetwork(filters: SyncFilter[]) {
     onWrite: (write) => write$.next(write),
   });
 
-  const { tables: scavengerTables } = resolveConfig(mudConfig);
-
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
    * Uses the MUD indexer if available, otherwise falls back
@@ -99,11 +96,7 @@ export async function setupNetwork(filters: SyncFilter[]) {
       indexerUrl: networkConfig.indexerUrl,
       startBlock: BigInt(networkConfig.initialBlockNumber),
       filters,
-      tables: {
-        Scavenger_Pilfered: scavengerTables.Pilfered,
-        Scavenger_Position: scavengerTables.Position,
-        Scavenger_Balances: scavengerTables.Balances,
-      },
+      tables: tablesPrefix,
     });
 
   /*
@@ -117,7 +110,7 @@ export async function setupNetwork(filters: SyncFilter[]) {
 
     const requestDrip = async () => {
       const balance = await publicClient.getBalance({ address });
-      console.info(`[Dev Faucet]: Player balance -> ${balance}`);
+      console.info(`[Dev Faucet]: Player balance -> ${balance} `);
       const lowBalance = balance < parseEther("1");
       if (lowBalance && networkConfig.faucetServiceUrl) {
         console.info("[Dev Faucet]: Balance is low, dripping funds to player");
