@@ -144,14 +144,19 @@ export const Match = () => {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
+      const move = (direction: number) => {
+        worldContract.write
+          .orange_MoveSystem_move([matchEntity as Hex, direction])
+          .catch(() => console.log("Cannot move here"));
+      };
       if (event.code === "KeyS") {
-        worldContract.write.orange_MoveSystem_move([matchEntity as Hex, 1]);
+        move(1);
       } else if (event.code === "KeyW") {
-        worldContract.write.orange_MoveSystem_move([matchEntity as Hex, 0]);
+        move(0);
       } else if (event.code === "KeyA") {
-        worldContract.write.orange_MoveSystem_move([matchEntity as Hex, 2]);
+        move(2);
       } else if (event.code === "KeyD") {
-        worldContract.write.orange_MoveSystem_move([matchEntity as Hex, 3]);
+        move(3);
       } else if (event.code === "KeyE") {
         const playerPosition = useStore
           .getState()
@@ -172,10 +177,9 @@ export const Match = () => {
 
           if (entitiesAtPosition.length > 0) {
             const { matchEntity, entity } = entitiesAtPosition[0].key;
-            worldContract.write.orange_PilferSystem_pilfer([
-              matchEntity,
-              entity,
-            ]);
+            worldContract.write
+              .orange_PilferSystem_pilfer([matchEntity, entity])
+              .catch(() => console.log("Cannot pilfer here"));
           }
         }
       }
