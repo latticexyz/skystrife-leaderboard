@@ -516,7 +516,7 @@ export default mudConfig({
       valueSchema: {
         cost: "uint256",
         window: "uint256",
-        token: "bytes32",
+        token: "address",
       },
     },
     /**
@@ -616,7 +616,6 @@ export default mudConfig({
       valueSchema: {
         startTime: "uint256",
         turnLength: "uint256",
-        actionCooldownLength: "uint256",
         levelId: "bytes32",
         createdBy: "bytes32",
       },
@@ -668,10 +667,7 @@ export default mudConfig({
         entity: "bytes32",
         rank: "uint256",
       },
-      valueSchema: {
-        token: "bytes32",
-        value: "uint256",
-      },
+      valueSchema: "uint256",
     },
 
     // ______________________ TEMPLATES + LEVELS ____________________________
@@ -752,44 +748,6 @@ export default mudConfig({
      * Whether a template is "virtual", meaning it is not instantiated during Level copying.
      */
     VirtualLevelTemplates: "bool",
-
-    // ______________________ TOKENS ____________________________
-
-    /**
-     * The metadata for each token.
-     */
-    TokenMetadata: {
-      valueSchema: {
-        decimals: "uint8",
-        name: "string",
-        emoji: "string",
-      },
-    },
-    /**
-     * The supply for each token.
-     */
-    TokenSupply: "uint256",
-    /**
-     * The allowance of each entity for a given token.
-     */
-    TokenAllowance: {
-      keySchema: {
-        token: "bytes32",
-        account: "bytes32",
-        spender: "bytes32",
-      },
-      valueSchema: "uint256",
-    },
-    /**
-     * The number of tokens owned by each entity for a given token.
-     */
-    TokenBalance: {
-      keySchema: {
-        token: "bytes32",
-        entity: "bytes32",
-      },
-      valueSchema: "uint256",
-    },
   },
   modules: [
     // KeysWithValueModule
