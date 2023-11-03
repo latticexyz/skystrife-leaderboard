@@ -1,17 +1,18 @@
 import { ReactNode, useEffect, useState } from "react";
 import { MUDProvider } from "./MUDContext";
+import { setup } from "./mud/setup";
 
 type Props = {
   children: ReactNode;
-  setup: () => Promise<any>;
+  mySetup: () => ReturnType<typeof setup>;
 };
 
-export function Setup({ children, setup }: Props) {
+export function Setup({ children, mySetup }: Props) {
   const [result, setResult] = useState<Awaited<ReturnType<typeof setup>>>();
 
   useEffect(() => {
-    setup().then((res) => setResult(res));
-  }, [setup]);
+    mySetup().then((res) => setResult(res));
+  }, [mySetup]);
 
   return (
     <div>

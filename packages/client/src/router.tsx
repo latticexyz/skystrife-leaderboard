@@ -15,7 +15,7 @@ const SetupMatch = () => {
   const { matchEntity } = useParams();
 
   return (
-    <Setup setup={() => setup(getFiltersMatch(matchEntity as Hex))}>
+    <Setup mySetup={() => setup(getFiltersMatch(matchEntity as Hex))}>
       <Match />
     </Setup>
   );
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Setup setup={() => setup(FILTERS_HOME)}>
+      <Setup mySetup={() => setup(FILTERS_HOME)}>
         <Home />
       </Setup>
     ),
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
   {
     path: "/leaderboard",
     element: (
-      <Setup setup={() => setup(FILTERS_LEADERBOARD)}>
+      <Setup mySetup={() => setup(FILTERS_LEADERBOARD)}>
         <Leaderboard />
       </Setup>
     ),
