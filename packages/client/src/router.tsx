@@ -2,17 +2,20 @@ import { createBrowserRouter, useParams } from "react-router-dom";
 import { Setup } from "./Setup";
 import { Leaderboard } from "./Leaderboard";
 import { Match } from "./Match";
-import { setupLeaderboard } from "./mud/setupLeaderboard";
-import { setupApp } from "./mud/setupApp";
+import { setup } from "./mud/setup";
 import { Hex } from "viem";
 import { Home } from "./Home";
-import { setupHome } from "./mud/setupHome";
+import {
+  FILTERS_HOME,
+  FILTERS_LEADERBOARD,
+  getFiltersMatch,
+} from "./mud/filters";
 
 const SetupApp = () => {
   const { matchEntity } = useParams();
 
   return (
-    <Setup setup={() => setupApp(matchEntity as Hex)}>
+    <Setup setup={() => setup(getFiltersMatch(matchEntity as Hex))}>
       <Match />
     </Setup>
   );
@@ -22,7 +25,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Setup setup={setupHome}>
+      <Setup setup={() => setup(FILTERS_HOME)}>
         <Home />
       </Setup>
     ),
@@ -30,7 +33,7 @@ export const router = createBrowserRouter([
   {
     path: "/leaderboard",
     element: (
-      <Setup setup={setupLeaderboard}>
+      <Setup setup={() => setup(FILTERS_LEADERBOARD)}>
         <Leaderboard />
       </Setup>
     ),
