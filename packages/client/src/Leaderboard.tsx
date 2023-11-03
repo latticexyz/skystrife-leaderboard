@@ -11,7 +11,7 @@ export function Leaderboard() {
   );
 
   return (
-    <div>
+    <div className="h-screen bg-blue-500 text-xl">
       <div>Leaderboard</div>
       <table>
         <thead>
