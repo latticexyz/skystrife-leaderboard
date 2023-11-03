@@ -21,4 +21,4 @@ extra_output_files = ["abi", "evm.bytecode"]
 fs_permissions = [{ access = "read", path = "./" }]
 
 [profile.redstone]
-eth_rpc_url = "https://redstone.linfra.xyz/"
+eth_rpc_url = "https://892.quarry.linfra.xyz/"

@@ -59,7 +59,7 @@ import { MatchMapCopyProgress, MatchMapCopyProgressTableId } from "./tables/Matc
 import { MatchReady, MatchReadyTableId } from "./tables/MatchReady.sol";
 import { MatchRanking, MatchRankingTableId } from "./tables/MatchRanking.sol";
 import { MatchSweepstake, MatchSweepstakeTableId } from "./tables/MatchSweepstake.sol";
-import { MatchReward, MatchRewardData, MatchRewardTableId } from "./tables/MatchReward.sol";
+import { MatchReward, MatchRewardTableId } from "./tables/MatchReward.sol";
 import { TemplateTables, TemplateTablesTableId } from "./tables/TemplateTables.sol";
 import { TemplateContent, TemplateContentTableId } from "./tables/TemplateContent.sol";
 import { LevelTemplates, LevelTemplatesTableId } from "./tables/LevelTemplates.sol";
@@ -68,7 +68,3 @@ import { LevelTables, LevelTablesTableId } from "./tables/LevelTables.sol";
 import { LevelContent, LevelContentTableId } from "./tables/LevelContent.sol";
 import { LevelContentIndex, LevelContentIndexTableId } from "./tables/LevelContentIndex.sol";
 import { VirtualLevelTemplates, VirtualLevelTemplatesTableId } from "./tables/VirtualLevelTemplates.sol";
-import { TokenMetadata, TokenMetadataData, TokenMetadataTableId } from "./tables/TokenMetadata.sol";
-import { TokenSupply, TokenSupplyTableId } from "./tables/TokenSupply.sol";
-import { TokenAllowance, TokenAllowanceTableId } from "./tables/TokenAllowance.sol";
-import { TokenBalance, TokenBalanceTableId } from "./tables/TokenBalance.sol";

@@ -26,13 +26,13 @@ ResourceId constant _tableId = ResourceId.wrap(
 ResourceId constant SkyPoolConfigTableId = _tableId;
 
 FieldLayout constant _fieldLayout = FieldLayout.wrap(
-  0x0060030020202000000000000000000000000000000000000000000000000000
+  0x0054030020201400000000000000000000000000000000000000000000000000
 );
 
 struct SkyPoolConfigData {
   uint256 cost;
   uint256 window;
-  bytes32 token;
+  address token;
 }
 
 library SkyPoolConfig {
@@ -62,7 +62,7 @@ library SkyPoolConfig {
     SchemaType[] memory _valueSchema = new SchemaType[](3);
     _valueSchema[0] = SchemaType.UINT256;
     _valueSchema[1] = SchemaType.UINT256;
-    _valueSchema[2] = SchemaType.BYTES32;
+    _valueSchema[2] = SchemaType.ADDRESS;
 
     return SchemaLib.encode(_valueSchema);
   }
@@ -179,27 +179,27 @@ library SkyPoolConfig {
   /**
    * @notice Get token.
    */
-  function getToken() internal view returns (bytes32 token) {
+  function getToken() internal view returns (address token) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
-    return (bytes32(_blob));
+    return (address(bytes20(_blob)));
   }
 
   /**
    * @notice Get token.
    */
-  function _getToken() internal view returns (bytes32 token) {
+  function _getToken() internal view returns (address token) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
-    return (bytes32(_blob));
+    return (address(bytes20(_blob)));
   }
 
   /**
    * @notice Set token.
    */
-  function setToken(bytes32 token) internal {
+  function setToken(address token) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((token)), _fieldLayout);
@@ -208,7 +208,7 @@ library SkyPoolConfig {
   /**
    * @notice Set token.
    */
-  function _setToken(bytes32 token) internal {
+  function _setToken(address token) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((token)), _fieldLayout);
@@ -245,7 +245,7 @@ library SkyPoolConfig {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(uint256 cost, uint256 window, bytes32 token) internal {
+  function set(uint256 cost, uint256 window, address token) internal {
     bytes memory _staticData = encodeStatic(cost, window, token);
 
     PackedCounter _encodedLengths;
@@ -259,7 +259,7 @@ library SkyPoolConfig {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(uint256 cost, uint256 window, bytes32 token) internal {
+  function _set(uint256 cost, uint256 window, address token) internal {
     bytes memory _staticData = encodeStatic(cost, window, token);
 
     PackedCounter _encodedLengths;
@@ -301,12 +301,12 @@ library SkyPoolConfig {
   /**
    * @notice Decode the tightly packed blob of static data using this table's field layout.
    */
-  function decodeStatic(bytes memory _blob) internal pure returns (uint256 cost, uint256 window, bytes32 token) {
+  function decodeStatic(bytes memory _blob) internal pure returns (uint256 cost, uint256 window, address token) {
     cost = (uint256(Bytes.slice32(_blob, 0)));
 
     window = (uint256(Bytes.slice32(_blob, 32)));
 
-    token = (Bytes.slice32(_blob, 64));
+    token = (address(Bytes.slice20(_blob, 64)));
   }
 
   /**
@@ -345,7 +345,7 @@ library SkyPoolConfig {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(uint256 cost, uint256 window, bytes32 token) internal pure returns (bytes memory) {
+  function encodeStatic(uint256 cost, uint256 window, address token) internal pure returns (bytes memory) {
     return abi.encodePacked(cost, window, token);
   }
 
@@ -358,7 +358,7 @@ library SkyPoolConfig {
   function encode(
     uint256 cost,
     uint256 window,
-    bytes32 token
+    address token
   ) internal pure returns (bytes memory, PackedCounter, bytes memory) {
     bytes memory _staticData = encodeStatic(cost, window, token);
 

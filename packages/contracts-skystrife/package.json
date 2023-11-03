@@ -13,11 +13,11 @@
     "solhint": "solhint --config ./.solhint.json 'src/**/*.sol' --fix"
   },
   "dependencies": {
-    "@latticexyz/cli": "2.0.0-main-52182f70",
-    "@latticexyz/schema-type": "2.0.0-main-52182f70",
-    "@latticexyz/store": "2.0.0-main-52182f70",
-    "@latticexyz/world": "2.0.0-main-52182f70",
-    "@latticexyz/world-modules": "2.0.0-main-52182f70"
+    "@latticexyz/cli": "2.0.0-main-161c1a85",
+    "@latticexyz/schema-type": "2.0.0-main-161c1a85",
+    "@latticexyz/store": "2.0.0-main-161c1a85",
+    "@latticexyz/world": "2.0.0-main-161c1a85",
+    "@latticexyz/world-modules": "2.0.0-main-161c1a85"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
@@ -26,7 +26,7 @@
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.7",
-    "solhint-config-mud": "2.0.0-main-52182f70",
-    "solhint-plugin-mud": "2.0.0-main-52182f70"
+    "solhint-config-mud": "2.0.0-main-161c1a85",
+    "solhint-plugin-mud": "2.0.0-main-161c1a85"
   }
 }

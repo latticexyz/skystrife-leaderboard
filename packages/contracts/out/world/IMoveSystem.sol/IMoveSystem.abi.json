@@ -12,7 +12,7 @@
         "type": "uint8"
       }
     ],
-    "name": "mangos_MoveSystem_move",
+    "name": "cherry_MoveSystem_move",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

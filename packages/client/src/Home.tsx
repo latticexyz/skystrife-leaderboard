@@ -1,5 +1,24 @@
 import { Link } from "react-router-dom";
 import { useMUD } from "./MUDContext";
+import { Hex } from "viem";
+
+function MatchLink({ matchEntity }: { matchEntity: Hex }) {
+  const {
+    network: { tables, useStore },
+  } = useMUD();
+
+  const index = useStore((state) =>
+    state.getValue(tables.MatchIndex, { matchEntity })
+  );
+
+  return (
+    <button className="bg-gray-500 hover:bg-gray-700 font-bold text-lg">
+      <Link to={`match/${matchEntity}`}>
+        Match #{index ? index.matchIndex : matchEntity}
+      </Link>
+    </button>
+  );
+}
 
 export function Home() {
   const {
@@ -19,7 +38,7 @@ export function Home() {
       <div>
         {Object.values(matches).map((record) => (
           <div key={record.id}>
-            <Link to={`match/${record.key.key}`}>{record.key.key}</Link>
+            <MatchLink matchEntity={record.key.key} />
           </div>
         ))}
       </div>

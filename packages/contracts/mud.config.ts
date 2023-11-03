@@ -1,7 +1,7 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
-  namespace: "mangos",
+  namespace: "cherry",
   enums: {
     Direction: ["DOWN", "UP", "LEFT", "RIGHT"]
   },

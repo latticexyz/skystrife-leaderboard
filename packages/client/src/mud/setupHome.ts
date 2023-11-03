@@ -4,7 +4,7 @@ import { setupNetwork } from "./setupNetwork";
 import skystrifeConfig from "contracts-skystrife/mud.config";
 import { SyncFilter } from "@latticexyz/store-sync";
 
-export type SetupResult = Awaited<ReturnType<typeof setupApp>>;
+export type SetupResult = Awaited<ReturnType<typeof setupHome>>;
 
 const FILTERS: SyncFilter[] = [
   {
@@ -12,6 +12,12 @@ const FILTERS: SyncFilter[] = [
       type: "table",
       namespace: skystrifeConfig.namespace,
       name: "MatchConfig",
+    }),
+  }, {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: skystrifeConfig.namespace,
+      name: "MatchIndex",
     }),
   },
 ];

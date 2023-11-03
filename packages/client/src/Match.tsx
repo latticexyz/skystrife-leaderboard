@@ -145,13 +145,13 @@ export const Match = () => {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === "KeyS") {
-        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 1]);
+        worldContract.write.cherry_MoveSystem_move([matchEntity as Hex, 1]);
       } else if (event.code === "KeyW") {
-        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 0]);
+        worldContract.write.cherry_MoveSystem_move([matchEntity as Hex, 0]);
       } else if (event.code === "KeyA") {
-        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 2]);
+        worldContract.write.cherry_MoveSystem_move([matchEntity as Hex, 2]);
       } else if (event.code === "KeyD") {
-        worldContract.write.mangos_MoveSystem_move([matchEntity as Hex, 3]);
+        worldContract.write.cherry_MoveSystem_move([matchEntity as Hex, 3]);
       } else if (event.code === "KeyE") {
         const playerPosition = useStore
           .getState()
@@ -172,7 +172,7 @@ export const Match = () => {
 
           if (entitiesAtPosition.length > 0) {
             const { matchEntity, entity } = entitiesAtPosition[0].key;
-            worldContract.write.mangos_PilferSystem_pilfer([
+            worldContract.write.cherry_PilferSystem_pilfer([
               matchEntity,
               entity,
             ]);
