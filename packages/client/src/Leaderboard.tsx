@@ -19,26 +19,28 @@ export function Leaderboard() {
       <div className="m-2">
         <div className="text-2xl">Leaderboard</div>
         <div className="text-lg">
-          <table>
-            <thead>
-              <tr>
-                <th>Account</th>
-                <th>Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {balances.length > 0
-                ? balances.map((record) => (
-                    <tr key={record.id}>
-                      <td>{record.key.account}</td>
-                      <td>
-                        {record.value.value.toString()} {SYMBOL}
-                      </td>
-                    </tr>
-                  ))
-                : "Nobody has pilfered yet :("}
-            </tbody>
-          </table>
+          {balances.length > 0 ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {balances.map((record) => (
+                  <tr key={record.id}>
+                    <td>{record.key.account}</td>
+                    <td>
+                      {record.value.value.toString()} {SYMBOL}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            "Nobody has pilfered yet :("
+          )}
         </div>
       </div>
     </div>
