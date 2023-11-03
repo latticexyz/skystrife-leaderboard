@@ -1,0 +1,287 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "matchEntity",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "enum Direction",
+          "name": "direction",
+          "type": "uint8"
+        }
+      ],
+      "name": "orange_MoveSystem_move",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "orange_MoveSystem_move(bytes32,uint8)": "a116852c"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"matchEntity\",\"type\":\"bytes32\"},{\"internalType\":\"enum Direction\",\"name\":\"direction\",\"type\":\"uint8\"}],\"name\":\"orange_MoveSystem_move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This interface is automatically generated from the corresponding system contract. Do not edit manually.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"IMoveSystem\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IMoveSystem.sol\":\"IMoveSystem\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":contracts-skystrife/=node_modules/contracts-skystrife/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/codegen/common.sol\":{\"keccak256\":\"0x7fed449228a3e42dc671e9077d5b9230b739ebc0f57deeee7ce1aa73a7fdb050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6314d39dcb59a9c74b64b4eeeea7090ca7120102087e2b2b819e2d7b37625e7b\",\"dweb:/ipfs/QmS6A4npJkM4fc9TDjYFuCdgyNmDC8HAsPDiTQj2Rcraqb\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0xc4a76ef28f452545255c43429067e46f3e526445bc177d828baa87613e41fa4b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://84caea37edb022d77aadb7c9625e4990b4f149e0bac0127975f197ef561a0133\",\"dweb:/ipfs/QmeccVsiAk6dmghGUKKuNa9iGcwVWayp5EHUD6e2mPAYP9\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.21+commit.d9974bed"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "matchEntity",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "enum Direction",
+              "name": "direction",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "orange_MoveSystem_move"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@latticexyz/=node_modules/@latticexyz/",
+        "contracts-skystrife/=node_modules/contracts-skystrife/",
+        "ds-test/=node_modules/ds-test/src/",
+        "forge-std/=node_modules/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 3000
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/codegen/world/IMoveSystem.sol": "IMoveSystem"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/codegen/common.sol": {
+        "keccak256": "0x7fed449228a3e42dc671e9077d5b9230b739ebc0f57deeee7ce1aa73a7fdb050",
+        "urls": [
+          "bzz-raw://6314d39dcb59a9c74b64b4eeeea7090ca7120102087e2b2b819e2d7b37625e7b",
+          "dweb:/ipfs/QmS6A4npJkM4fc9TDjYFuCdgyNmDC8HAsPDiTQj2Rcraqb"
+        ],
+        "license": "MIT"
+      },
+      "src/codegen/world/IMoveSystem.sol": {
+        "keccak256": "0xc4a76ef28f452545255c43429067e46f3e526445bc177d828baa87613e41fa4b",
+        "urls": [
+          "bzz-raw://84caea37edb022d77aadb7c9625e4990b4f149e0bac0127975f197ef561a0133",
+          "dweb:/ipfs/QmeccVsiAk6dmghGUKKuNa9iGcwVWayp5EHUD6e2mPAYP9"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/codegen/world/IMoveSystem.sol",
+    "id": 109984,
+    "exportedSymbols": {
+      "Direction": [
+        106925
+      ],
+      "IMoveSystem": [
+        109983
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:376:243",
+    "nodes": [
+      {
+        "id": 109971,
+        "nodeType": "PragmaDirective",
+        "src": "32:25:243",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".21"
+        ]
+      },
+      {
+        "id": 109973,
+        "nodeType": "ImportDirective",
+        "src": "108:44:243",
+        "nodes": [],
+        "absolutePath": "src/codegen/common.sol",
+        "file": "./../common.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 109984,
+        "sourceUnit": 106926,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 109972,
+              "name": "Direction",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 106925,
+              "src": "117:9:243",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 109983,
+        "nodeType": "ContractDefinition",
+        "src": "296:111:243",
+        "nodes": [
+          {
+            "id": 109982,
+            "nodeType": "FunctionDefinition",
+            "src": "322:83:243",
+            "nodes": [],
+            "functionSelector": "a116852c",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "orange_MoveSystem_move",
+            "nameLocation": "331:22:243",
+            "parameters": {
+              "id": 109980,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 109976,
+                  "mutability": "mutable",
+                  "name": "matchEntity",
+                  "nameLocation": "362:11:243",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 109982,
+                  "src": "354:19:243",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 109975,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "354:7:243",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 109979,
+                  "mutability": "mutable",
+                  "name": "direction",
+                  "nameLocation": "385:9:243",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 109982,
+                  "src": "375:19:243",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Direction_$106925",
+                    "typeString": "enum Direction"
+                  },
+                  "typeName": {
+                    "id": 109978,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 109977,
+                      "name": "Direction",
+                      "nameLocations": [
+                        "375:9:243"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 106925,
+                      "src": "375:9:243"
+                    },
+                    "referencedDeclaration": 106925,
+                    "src": "375:9:243",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Direction_$106925",
+                      "typeString": "enum Direction"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "353:42:243"
+            },
+            "returnParameters": {
+              "id": 109981,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "404:0:243"
+            },
+            "scope": 109983,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IMoveSystem",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 109974,
+          "nodeType": "StructuredDocumentation",
+          "src": "154:141:243",
+          "text": " @title IMoveSystem\n @dev This interface is automatically generated from the corresponding system contract. Do not edit manually."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          109983
+        ],
+        "name": "IMoveSystem",
+        "nameLocation": "306:11:243",
+        "scope": 109984,
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 243
+}

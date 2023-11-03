@@ -3,16 +3,29 @@
  * (https://viem.sh/docs/getting-started.html).
  * This line imports the functions we need from it.
  */
-import { createPublicClient, fallback, webSocket, http, createWalletClient, Hex, parseEther, ClientConfig } from "viem";
-import { createFaucetService } from "@latticexyz/services/faucet";
-import { encodeEntity, syncToRecs } from "@latticexyz/store-sync/recs";
-
-import { getNetworkConfig } from "./getNetworkConfig";
-import { world } from "./world";
-import IWorldAbi from "./skystrife-config/out/IWorld.sol/IWorld.abi.json";
-import { createBurnerAccount, createContract, transportObserver, ContractWrite, resourceToHex } from "@latticexyz/common";
-
+import {
+  createPublicClient,
+  fallback,
+  webSocket,
+  http,
+  createWalletClient,
+  Hex,
+  parseEther,
+  ClientConfig,
+} from "viem";
+import { syncToZustand } from "@latticexyz/store-sync/zustand";
+import {
+  createBurnerAccount,
+  createContract,
+  transportObserver,
+  ContractWrite,
+} from "@latticexyz/common";
+import { SyncFilter } from "@latticexyz/store-sync";
 import { Subject, share } from "rxjs";
+import IWorldAbi from "contracts/out/world/IWorld.sol/IWorld.abi.json";
+import SkystrifeAbi from "contracts-skystrife/out/world/IWorld.sol/IWorld.abi.json";
+import { getNetworkConfig } from "./getNetworkConfig";
+import { drip } from "./faucet";
 
 /*
  * Import our MUD config, which includes strong types for
@@ -22,17 +35,12 @@ import { Subject, share } from "rxjs";
  * See https://mud.dev/tutorials/walkthrough/minimal-onchain#mudconfigts
  * for the source of this information.
  */
-import mudConfig from "./skystrife-config/mud.config";
-import { SyncFilter } from "@latticexyz/store-sync";
+import skystrifeConfig from "contracts-skystrife/mud.config";
+import { tablesPrefix } from "./scavengerTablesPrefix";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
-type TableName = keyof (typeof mudConfig)["tables"];
-
-const TABLES: TableName[] = ["TokenBalance"]
-const filters: SyncFilter[] = TABLES.map(name => ({ tableId: resourceToHex({ type: "table", namespace: mudConfig.namespace, name }) }))
-
-export async function setupNetwork() {
+export async function setupNetwork(filters: SyncFilter[]) {
   const networkConfig = await getNetworkConfig();
 
   /*
@@ -51,10 +59,10 @@ export async function setupNetwork() {
    * Create a temporary wallet and a viem client for it
    * (see https://viem.sh/docs/clients/wallet.html).
    */
-  const burnerAccount = createBurnerAccount(networkConfig.privateKey as Hex);
-  const burnerWalletClient = createWalletClient({
+  const account = createBurnerAccount(networkConfig.privateKey as Hex);
+  const walletClient = createWalletClient({
     ...clientOptions,
-    account: burnerAccount,
+    account,
   });
 
   /*
@@ -68,9 +76,9 @@ export async function setupNetwork() {
    */
   const worldContract = createContract({
     address: networkConfig.worldAddress as Hex,
-    abi: IWorldAbi,
+    abi: [...SkystrifeAbi, ...IWorldAbi] as const,
     publicClient,
-    walletClient: burnerWalletClient,
+    walletClient,
     onWrite: (write) => write$.next(write),
   });
 
@@ -80,15 +88,16 @@ export async function setupNetwork() {
    * to the viem publicClient to make RPC calls to fetch MUD
    * events from the chain.
    */
-  const { components, latestBlock$, storedBlockLogs$ } = await syncToRecs({
-    world,
-    config: mudConfig,
-    address: networkConfig.worldAddress as Hex,
-    publicClient,
-    indexerUrl: networkConfig.indexerUrl,
-    startBlock: BigInt(networkConfig.initialBlockNumber),
-    filters
-  });
+  const { tables, useStore, latestBlock$, storedBlockLogs$ } =
+    await syncToZustand({
+      config: skystrifeConfig,
+      address: networkConfig.worldAddress as Hex,
+      publicClient,
+      indexerUrl: networkConfig.indexerUrl,
+      startBlock: BigInt(networkConfig.initialBlockNumber),
+      filters,
+      tables: tablesPrefix,
+    });
 
   /*
    * If there is a faucet, request (test) ETH if you have
@@ -96,20 +105,17 @@ export async function setupNetwork() {
    * run out.
    */
   if (networkConfig.faucetServiceUrl) {
-    const address = burnerAccount.address;
+    const { address } = account;
     console.info("[Dev Faucet]: Player address -> ", address);
-
-    const faucet = createFaucetService(networkConfig.faucetServiceUrl);
 
     const requestDrip = async () => {
       const balance = await publicClient.getBalance({ address });
-      console.info(`[Dev Faucet]: Player balance -> ${balance}`);
+      console.info(`[Dev Faucet]: Player balance -> ${balance} `);
       const lowBalance = balance < parseEther("1");
-      if (lowBalance) {
+      if (lowBalance && networkConfig.faucetServiceUrl) {
         console.info("[Dev Faucet]: Balance is low, dripping funds to player");
         // Double drip
-        await faucet.dripDev({ address });
-        await faucet.dripDev({ address });
+        drip(address, networkConfig.faucetServiceUrl, publicClient);
       }
     };
 
@@ -119,11 +125,10 @@ export async function setupNetwork() {
   }
 
   return {
-    world,
-    components,
-    playerEntity: encodeEntity({ address: "address" }, { address: burnerWalletClient.account.address }),
+    tables,
+    useStore,
     publicClient,
-    walletClient: burnerWalletClient,
+    walletClient,
     latestBlock$,
     storedBlockLogs$,
     worldContract,
