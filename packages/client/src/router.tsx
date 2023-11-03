@@ -11,7 +11,7 @@ import {
   getFiltersMatch,
 } from "./mud/filters";
 
-const SetupApp = () => {
+const SetupMatch = () => {
   const { matchEntity } = useParams();
 
   return (
@@ -40,6 +40,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/match/:matchEntity",
-    element: <SetupApp />,
+    element: <SetupMatch />,
   },
 ]);
