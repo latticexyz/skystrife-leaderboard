@@ -15,10 +15,6 @@ import {
 } from "viem";
 import { syncToZustand } from "@latticexyz/store-sync/zustand";
 import { resolveConfig } from "@latticexyz/store";
-
-import { getNetworkConfig } from "./getNetworkConfig";
-import SkystrifeAbi from "contracts-skystrife/out/world/IWorld.sol/IWorld.abi.json";
-import IWorldAbi from "contracts/out/world/IWorld.sol/IWorld.abi.json";
 import {
   createBurnerAccount,
   createContract,
@@ -26,8 +22,12 @@ import {
   ContractWrite,
   resourceToHex,
 } from "@latticexyz/common";
-
+import { SyncFilter } from "@latticexyz/store-sync";
 import { Subject, share } from "rxjs";
+import IWorldAbi from "contracts/out/world/IWorld.sol/IWorld.abi.json";
+import SkystrifeAbi from "contracts-skystrife/out/world/IWorld.sol/IWorld.abi.json";
+import { getNetworkConfig } from "./getNetworkConfig";
+import { drip } from "./faucet";
 
 /*
  * Import our MUD config, which includes strong types for
@@ -37,10 +37,8 @@ import { Subject, share } from "rxjs";
  * See https://mud.dev/tutorials/walkthrough/minimal-onchain#mudconfigts
  * for the source of this information.
  */
-import skystrifeConfig from "contracts-skystrife/mud.config";
 import mudConfig from "contracts/mud.config";
-import { SyncFilter } from "@latticexyz/store-sync";
-import { drip } from "./faucet";
+import skystrifeConfig from "contracts-skystrife/mud.config";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
@@ -51,14 +49,14 @@ const createSyncFilters = (matchEntity: Hex): SyncFilter[] => [
       type: "table",
       namespace: skystrifeConfig.namespace,
       name: "MatchConfig",
-    })
+    }),
   },
   {
     tableId: resourceToHex({
       type: "table",
       namespace: skystrifeConfig.namespace,
       name: "LevelContent",
-    })
+    }),
   },
   {
     tableId: resourceToHex({
@@ -74,7 +72,7 @@ const createSyncFilters = (matchEntity: Hex): SyncFilter[] => [
       namespace: skystrifeConfig.namespace,
       name: "OwnedBy",
     }),
-    key0: matchEntity
+    key0: matchEntity,
   },
   {
     tableId: resourceToHex({
@@ -85,6 +83,13 @@ const createSyncFilters = (matchEntity: Hex): SyncFilter[] => [
     key0: matchEntity,
   },
   // Sky Scavenger tables
+  {
+    tableId: resourceToHex({
+      type: "table",
+      namespace: mudConfig.namespace,
+      name: "Balances",
+    }),
+  },
   {
     tableId: resourceToHex({
       type: "table",
@@ -101,13 +106,6 @@ const createSyncFilters = (matchEntity: Hex): SyncFilter[] => [
     }),
     key0: matchEntity,
   },
-  {
-    tableId: resourceToHex({
-      type: "table",
-      namespace: mudConfig.namespace,
-      name: "Balances",
-    })
-  }
 ];
 
 export async function setupNetwork() {
@@ -146,10 +144,7 @@ export async function setupNetwork() {
    */
   const worldContract = createContract({
     address: networkConfig.worldAddress as Hex,
-    abi: [
-      ...SkystrifeAbi,
-      ...IWorldAbi
-    ] as const,
+    abi: [...SkystrifeAbi, ...IWorldAbi] as const,
     publicClient,
     walletClient,
     onWrite: (write) => write$.next(write),
@@ -163,19 +158,20 @@ export async function setupNetwork() {
    * to the viem publicClient to make RPC calls to fetch MUD
    * events from the chain.
    */
-  const { tables, useStore, latestBlock$, storedBlockLogs$ } = await syncToZustand({
-    config: skystrifeConfig,
-    address: networkConfig.worldAddress as Hex,
-    publicClient,
-    indexerUrl: networkConfig.indexerUrl,
-    startBlock: BigInt(networkConfig.initialBlockNumber),
-    filters: createSyncFilters(networkConfig.matchEntity),
-    tables: {
-      Pilfered: scavengerTables.Pilfered,
-      ScavengerPosition: scavengerTables.Position,
-      ScavengerBalances: scavengerTables.Balances
-    }
-  });
+  const { tables, useStore, latestBlock$, storedBlockLogs$ } =
+    await syncToZustand({
+      config: skystrifeConfig,
+      address: networkConfig.worldAddress as Hex,
+      publicClient,
+      indexerUrl: networkConfig.indexerUrl,
+      startBlock: BigInt(networkConfig.initialBlockNumber),
+      filters: createSyncFilters(networkConfig.matchEntity),
+      tables: {
+        Scavenger_Pilfered: scavengerTables.Pilfered,
+        Scavenger_Position: scavengerTables.Position,
+        Scavenger_Balances: scavengerTables.Balances,
+      },
+    });
 
   /*
    * If there is a faucet, request (test) ETH if you have
@@ -185,7 +181,6 @@ export async function setupNetwork() {
   if (networkConfig.faucetServiceUrl) {
     const { address } = account;
     console.info("[Dev Faucet]: Player address -> ", address);
-
 
     const requestDrip = async () => {
       const balance = await publicClient.getBalance({ address });
@@ -212,6 +207,6 @@ export async function setupNetwork() {
     storedBlockLogs$,
     worldContract,
     write$: write$.asObservable().pipe(share()),
-    matchEntity: networkConfig.matchEntity
+    matchEntity: networkConfig.matchEntity,
   };
 }

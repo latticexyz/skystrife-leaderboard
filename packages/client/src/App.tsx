@@ -52,7 +52,7 @@ const Unit = ({
     })
   );
   const pilfered = useStore((state) =>
-    state.getValue(tables.Pilfered, keyObject)
+    state.getValue(tables.Scavenger_Pilfered, keyObject)
   );
 
   const backgroundColor = owner ? `#${owner.value.slice(-6)}` : "gray";
@@ -84,7 +84,7 @@ const Scavenger = ({
   } = useMUD();
 
   const position = useStore((state) =>
-    state.getValue(tables.ScavengerPosition, keyObject)
+    state.getValue(tables.Scavenger_Position, keyObject)
   );
   const backgroundColor =
     keyObject.account === walletClient.account.address ? "gold" : "blue";
@@ -112,7 +112,7 @@ export const App = () => {
     state.getValue(tables.MatchConfig, { key: matchEntity })
   );
   const balance = useStore((state) =>
-    state.getValue(tables.ScavengerBalances, {
+    state.getValue(tables.Scavenger_Balances, {
       account: walletClient.account.address,
     })
   );
@@ -135,7 +135,7 @@ export const App = () => {
   );
 
   const scavengers = useStore((state) =>
-    Object.values(state.getRecords(tables.ScavengerPosition)).filter(
+    Object.values(state.getRecords(tables.Scavenger_Position)).filter(
       (record) => record.key.matchEntity === matchEntity
     )
   );
@@ -153,7 +153,7 @@ export const App = () => {
       } else if (event.code === "KeyE") {
         const playerPosition = useStore
           .getState()
-          .getValue(tables.ScavengerPosition, {
+          .getValue(tables.Scavenger_Position, {
             matchEntity: matchEntity,
             account: walletClient.account.address,
           });
@@ -187,7 +187,7 @@ export const App = () => {
   }, [
     matchEntity,
     tables.Position,
-    tables.ScavengerPosition,
+    tables.Scavenger_Position,
     useStore,
     walletClient.account.address,
     worldContract.write,

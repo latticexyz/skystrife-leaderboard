@@ -47,9 +47,6 @@ importers:
       '@latticexyz/react':
         specifier: 2.0.0-main-78949f2c
         version: 2.0.0-main-78949f2c(typescript@5.1.6)(zod@3.22.2)
-      '@latticexyz/recs':
-        specifier: 2.0.0-main-78949f2c
-        version: 2.0.0-main-78949f2c(typescript@5.1.6)(zod@3.22.2)
       '@latticexyz/schema-type':
         specifier: 2.0.0-main-78949f2c
         version: 2.0.0-main-78949f2c(typescript@5.1.6)(zod@3.22.2)

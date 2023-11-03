@@ -7,7 +7,7 @@ export function Leaderboard() {
   } = useMUD();
 
   const balances = useStore((state) =>
-    state.getRecords(tables.ScavengerBalances)
+    state.getRecords(tables.Scavenger_Balances)
   );
 
   return (
